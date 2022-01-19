@@ -63,7 +63,8 @@ const options: BottomTabNavigationOptions = {
   tabBarShowLabel: false,
   tabBarStyle: {
     borderTopColor: "black",
-    borderTopWidth: 1
+    borderTopWidth: 1,
+    height: "7.5%"
   }
 }
 
