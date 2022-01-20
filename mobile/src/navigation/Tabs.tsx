@@ -6,7 +6,6 @@ import { TabParamList } from './types'
 import AreasScreen from '../screens/Areas';
 import AppsScreen from '../screens/Apps';
 import ExploreScreen from '../screens/Explore';
-import { RouteProp } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -63,7 +62,18 @@ const options: BottomTabNavigationOptions = {
   tabBarShowLabel: false,
   tabBarStyle: {
     borderTopColor: "black",
-    borderTopWidth: 1
+    borderTopWidth: 1,
+  },
+  headerShadowVisible: true,
+  headerStyle: {
+    elevation: 14,
+    shadowOpacity: 0.25,
+    borderBottomColor: 'black',
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: 0
+    }
   }
 }
 
