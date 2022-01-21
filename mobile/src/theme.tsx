@@ -1,5 +1,4 @@
 import { Theme } from "react-native-elements";
-import { Colors } from "react-native-elements";
 
 const navigationTheme = {
   dark: false,
@@ -20,6 +19,24 @@ const theme: Theme = {
     success: '#27AE60',
     error: '#E74C3C',
     warning: '#E67E22'
+  },
+  Text: {
+    h1Style: {
+      fontFamily: "NotoSans-Bold",
+      fontSize: 25
+    },
+    h2Style: {
+      fontFamily: "NotoSans-Bold",
+      fontSize: 15
+    },
+    h3Style: {
+      fontFamily: "NotoSans-Regular",
+      fontSize: 12
+    },
+    h4Style: {
+      fontFamily: "OpenSans-Regular",
+      fontSize: 10
+    }
   },
   Card: {
     containerStyle: {
