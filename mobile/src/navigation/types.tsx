@@ -10,15 +10,16 @@ type TabParamList = {
 type StackParamList = {
   Register: undefined,
   Login: undefined,
-  Tabs: undefined
+  Tabs: undefined,
+  EditArea: { areaId: number }
 }
 
-type StackNavigationProp = NativeStackNavigationProp<StackParamList>
-type TabNavigationProp = BottomTabNavigationProp<TabParamList>
+type StackNavProp = NativeStackNavigationProp<StackParamList>
+type TabNavProp = BottomTabNavigationProp<TabParamList>
 
 export type {
   TabParamList,
   StackParamList,
-  StackNavigationProp,
-  TabNavigationProp
+  StackNavProp,
+  TabNavProp
 }

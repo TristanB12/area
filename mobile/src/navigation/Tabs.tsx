@@ -2,6 +2,7 @@ import React from 'react';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TabParamList } from './types'
+import theme from '../theme';
 
 import AreasScreen from '../screens/Areas';
 import AppsScreen from '../screens/Apps';
@@ -65,6 +66,11 @@ const options: BottomTabNavigationOptions = {
     borderTopWidth: 1,
   },
   headerShadowVisible: true,
+  headerTitleStyle: {
+    fontFamily: "NotoSans-Bold",
+    fontSize: 25,
+    paddingLeft: 5
+  },
   headerStyle: {
     elevation: 14,
     shadowOpacity: 0.25,

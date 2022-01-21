@@ -1,7 +1,10 @@
 import React from "react";
-import { View, FlatList } from "react-native";
-import { Card, FAB, Icon, ListItem, Image } from "react-native-elements";
-import areasMock, { Area } from "../mock/areas";
+import { View, FlatList, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavProp } from "../navigation/types";
+import { Card, FAB, ListItem, Image } from "react-native-elements";
+import Area from "../types";
+import areasMock from "../mock/areas";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {
   return (
@@ -20,23 +23,28 @@ function ServiceListItem({ title, url } : { title: string, url: string }) {
   )
 }
 
-function AreaItem({ area } : { area: Area }) {
+function AreaItem({ area, index } : { area: Area, index: number }) {
+  const navigation = useNavigation<StackNavProp>()
+  const goToEditArea = () => navigation.navigate('EditArea', { areaId: index })
+
   return (
-    <Card>
-      <Card.Title style={{ textAlign: "left", fontFamily: "OpenSans", fontWeight: "bold", fontSize: 16}}>
-        { area.title }
-      </Card.Title>
-      <ListItem>
-        <ServiceListItem
-          title={area.action}
-          url="https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
-        />
-        <ServiceListItem
-          title={area.reaction}
-          url="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
-        />
-      </ListItem>
-    </Card>
+    <TouchableOpacity onPress={goToEditArea}>
+      <Card>
+        <Card.Title h2 style={{ textAlign: "left" }}>
+          { area.title }
+        </Card.Title>
+        <ListItem key={area.title}>
+          <ServiceListItem
+            title={area.action.service}
+            url={area.action.logoUri}
+          />
+          <ServiceListItem
+            title={area.reaction.service}
+            url={area.reaction.logoUri}
+          />
+        </ListItem>
+      </Card>
+    </TouchableOpacity>
   )
 }
 
@@ -46,7 +54,7 @@ function AreasScreen() {
       <FlatList
         keyExtractor={(area: Area) => area.title }
         data={areasMock}
-        renderItem={item => <AreaItem area={item.item} />}
+        renderItem={({ item, index }) => <AreaItem area={item} index={index} />}
       />
       <FAB
         icon={{ name: 'add', color: 'white' }}
