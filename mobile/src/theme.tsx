@@ -23,19 +23,35 @@ const theme: Theme = {
   Text: {
     h1Style: {
       fontFamily: "NotoSans-Bold",
-      fontSize: 25
+      fontSize: 25,
+      flex: 1,
     },
     h2Style: {
       fontFamily: "NotoSans-Bold",
-      fontSize: 15
+      fontSize: 15,
+      flex: 1
     },
     h3Style: {
       fontFamily: "NotoSans-Regular",
-      fontSize: 12
+      fontSize: 12,
+      flex: 1
     },
     h4Style: {
       fontFamily: "OpenSans-Regular",
-      fontSize: 10
+      fontSize: 10,
+      flex: 1
+    }
+  },
+  Button: {
+    containerStyle: {
+      backgroundColor: '#F06543',
+      borderRadius: 10
+    },
+    titleStyle: {
+      color: 'white'
+    },
+    iconContainerStyle: {
+      marginRight: 10
     }
   },
   Card: {

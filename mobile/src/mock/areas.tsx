@@ -36,7 +36,7 @@ const areas: Area[] = [
     }
   },
   {
-    title: "Email me when Lil Nas X releases new Song",
+    title: "Send me an email when Lil Nas X releases new Song on spotify",
     description: "",
     action: {
       service: "Spotify",
@@ -57,5 +57,4 @@ const areas: Area[] = [
   },
 ]
 
-export type { Area }
 export default areas

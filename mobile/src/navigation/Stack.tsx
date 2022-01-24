@@ -18,7 +18,7 @@ function StackNavigation() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>
-        <Stack.Screen name="EditArea" component={EditAreaScreen} options={{ headerTitle: 'Area' }}/>
+        <Stack.Screen name="EditArea" component={EditAreaScreen} options={{ title: 'Area' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

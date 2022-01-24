@@ -2,7 +2,6 @@ import React from 'react';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TabParamList } from './types'
-import theme from '../theme';
 
 import AreasScreen from '../screens/Areas';
 import AppsScreen from '../screens/Apps';
