@@ -128,4 +128,17 @@ a {
         width: 100%;
     }
 }
+.router-link-active::after {
+    content: '';
+    width: 0;
+    height: 2px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    position: absolute;
+    bottom: -2px;
+    background: $main-orange;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 100%;
+}
 </style>
