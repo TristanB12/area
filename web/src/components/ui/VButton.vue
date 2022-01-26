@@ -30,7 +30,7 @@ import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
                 default: false
             }
         },
-        methods: {
+        computed: {
             imagePath() {
                 return require(`../../assets/${this.iconName}`);
             }

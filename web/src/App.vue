@@ -1,6 +1,7 @@
 <template>
   <main>
     <LandingHeader />
+    <router-view />
   </main>
 </template>
 
