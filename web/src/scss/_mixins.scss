@@ -1,0 +1,56 @@
+// typography
+@mixin text-display {
+    font-family: $primary-font;
+    font-size: 64px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+@mixin text-heading-01 {
+    font-family: $primary-font;
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+@mixin text-heading-02 {
+    font-family: $primary-font;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+@mixin text-subtitle {
+    font-family: $primary-font;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+@mixin text-body {
+    font-family: $secondary-font;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+@mixin text-strong {
+    font-family: $secondary-font;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+@mixin text-small {
+    font-family: $secondary-font;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+@mixin text-button {
+    font-family: $primary-font;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}

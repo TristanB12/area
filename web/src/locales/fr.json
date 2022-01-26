@@ -1,0 +1,13 @@
+{
+    "languages": {
+        "french": "français",
+        "english": "anglais"
+    },
+    "navLinks": {
+        "mobile": "Mobile",
+        "aboutUs": "A propos",
+        "services": "Services",
+        "signIn": "Connexion",
+        "register": "S'inscrire"
+    }
+}

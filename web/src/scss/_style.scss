@@ -1,0 +1,31 @@
+// typography
+.display {
+    @include text-display;
+}
+.heading-01 {
+    @include text-heading-01;
+
+}
+.heading-02 {
+    @include text-heading-02;
+
+}
+.subtitle {
+    @include text-subtitle;
+
+}
+.body {
+    @include text-body;
+
+}
+.strong {
+    @include text-strong;
+
+}
+.small {
+    @include text-small;
+
+}
+.button {
+    @include text-button;
+}
