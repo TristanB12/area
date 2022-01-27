@@ -1,19 +1,21 @@
 import React from "react";
-import { View } from "react-native";
-import { FAB } from "react-native-elements";
+import { Fab, Icon } from "native-base"
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ScreenView from "./ScreenView";
 
 function TabScreenView({ children } : { children: React.ReactNode }) {
   return (
-    <View style={{ flex: 1, paddingTop: 20 }}>
+    <ScreenView>
       {
         children
       }
-      <FAB
-        icon={{ name: 'add', color: 'white' }}
-        placement="right"
-        size="large"
+      <Fab
+        renderInPortal={false}
+        shadow={2}
+        size="sm"
+        icon={<Icon color="white" as={<MaterialCommunityIcons name="plus" />} />}
       />
-    </View>
+    </ScreenView>
   )
 }
 

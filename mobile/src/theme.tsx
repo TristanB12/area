@@ -1,4 +1,5 @@
-import { Theme } from "react-native-elements";
+
+import { extendTheme } from "native-base";
 
 const navigationTheme = {
   dark: false,
@@ -12,69 +13,129 @@ const navigationTheme = {
   },
 };
 
-const theme: Theme = {
+const theme = extendTheme({
   colors: {
-    primary: '#F06543',
-    secondary: '#2F2E41',
-    success: '#27AE60',
-    error: '#E74C3C',
-    warning: '#E67E22'
-  },
-  Text: {
-    h1Style: {
-      fontFamily: "NotoSans-Bold",
-      fontSize: 25,
-      flex: 1,
+    primary: {
+      50: '#ffe9e1',
+      100: '#fdc4b6',
+      200: '#f79e88',
+      300: '#f2785a',
+      400: '#ed522b',
+      500: '#F06543',
+      600: '#a52b0d',
+      700: '#771e08',
+      800: '#491003',
+      900: '#1f0200',
     },
-    h2Style: {
-      fontFamily: "NotoSans-Bold",
-      fontSize: 15,
-      flex: 1
+    secondary: {
+      50: '#efeffc',
+      100: '#d3d2e1',
+      200: '#b5b4ca',
+      300: '#9896b4',
+      400: '#7b799e',
+      500: '#615f84',
+      600: '#4c4a68',
+      700: '#36354b',
+      800: '#20202f',
+      900: '#0a0a16',
     },
-    h3Style: {
-      fontFamily: "NotoSans-Regular",
-      fontSize: 12,
-      flex: 1
-    },
-    h4Style: {
-      fontFamily: "OpenSans-Regular",
-      fontSize: 10,
-      flex: 1
+    tertiary: {
+      50: '#e0edff',
+      100: '#b1c9ff',
+      200: '#7fa5ff',
+      300: '#4d81ff',
+      400: '#1e5dfe',
+      500: '#0744e5',
+      600: '#0035b3',
+      700: '#002681',
+      800: '#001750',
+      900: '#000820',
     }
   },
-  Button: {
-    containerStyle: {
-      backgroundColor: '#F06543',
-      borderRadius: 10
-    },
-    titleStyle: {
-      color: 'white'
-    },
-    iconContainerStyle: {
-      marginRight: 10
-    }
-  },
-  Card: {
-    containerStyle: {
-      borderRadius: 12,
-      borderColor: "#C8C8C8",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
+  fontConfig: {
+    NotoSans: {
+      100: {
+        normal: 'NotoSans-Regular',
+        italic: 'NotoSans-Italic'
       },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 6
+      200: {
+        normal: 'NotoSans-Regular',
+        italic: 'NotoSans-Italic'
+      },
+      300: {
+        normal: 'NotoSans-Regular',
+        italic: 'NotoSans-Italic'
+      },
+      400: {
+        normal: 'NotoSans-Regular',
+        italic: 'NotoSans-Italic'
+      },
+      500: {
+        normal: 'NotoSans-Regular',
+        italic: 'NotoSans-Italic'
+      },
+      600: {
+        normal: 'NotoSans-Regular',
+        italic: 'NotoSans-Italic'
+      },
+      700: {
+        normal: 'NotoSans-Bold',
+        italic: 'NotoSans-BoldItalic'
+      },
+      800: {
+        normal: 'NotoSans-Bold',
+        italic: 'NotoSans-BoldItalic'
+      },
+      900: {
+        normal: 'NotoSans-Bold',
+        italic: 'NotoSans-BoldItalic'
+      },
     },
-    wrapperStyle: {
-      elevation: 6
+    OpenSans: {
+      100: {
+        normal: 'OpenSans-Light',
+        italic: 'OpenSans-LightItalic'
+      },
+      200: {
+        normal: 'OpenSans-Light',
+        italic: 'OpenSans-LightItalic'
+      },
+      300: {
+        normal: 'OpenSans-Light',
+        italic: 'OpenSans-LightItalic'
+      },
+      400: {
+        normal: 'OpenSans-Regular',
+        italic: 'OpenSans-Italic'
+      },
+      500: {
+        normal: 'OpenSans-Medium',
+        italic: 'OpenSans-MediumItalic'
+      },
+      600: {
+        normal: 'OpenSans-SemiBold',
+        italic: 'OpenSans-SemiBoldItalic'
+      },
+      700: {
+        normal: 'OpenSans-Bold',
+        italic: 'OpenSans-BoldItalic'
+      },
+      800: {
+        normal: 'OpenSans-Bold',
+        italic: 'OpenSans-BoldItalic'
+      },
+      900: {
+        normal: 'OpenSans-ExtraBold',
+        italic: 'OpenSans-ExtraBoldItalic'
+      },
     }
   },
-  FAB: {
-    color: '#F06543'
+  fonts: {
+    heading: 'NotoSans',
+    body: 'OpenSans',
+    mono: 'OpenSans'
   }
-}
+})
 
 export { navigationTheme }
 export default theme

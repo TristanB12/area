@@ -1,10 +1,11 @@
-import React, { useLayoutEffect } from "react";
-import { View, TouchableOpacity, Alert } from "react-native";
+import React, { useLayoutEffect, useState } from "react";
+import { TouchableOpacity, Alert } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackParamList, TabParamList } from "../navigation/types";
-import { Card, Image, Text, Icon, useTheme, Button, Input } from "react-native-elements";
+import { Icon, Box, Text, HStack, Image, Button, Input, VStack, FormControl, TextArea } from "native-base"
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Area, { ServiceAction } from "../types";
 import { useRecoilValue } from "recoil";
 import areasAtom from "../recoil/atoms/areas";
@@ -20,8 +21,6 @@ type RightHeaderButtonsProps = {
 }
 
 function RightHeaderButtons({ navigation} : RightHeaderButtonsProps) {
-  const { theme } = useTheme()
-
   const confirmDeletion = () =>
     Alert.alert(
       "Supprimer l'AREA",
@@ -41,38 +40,42 @@ function RightHeaderButtons({ navigation} : RightHeaderButtonsProps) {
 
   return (
     <TouchableOpacity onPress={confirmDeletion}>
-      <Icon
-        name='delete'
-        type='materialIcons'
-        size={32}
-        color={theme.colors?.primary}
-      />
+      <Icon as={MaterialCommunityIcons} name="delete" color="primary.500" />
     </TouchableOpacity>
   )
 }
 
 function ServiceCard({ action } : { action: ServiceAction }) {
   return (
-    <Card containerStyle={{ width: "100%" }}>
-      <View style={{ flexDirection: "row", alignItems: 'center' }}>
+    <Box w="100%" shadow={6} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
+      borderColor: "coolGray.600",
+      backgroundColor: "gray.700"
+    }} _light={{
+      backgroundColor: "gray.50"
+    }}>
+      <HStack space={5} p={4} alignItems="center">
         <Image
           source={{ uri: action.logoUri }}
-          containerStyle={{ width: 32, height: 32, marginRight: 10 }}
+          size="sm"
           resizeMode="contain"
+          alt={action.service}
         />
-        <Text h2 style={{ flex: 1, textAlign: 'center' }}>
+        <Text flex={1} textAlign="center" >
           { action.title }
         </Text>
-      </View>
-    </Card>
+      </HStack>
+    </Box>
   )
 }
 
 function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
   const { areaId } = route.params
   const areas = useRecoilValue(areasAtom)
-  const area = areas.find(area => area._id === areaId)
-  const { theme } = useTheme()
+  const [area, setArea] = useState(areas.find(area => area._id === areaId))
+
+  if (area === undefined) {
+    return null
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -80,44 +83,64 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
     });
   }, [navigation]);
 
-  if (area === undefined) {
-    return null
-  }
+  const isInvalid = area.title.length === 0
+  const onSubmit = () => !isInvalid && navigation.goBack()
+
   return (
-    <ScreenView>
-      <Input
-        label="Area name"
-        labelStyle={{ fontFamily: "NotoSans-Bold", fontSize: 25, color: theme.colors?.secondary }}
-        placeholder='Your area name'
-        placeholderTextColor='#6F6F6F'
-        inputContainerStyle={{ backgroundColor: "#F4F4F4", borderRadius: 6, borderBottomWidth: 0, paddingLeft: 10 }}
-        containerStyle={{ height: 80 }}
-      />
-      <Input
-        label="Description (optional)"
-        labelStyle={{ fontFamily: "NotoSans-Bold", fontSize: 25, color: theme.colors?.secondary }}
-        multiline
-        placeholder='Your area description'
-        placeholderTextColor='#6F6F6F'
-        inputContainerStyle={{ backgroundColor: "#F4F4F4", borderRadius: 6, borderBottomWidth: 0, paddingLeft: 10 }}
-        containerStyle={{ height: 80 }}
-      />
-      <ServiceCard action={area.action} />
-      <ServiceCard action={area.reaction} />
+    <ScreenView style={{ justifyContent: "space-between", paddingBottom: 40 }}>
+      <VStack w='100%' space={6}>
+        <VStack w='100%'>
+          <FormControl isRequired isInvalid={isInvalid}>
+            <FormControl.Label _text={{ fontSize: "xl", bold: true }}>
+              Area name
+            </FormControl.Label>
+            <Input
+              size="lg"
+              w='100%'
+              rounded="lg"
+              variant="filled"
+              placeholder="Your Area name"
+              p={4}
+              value={area.title}
+              onChangeText={value => setArea({ ...area, title: value })}
+            />
+            {
+              isInvalid &&
+              <FormControl.ErrorMessage>
+                A title for your area is required
+              </FormControl.ErrorMessage>
+            }
+          </FormControl>
+        </VStack>
+        <VStack w='100%'>
+          <FormControl>
+            <FormControl.Label _text={{ fontSize: "xl", bold: true }}>
+              Description (optional)
+            </FormControl.Label>
+            <TextArea
+              size="md"
+              variant="filled"
+              rounded="lg"
+              placeholder="No description"
+              p={4}
+              value={area.description}
+              onChangeText={value => setArea({ ...area, description: value })}
+            />
+          </FormControl>
+        </VStack>
+      </VStack>
+      <VStack w="100%" space={8}>
+        <ServiceCard action={area.action} />
+        <ServiceCard action={area.reaction} />
+      </VStack>
       <Button
-        title="Save"
-        containerStyle={{ width: "80%" }}
-        icon={{
-          name: 'save',
-          type: 'material-icons',
-          size: 24,
-          color: 'white',
-        }}
-        titleStyle={{
-          fontSize: 20
-        }}
-        onPress={() => navigation.goBack()}
-      />
+        leftIcon={<Icon as={MaterialCommunityIcons} name="content-save" />}
+        w='80%'
+        onPress={onSubmit}
+        _text={{ fontSize: "lg" }}
+      >
+        Save
+      </Button>
     </ScreenView>
   )
 }

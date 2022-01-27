@@ -8,7 +8,6 @@ import TabsNavigation from './Tabs';
 import RegisterScreen from '../screens/auth/Register';
 import LoginScreen from '../screens/auth/Login';
 import EditAreaScreen from '../screens/EditArea';
-import EditAreaScreenNb from '../screens/EditAreaNativeBase';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -19,7 +18,7 @@ function StackNavigation() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>
-        <Stack.Screen name="EditArea" component={EditAreaScreenNb} options={{ title: 'Area' }}/>
+        <Stack.Screen name="EditArea" component={EditAreaScreen} options={{ title: 'Area' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
