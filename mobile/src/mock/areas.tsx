@@ -1,7 +1,8 @@
 import Area from "../types"
 
-const areas: Area[] = [
+const areasMock: Area[] = [
   {
+    _id: 1424242232,
     title: "Song from youtube to Spotify",
     description: "Transfer songs I watch from youtube to a Spotify playlist",
     action: {
@@ -19,6 +20,7 @@ const areas: Area[] = [
     }
   },
   {
+    _id: 23232432424,
     title: "Song from Spotify to youtube",
     description: "Transfer songs I listen from spotify to a youtube playlist",
     action: {
@@ -36,12 +38,13 @@ const areas: Area[] = [
     }
   },
   {
+    _id: 322472748,
     title: "Send me an email when Lil Nas X releases new Song on spotify",
     description: "",
     action: {
       service: "Spotify",
       logoUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png",
-      title: "When an artist releases a new song",
+      title: "When an artist releases a new song on Spotify and I'm subscribed to that artist",
       config: {
         artistName: "Lil Nas X"
       }
@@ -57,4 +60,4 @@ const areas: Area[] = [
   },
 ]
 
-export default areas
+export default areasMock

@@ -6,6 +6,7 @@ type ServiceAction = {
 }
 
 type Area = {
+  _id: number,
   title: string,
   description: string,
   action: ServiceAction

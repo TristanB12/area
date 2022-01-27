@@ -1,11 +1,12 @@
 import React from "react";
-import { View, FlatList, TouchableOpacity } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavProp } from "../navigation/types";
-import { Card, FAB, ListItem, Image } from "react-native-elements";
+import { Card, ListItem, Image } from "react-native-elements";
 import TabScreenView from "../components/TabScreenView";
 import Area from "../types";
-import areasMock from "../mock/areas";
+import areasAtom from "../recoil/atoms/areas";
+import { useRecoilValue } from "recoil";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {
   return (
@@ -34,7 +35,7 @@ function AreaItem({ area } : { area: Area }) {
         <Card.Title h2 style={{ textAlign: "left" }}>
           { area.title }
         </Card.Title>
-        <ListItem key={area.title}>
+        <ListItem key={`${area._id}`}>
           <ServiceListItem
             title={area.action.service}
             url={area.action.logoUri}
@@ -50,11 +51,13 @@ function AreaItem({ area } : { area: Area }) {
 }
 
 function AreasScreen() {
+  const areas = useRecoilValue(areasAtom)
+
   return (
     <TabScreenView>
       <FlatList
-        keyExtractor={(area: Area) => area.title }
-        data={areasMock}
+        keyExtractor={(area: Area) => `${area._id}` }
+        data={areas}
         renderItem={({ item }) => <AreaItem area={item} />}
       />
     </TabScreenView>

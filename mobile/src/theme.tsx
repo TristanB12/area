@@ -57,7 +57,15 @@ const theme: Theme = {
   Card: {
     containerStyle: {
       borderRadius: 12,
-      borderColor: "#C8C8C8"
+      borderColor: "#C8C8C8",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 6
     },
     wrapperStyle: {
       elevation: 6
