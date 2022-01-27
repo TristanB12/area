@@ -1,11 +1,11 @@
 import React from "react";
-import { Text } from "react-native";
+import TabScreenView from "../components/TabScreenView";
 
 function Explore() {
   return (
-    <Text>
-      Explore
-    </Text>
+    <TabScreenView>
+
+    </TabScreenView>
   )
 }
 

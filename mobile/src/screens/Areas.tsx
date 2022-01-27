@@ -3,6 +3,7 @@ import { View, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavProp } from "../navigation/types";
 import { Card, FAB, ListItem, Image } from "react-native-elements";
+import TabScreenView from "../components/TabScreenView";
 import Area from "../types";
 import areasMock from "../mock/areas";
 
@@ -23,9 +24,9 @@ function ServiceListItem({ title, url } : { title: string, url: string }) {
   )
 }
 
-function AreaItem({ area, index } : { area: Area, index: number }) {
+function AreaItem({ area } : { area: Area }) {
   const navigation = useNavigation<StackNavProp>()
-  const goToEditArea = () => navigation.navigate('EditArea', { areaId: index })
+  const goToEditArea = () => navigation.navigate('EditArea', { areaId: area._id })
 
   return (
     <TouchableOpacity onPress={goToEditArea}>
@@ -50,18 +51,13 @@ function AreaItem({ area, index } : { area: Area, index: number }) {
 
 function AreasScreen() {
   return (
-    <View style={{ flex: 1, paddingTop: 20 }}>
+    <TabScreenView>
       <FlatList
         keyExtractor={(area: Area) => area.title }
         data={areasMock}
-        renderItem={({ item, index }) => <AreaItem area={item} index={index} />}
+        renderItem={({ item }) => <AreaItem area={item} />}
       />
-      <FAB
-        icon={{ name: 'add', color: 'white' }}
-        placement="right"
-        size="large"
-      />
-    </View>
+    </TabScreenView>
   )
 }
 
