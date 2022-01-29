@@ -14,7 +14,8 @@ type StackParamList = {
   EditArea: { areaId: number },
   CreateArea: undefined,
   ChooseService: undefined,
-  ChooseAction: undefined
+  ChooseAction: { serviceName: string },
+  ConfigureAction: { serviceName: string, actionTitle: string },
 }
 
 type StackNavProp = NativeStackNavigationProp<StackParamList>

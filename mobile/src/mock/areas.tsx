@@ -10,7 +10,8 @@ const areasMock: Area[] = [
         name: "Youtube",
         logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
       },
-      title: "When I watch a song's official video"
+      title: "When I watch a song's official video",
+      requiresUserAuth: false
     },
     reaction: {
       service: {
@@ -18,6 +19,7 @@ const areasMock: Area[] = [
         logoUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png",
       },
       title: "Add to playlist",
+      requiresUserAuth: false,
       config: {
         playlistName: "Gacha"
       }
@@ -32,7 +34,8 @@ const areasMock: Area[] = [
         name: "Spotify",
         logoUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png",
       },
-      title: "When I listen to a song"
+      title: "When I listen to a song",
+      requiresUserAuth: false
     },
     reaction: {
       service: {
@@ -40,6 +43,7 @@ const areasMock: Area[] = [
         logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
       },
       title: "Add to playlist",
+      requiresUserAuth: false,
       config: {
         playlistName: "Gacha-Youtube"
       }
@@ -55,6 +59,7 @@ const areasMock: Area[] = [
         logoUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
       },
       title: "When an artist releases a new song on Spotify and I'm subscribed to that artist",
+      requiresUserAuth: false,
       config: {
         artistName: "Lil Nas X"
       }
@@ -65,6 +70,7 @@ const areasMock: Area[] = [
         logoUri: "https://pnggrid.com/wp-content/uploads/2021/07/Microsoft-Outlook-Logo.png",
       },
       title: "Send an email",
+      requiresUserAuth: false,
       config: {
         receiver: "julien.pause@epitech.eu"
       }

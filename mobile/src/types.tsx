@@ -1,11 +1,13 @@
 type Action = {
   title: string,
+  requiresUserAuth: boolean,
   config?: object
 }
 
 type Service = {
   name: string,
   logoUri: string,
+  isAuth: boolean,
   actions: Action[],
   reactions: Action[]
 }
@@ -22,5 +24,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { Service, ServiceAction }
+export type { Service, Action, ServiceAction }
 export default Area

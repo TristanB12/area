@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { FlatList } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "../navigation/types";
+import React, { useState } from "react";
+import { FlatList, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavProp } from "../navigation/types";
 import { Box, Image, VStack, Text, Input, Icon } from "native-base";
 import { useRecoilValue } from "recoil";
 import { Service } from "../types";
@@ -9,44 +9,47 @@ import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-type CreateAreaScreenProps = NativeStackScreenProps<StackParamList, 'CreateArea'>
-
 function ServiceItem({ service } : { service: Service }) {
-  return (
-    <Box
-      flex={1}
-      m={2}
-      p={4}
-      shadow={6}
-      rounded="lg"
-      overflow="hidden"
-      borderColor="coolGray.200"
-      borderWidth="1"
-      justifyContent="center"
+  const navigation = useNavigation<StackNavProp>()
+  const goToChooseAction = () => navigation.push('ChooseAction', {
+    serviceName: service.name
+  })
 
-      _dark={{
-      borderColor: "coolGray.600",
-      backgroundColor: "gray.700"
-    }} _light={{
-      backgroundColor: "gray.50"
-    }}
-    >
-      <VStack space={4}  alignItems="center">
-        <Image
-          source={{ uri: service.logoUri }}
-          size="xs"
-          resizeMode="contain"
-          alt={service.name}
-        />
-        <Text>
-          { service.name }
-        </Text>
-      </VStack>
-    </Box>
+  return (
+    <TouchableOpacity style={{ flex: 1 }} onPress={goToChooseAction}>
+      <Box
+        m={2}
+        p={4}
+        shadow={6}
+        rounded="lg"
+        overflow="hidden"
+        borderColor="coolGray.200"
+        borderWidth="1"
+        justifyContent="center"
+        _dark={{
+        borderColor: "coolGray.600",
+        backgroundColor: "gray.700"
+      }} _light={{
+        backgroundColor: "gray.50"
+      }}
+      >
+        <VStack space={4}  alignItems="center">
+          <Image
+            source={{ uri: service.logoUri }}
+            size="xs"
+            resizeMode="contain"
+            alt={service.name}
+          />
+          <Text>
+            { service.name }
+          </Text>
+        </VStack>
+      </Box>
+    </TouchableOpacity>
   )
 }
 
-function ChooseServiceScreen({ navigation }: CreateAreaScreenProps) {
+function ChooseServiceScreen() {
   const allServices = useRecoilValue(servicesAtom)
   const [services, setServices] = useState(allServices)
 
@@ -86,11 +89,10 @@ function ChooseServiceScreen({ navigation }: CreateAreaScreenProps) {
       <FlatList
         columnWrapperStyle={{justifyContent: 'space-between'}}
         style={{ width: "100%" }}
-        contentContainerStyle={{  }}
         keyExtractor={service => service.name}
         data={services}
         renderItem={item => <ServiceItem service={item.item} />}
-        numColumns={3}
+        numColumns={2}
       />
     </ScreenView>
   )
