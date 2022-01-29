@@ -53,12 +53,12 @@ function AreaItem({ area } : { area: Area }) {
         </Text>
         <HStack mt={2}>
           <ServiceListItem
-            title={area.action.service}
-            url={area.action.logoUri}
+            title={area.action.service.name}
+            url={area.action.service.logoUri}
           />
           <ServiceListItem
-            title={area.reaction.service}
-            url={area.reaction.logoUri}
+            title={area.reaction.service.name}
+            url={area.reaction.service.logoUri}
           />
         </HStack>
       </Box>

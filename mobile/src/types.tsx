@@ -1,9 +1,18 @@
-type ServiceAction = {
-  service: string,
-  logoUri: string
+type Action = {
   title: string,
   config?: object
 }
+
+type Service = {
+  name: string,
+  logoUri: string,
+  actions: Action[],
+  reactions: Action[]
+}
+
+type ServiceAction = {
+  service: Pick<Service, 'name' | 'logoUri'>
+} & Action
 
 type Area = {
   _id: number,
@@ -13,5 +22,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { ServiceAction }
+export type { Service, ServiceAction }
 export default Area

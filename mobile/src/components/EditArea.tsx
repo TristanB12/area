@@ -1,43 +1,51 @@
 import React from "react";
 import Area, { ServiceAction } from "../types";
 import { Box, Text, HStack, Image, Button, Input, VStack, FormControl, TextArea } from "native-base"
+import { useNavigation } from "@react-navigation/native";
+import { StackNavProp } from "../navigation/types";
+import { TouchableOpacity } from "react-native";
 
 function ServiceCard({ action, isReaction } : { action: ServiceAction | undefined, isReaction?: boolean }) {
+  const navigation = useNavigation<StackNavProp>()
+  const goToConfigureAction = () => navigation.push('ChooseService')
+
   return (
-    <Box
-      w="100%"
-      h="100"
-      shadow={6}
-      rounded="lg"
-      overflow="hidden"
-      borderColor="coolGray.200"
-      borderWidth="1"
-      justifyContent="center"
-      _dark={{
-      borderColor: "coolGray.600",
-      backgroundColor: action ? "gray.700" : "primary.500"
-    }} _light={{
-      backgroundColor: action ? "gray.50" : "primary.500"
-    }}>
-      {
-        action ?
-        <HStack space={5} p={4} alignItems="center">
-          <Image
-            source={{ uri: action.logoUri }}
-            size="sm"
-            resizeMode="contain"
-            alt={action.service}
-          />
-          <Text flex={1} textAlign="center" >
-            { action.title }
+    <TouchableOpacity onPress={goToConfigureAction}>
+      <Box
+        w="100%"
+        h="100"
+        shadow={6}
+        rounded="lg"
+        overflow="hidden"
+        borderColor="coolGray.200"
+        borderWidth="1"
+        justifyContent="center"
+        _dark={{
+        borderColor: "coolGray.600",
+        backgroundColor: action ? "gray.700" : "primary.500"
+      }} _light={{
+        backgroundColor: action ? "gray.50" : "primary.500"
+      }}>
+        {
+          action ?
+          <HStack space={5} p={4} alignItems="center">
+            <Image
+              source={{ uri: action.service.logoUri }}
+              size="sm"
+              resizeMode="contain"
+              alt={action.service.name}
+            />
+            <Text flex={1} textAlign="center" >
+              { action.title }
+            </Text>
+          </HStack>
+          :
+          <Text fontFamily="heading" fontSize="lg" fontWeight="bold" textAlign="center" color="white">
+            CONFIGURE { isReaction && "RE" }ACTION
           </Text>
-        </HStack>
-        :
-        <Text fontFamily="heading" fontSize="lg" fontWeight="bold" textAlign="center" color="white">
-          CONFIGURE { isReaction && "RE" }ACTION
-        </Text>
-      }
-    </Box>
+        }
+      </Box>
+    </TouchableOpacity>
   )
 }
 

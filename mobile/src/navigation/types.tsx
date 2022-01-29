@@ -12,7 +12,9 @@ type StackParamList = {
   Login: undefined,
   Tabs: undefined,
   EditArea: { areaId: number },
-  CreateArea: undefined
+  CreateArea: undefined,
+  ChooseService: undefined,
+  ChooseAction: undefined
 }
 
 type StackNavProp = NativeStackNavigationProp<StackParamList>

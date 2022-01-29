@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { TouchableOpacity, Alert } from "react-native";
-import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackParamList, TabParamList } from "../navigation/types";
@@ -10,12 +8,9 @@ import Area from "../types";
 import ScreenView from '../components/ScreenView'
 import EditArea from "../components/EditArea";
 
-type EditAreaScreenProps = CompositeScreenProps<
-  NativeStackScreenProps<StackParamList, 'EditArea'>,
-  BottomTabScreenProps<TabParamList>
->
+type CreateAreaScreenProps = NativeStackScreenProps<StackParamList, 'CreateArea'>
 
-function CreateAreaScreen({ route, navigation }: EditAreaScreenProps) {
+function CreateAreaScreen({ navigation }: CreateAreaScreenProps) {
   const [area, setArea] = useState<Area>({
     _id: 0,
     title: "",
