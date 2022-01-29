@@ -9,8 +9,8 @@ type Area = {
   _id: number,
   title: string,
   description: string,
-  action: ServiceAction
-  reaction: ServiceAction
+  action: ServiceAction | undefined
+  reaction: ServiceAction | undefined
 }
 
 export type { ServiceAction }

@@ -3,9 +3,9 @@ import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-nav
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TabParamList } from './types'
 
-import AreasScreen from '../screens/Areas';
-import AppsScreen from '../screens/Apps';
-import ExploreScreen from '../screens/Explore';
+import AreasScreen from '../screens/Tabs/Areas';
+import AppsScreen from '../screens/Tabs/Apps';
+import ExploreScreen from '../screens/Tabs/Explore';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 

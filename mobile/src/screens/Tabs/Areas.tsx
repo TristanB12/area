@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { StackNavProp } from "../navigation/types";
+import { StackNavProp } from "../../navigation/types";
 import { Box, Image, HStack, Pressable, Text, VStack, Flex } from "native-base";
-import Area from "../types";
-import areasAtom from "../recoil/atoms/areas";
+import Area from "../../types";
+import areasAtom from "../../recoil/atoms/areas";
 import { useRecoilValue } from "recoil";
-import TabScreenView from "../components/TabScreenView";
+import TabScreenView from "../../components/TabScreenView";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {
   return (
@@ -26,6 +26,10 @@ function ServiceListItem({ title, url } : { title: string, url: string }) {
 function AreaItem({ area } : { area: Area }) {
   const navigation = useNavigation<StackNavProp>()
   const goToEditArea = () => navigation.navigate('EditArea', { areaId: area._id })
+
+  if (area.action === undefined || area.reaction === undefined) {
+    return null
+  }
 
   return (
     <Pressable w="100%" onPress={goToEditArea}>
@@ -59,16 +63,6 @@ function AreaItem({ area } : { area: Area }) {
         </HStack>
       </Box>
     </Pressable>
-    // <TouchableOpacity onPress={goToEditArea}>
-    //   <Card>
-    //     <Card.Title h2 style={{ textAlign: "left" }}>
-    //       { area.title }
-    //     </Card.Title>
-    //     <ListItem key={`${area._id}`}>
-    //
-    //     </ListItem>
-    //   </Card>
-    // </TouchableOpacity>
   )
 }
 

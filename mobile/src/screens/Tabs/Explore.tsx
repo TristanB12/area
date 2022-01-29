@@ -1,5 +1,5 @@
 import React from "react";
-import TabScreenView from "../components/TabScreenView";
+import TabScreenView from "../../components/TabScreenView";
 
 function Explore() {
   return (
