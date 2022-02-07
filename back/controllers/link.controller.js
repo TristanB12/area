@@ -13,14 +13,17 @@ const User = db.user;
 async function linkService(req, res) {
   const serviceName = req.service;
   const { code } = req.query;
+  const { redirect_uri } = req.query;
 
   if (!code)
     return res.status(200).json({ message: 'Code is required.' });
+  if (!redirect_uri)
+    return res.status(400).json({ message: 'No redirect_uri.' });
 
   const user = req.user;
   let userServices = user.services;
   try {
-    const axiosOpts = services[serviceName].link.accessTokenUrlOption(code);
+    const axiosOpts = services[serviceName].link.accessTokenUrlOption(code, redirect_uri);
     const response = await tokenController.getServiceAccessToken(axiosOpts);
 
     if (response.data === undefined)

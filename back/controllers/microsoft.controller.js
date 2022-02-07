@@ -4,9 +4,10 @@ const qs = require('qs');
 /**
  * Url to get access_token for microsoft service
  * @param {*} code 
+ * @param {*} redirect_uri
  * @returns 
  */
-function accessTokenUrlOption(code) {
+function accessTokenUrlOption(code, redirect_uri) {
   return {
     url: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
     method: 'POST',
@@ -17,7 +18,7 @@ function accessTokenUrlOption(code) {
       grant_type: 'authorization_code',
       client_id: process.env.MICROSOFT_CLIENT_ID,
       client_secret: process.env.MICROSOFT_CLIENT_SECRET,
-      redirect_uri: process.env.MICROSOFT_REDIRECT_URI,
+      redirect_uri,
       code,
     },
 

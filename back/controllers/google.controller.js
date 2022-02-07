@@ -8,10 +8,11 @@ const User = db.user;
 
 /**
  * Url to get access_token for google service
- * @param {*} code 
+ * @param {*} code
+ * @param {*} redirect_uri 
  * @returns 
  */
-function accessTokenUrlOption(code) {
+function accessTokenUrlOption(code, redirect_uri) {
   return {
     url: 'https://oauth2.googleapis.com/token',
     method: 'POST',
@@ -22,7 +23,7 @@ function accessTokenUrlOption(code) {
       code,
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+      redirect_uri,
       grant_type: 'authorization_code',
     }
   };
@@ -50,11 +51,12 @@ async function getUserInfo(access_token) {
  */
 async function login(req, res) {
   const { code } = req.query;
+  const { redirect_uri } = req;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to auth with the given code.' });
@@ -94,12 +96,14 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
+  const { redirect_uri } = req;
+
   let googleUser = undefined;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to link the service with the given code.' });

@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-function accessTokenUrlOption(code) {
+function accessTokenUrlOption(code, redirect_uri) {
   return {
     url: 'https://accounts.spotify.com/api/token',
     method: 'POST',
@@ -11,7 +11,7 @@ function accessTokenUrlOption(code) {
     params: {
       code,
       grant_type: 'authorization_code',
-      redirect_uri: process.env.SNAPCHAT_REDIRECT_URI
+      redirect_uri
     }
   };
 }

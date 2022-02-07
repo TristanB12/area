@@ -30,15 +30,16 @@ async function getUserInfos(access_token, fields_list) {
 /**
  * Url to get access_token for facebook service
  * @param {*} code 
+ * @param {*} redirect_uri
  * @returns 
  */
-function accessTokenUrlOption(code) {
+function accessTokenUrlOption(code, redirect_uri) {
   return {
     url: 'https://graph.facebook.com/v12.0/oauth/access_token',
     method: 'GET',
     params: {
       client_id: process.env.FACEBOOK_CLIENT_ID,
-      redirect_uri: process.env.FACEBOOK_REDIRECT_URI,
+      redirect_uri,
       client_secret: process.env.FACEBOOK_CLIENT_SECERT,
       code,
       scope: 'email',
@@ -54,11 +55,12 @@ function accessTokenUrlOption(code) {
  */ 
 async function login(req, res) {
   const { code } = req.query;
+  const { redirect_uri } = req;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to auth with the given code.' });
@@ -100,12 +102,14 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
+  const { redirect_uri } = req;
+
   let facebookUser = undefined;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to link the service with the given code.' });
