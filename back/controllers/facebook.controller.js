@@ -52,14 +52,15 @@ function accessTokenUrlOption(code, redirect_uri) {
  * @param {*} req 
  * @param {*} res 
  * @returns Responce to client request (400: Problem with credentials / 200: Success login)
- */ 
+ */
 async function login(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req;
+  const { redirect_uri } = req.query;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
-
+  if (!redirect_uri)
+    return res.status(400).json({ message: 'No redirect_uri.' });
   const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
@@ -102,12 +103,14 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req;
+  const { redirect_uri } = req.query;
 
   let facebookUser = undefined;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
+  if (!redirect_uri)
+    return res.status(400).json({ message: 'No redirect_uri.' });
 
   const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 

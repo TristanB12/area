@@ -51,11 +51,12 @@ async function getUserInfo(access_token) {
  */
 async function login(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req;
+  const { redirect_uri } = req.query;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
-
+  if (!redirect_uri)
+    return res.status(400).json({ message: 'No redirect_uri.' });
   const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
@@ -77,8 +78,8 @@ async function login(req, res) {
       'services.google': {
         access_token: response.data.access_token,
         refresh_token: response.data.refresh_token
-      } 
-    } 
+      }
+    }
   });
   return res.status(200).json({
     access_token: mjwt.generateAccessToken(user._id),
@@ -96,14 +97,16 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req;
+  const { redirect_uri } = req.query;
 
   let googleUser = undefined;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
+  if (!redirect_uri)
+    return res.status(400).json({ message: 'No redirect_uri.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
+    const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to link the service with the given code.' });

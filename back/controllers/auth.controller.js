@@ -8,11 +8,7 @@ const services = require('../services');
  */
 async function signup(req, res) {
   const serviceName = req.service;
-  const { redirect_uri } = req.query;
-
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
-  req.redirect_uri = redirect_uri;
+  
   try {
     return services[serviceName].auth.signup(req, res);
   } catch (error) {
@@ -29,11 +25,6 @@ async function signup(req, res) {
  */
 async function login(req, res) {
   const serviceName = req.service;
-  const { redirect_uri } = req.query;
-
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
-  req.redirect_uri = redirect_uri;
 
   try {
     return services[serviceName].auth.login(req, res);
