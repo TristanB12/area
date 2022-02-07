@@ -1,9 +1,18 @@
 var express = require('express');
-var router = express.Router();
+const db = require('../models');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+module.exports = app => {
+  app.get('/', async (req, res) => {
+    const data = await db.user.find();
 
-module.exports = router;
+    return res.status(200).json(data);
+  });
+
+  app.use('/auth', require('./auth'));
+  app.use('/token', require('./token'));
+  app.use('/link', require('./link'));
+
+  app.use('*', (req, res) => {
+    res.status(404).json({ message: 'Page not found.' });
+  });
+};
