@@ -1,12 +1,12 @@
 <template>
     <button class="button">
-        <img v-if="iconName && !isLoading" :src="imagePath" :alt="iconName">
         <span v-if="title && !isLoading">{{ title }}</span>
         <ClipLoader
             v-else
             size="24px"
             color="white"
         />
+        <img v-if="iconName && !isLoading" :src="imagePath" :alt="iconName">
     </button>
 </template>
 
