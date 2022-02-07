@@ -1,4 +1,3 @@
-const { compareSync } = require('bcryptjs');
 const db = require('../models');
 const services = require('../services');
 const tokenController = require('./token.controller');
@@ -28,7 +27,7 @@ async function linkService(req, res) {
       return res.status(400).json({ message: 'Problem to link the service with the given code.' });
     userServices[serviceName] = {
       access_token: response.data.access_token,
-      refresh_token: response.data.refresh_token
+      refresh_token: response.data.refresh_token || null
     }
     await User.findByIdAndUpdate({ _id: user._id }, { services: userServices });
     return res.status(200).json({ message: `${serviceName} account linked successfully.` });
