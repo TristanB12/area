@@ -80,7 +80,7 @@ async function login(req, res) {
     $set: {
       'services.facebook': {
         access_token: response.data.access_token,
-        refresh_token: null
+        refresh_token: undefined
       }
     }
   });
