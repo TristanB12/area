@@ -11,10 +11,16 @@ import servicesAtom from "../recoil/atoms/services";
 
 function ActionItem({ service, action } : { service: Service, action: Action }) {
   const navigation = useNavigation<StackNavProp>()
-  const goToConfigureAction = () => navigation.push('ConfigureAction', {
-    serviceName: service.name,
-    actionTitle: action.title
-  })
+  const goToConfigureAction = () => {
+    if (action.config) {
+      navigation.push('ConfigureAction', {
+        serviceName: service.name,
+        actionTitle: action.title
+      })
+    } else {
+      navigation.navigate('EditArea')
+    }
+  }
 
   return (
     <TouchableOpacity style={{ width: "100%" }} onPress={goToConfigureAction}>

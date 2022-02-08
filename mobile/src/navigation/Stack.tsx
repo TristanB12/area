@@ -8,7 +8,6 @@ import TabsNavigation from './Tabs';
 import RegisterScreen from '../screens/auth/Register';
 import LoginScreen from '../screens/auth/Login';
 import EditAreaScreen from '../screens/EditArea';
-import CreateAreaScreen from '../screens/CreateArea';
 import ChooseServiceScreen from '../screens/ChooseService';
 import ChooseActionScreen from '../screens/ChooseAction';
 import ConfigureActionScreen from '../screens/ConfigureAction';
@@ -22,8 +21,7 @@ function StackNavigation() {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>
-        <Stack.Screen name="EditArea" component={EditAreaScreen} options={{ title: 'Area' }}/>
-        <Stack.Screen name="CreateArea" component={CreateAreaScreen} options={{ title: 'Create Area' }}/>
+        <Stack.Screen name="EditArea" component={EditAreaScreen}/>
         <Stack.Screen name="ChooseService" component={ChooseServiceScreen} options={{ title: 'Choose a service' }}/>
         <Stack.Screen name="ChooseAction" component={ChooseActionScreen} options={{ title: 'Choose an action' }}/>
         <Stack.Screen name="ConfigureAction" component={ConfigureActionScreen} options={{ title: 'Configure action' }}/>

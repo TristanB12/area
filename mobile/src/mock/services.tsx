@@ -27,7 +27,19 @@ const servicesMock: Service[] = [
       {
         title: "When an artist releases a new song",
         requiresUserAuth: false
-      }
+      },
+      {
+        title: "New track added to playlist",
+        requiresUserAuth: true
+      },
+      {
+        title: "New saved track",
+        requiresUserAuth: true
+      },
+      {
+        title: "New recently played track",
+        requiresUserAuth: true
+      },
     ],
     reactions: [
       {
@@ -60,7 +72,11 @@ const servicesMock: Service[] = [
       },
       {
         title: "When a youtuber reaches a certain amount of subscribers",
-        requiresUserAuth: false
+        requiresUserAuth: false,
+        config: {
+          youtuberName: "dream",
+          nbSubscribers: 5_000_000,
+        }
       },
     ],
     reactions: [

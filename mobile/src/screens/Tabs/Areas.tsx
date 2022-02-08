@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavProp } from "../../navigation/types";
-import { Box, Image, HStack, Pressable, Text, VStack, Flex } from "native-base";
+import { Box, Image, HStack, Pressable, Text, VStack } from "native-base";
 import Area from "../../types";
 import areasAtom from "../../recoil/atoms/areas";
 import { useRecoilValue } from "recoil";

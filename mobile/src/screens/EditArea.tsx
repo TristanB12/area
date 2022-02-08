@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { TouchableOpacity, Alert } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -16,11 +16,7 @@ type EditAreaScreenProps = CompositeScreenProps<
   BottomTabScreenProps<TabParamList>
 >
 
-type RightHeaderButtonsProps = {
-  navigation: EditAreaScreenProps['navigation']
-}
-
-function RightHeaderButtons({ navigation} : RightHeaderButtonsProps) {
+function DeleteAreaButton({ onDelete } : { onDelete: () => void }) {
   const confirmDeletion = () =>
     Alert.alert(
       "Supprimer l'AREA",
@@ -28,9 +24,7 @@ function RightHeaderButtons({ navigation} : RightHeaderButtonsProps) {
       [
         {
           text: "OUI",
-          onPress: () => {
-            navigation.goBack()
-          }
+          onPress: onDelete
         },
         {
           text: "NON"
@@ -45,18 +39,28 @@ function RightHeaderButtons({ navigation} : RightHeaderButtonsProps) {
   )
 }
 
+// Used for editing areas and creating new ones
 function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
-  const { areaId } = route.params
-  const areas = useRecoilValue(areasAtom)
-  const [area, setArea] = useState(areas.find(area => area._id === areaId))
-
-  if (area === undefined) {
-    return null
+  const areaId = route.params?.areaId
+  const [areas, setAreas] = useRecoilState(areasAtom)
+  const [area, setArea] = useState(areas.find(area => area._id === areaId) || {
+    _id: 0,
+    title: "",
+    description: "",
+    action: undefined,
+    reaction: undefined
+  })
+  const isNewArea = (area._id === 0)
+  const onDelete = () => {
+    setAreas(areas.filter(area => area._id !== areaId))
+    navigation.goBack()
   }
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <RightHeaderButtons navigation={navigation} />
+      title: isNewArea ? "Create Area" : "Area",
+      headerRight: isNewArea ? undefined : () =>
+        <DeleteAreaButton onDelete={onDelete} />
     });
   }, [navigation]);
 

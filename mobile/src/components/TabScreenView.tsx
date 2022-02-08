@@ -18,7 +18,7 @@ function TabScreenView({ children } : { children: React.ReactNode }) {
         shadow={2}
         size="sm"
         icon={<Icon color="white" as={<MaterialCommunityIcons name="plus" />} />}
-        onPress={() => navigation.push('CreateArea')}
+        onPress={() => navigation.push('EditArea')}
       />
     </ScreenView>
   )
