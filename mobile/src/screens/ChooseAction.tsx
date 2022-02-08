@@ -1,30 +1,44 @@
 import React, { useLayoutEffect } from "react";
 import { TouchableOpacity } from "react-native";
-import { RouteProp, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { StackNavProp, StackParamList } from "../navigation/types";
 import { Box, Image, VStack, Text, Input, Icon, HStack } from "native-base";
-import { useRecoilValue } from "recoil";
-import { Service, Action } from "../types";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import Area, { Service, Action } from "../types";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import editedAreaAtom from "../recoil/atoms/editedArea";
 
-function ActionItem({ service, action } : { service: Service, action: Action }) {
+function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
+  const setArea = useSetRecoilState(editedAreaAtom)
+  const areaActionField: keyof Area = isReaction ? 'reaction' : 'action'
   const navigation = useNavigation<StackNavProp>()
-  const goToConfigureAction = () => {
+
+  const onPress = () => {
     if (action.config) {
       navigation.push('ConfigureAction', {
         serviceName: service.name,
         actionTitle: action.title
       })
     } else {
+      setArea(area => ({
+        ...area,
+        [areaActionField]: {
+          service: {
+            name: service.name,
+            logoUri: service.logoUri,
+          },
+          ...action
+        }
+      }))
       navigation.navigate('EditArea')
     }
   }
 
   return (
-    <TouchableOpacity style={{ width: "100%" }} onPress={goToConfigureAction}>
+    <TouchableOpacity style={{ width: "100%" }} onPress={onPress}>
       <Box
         shadow={6}
         rounded="lg"
@@ -95,6 +109,7 @@ function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
               key={action.title}
               service={service}
               action={action}
+              isReaction={isReaction}
             />
           )
         }

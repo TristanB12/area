@@ -1,15 +1,16 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useCallback } from "react";
 import { useRecoilState } from "recoil";
 import { TouchableOpacity, Alert } from "react-native";
-import { CompositeScreenProps } from "@react-navigation/native";
+import { CompositeScreenProps, useFocusEffect } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackParamList, TabParamList } from "../navigation/types";
-import { Icon } from "native-base"
+import { Icon, useLayout } from "native-base"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import areasAtom from "../recoil/atoms/areas";
 import ScreenView from '../components/ScreenView'
 import EditArea from "../components/EditArea";
+import editedAreaAtom from "../recoil/atoms/editedArea";
 
 type EditAreaScreenProps = CompositeScreenProps<
   NativeStackScreenProps<StackParamList, 'EditArea'>,
@@ -41,27 +42,38 @@ function DeleteAreaButton({ onDelete } : { onDelete: () => void }) {
 
 // Used for editing areas and creating new ones
 function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
-  const areaId = route.params?.areaId
   const [areas, setAreas] = useRecoilState(areasAtom)
-  const [area, setArea] = useState(areas.find(area => area._id === areaId) || {
-    _id: 0,
-    title: "",
-    description: "",
-    action: undefined,
-    reaction: undefined
-  })
-  const isNewArea = (area._id === 0)
+  const [area, setArea] = useRecoilState(editedAreaAtom)
+  const areaId = route.params?.areaId || area._id
+
   const onDelete = () => {
     setAreas(areas.filter(area => area._id !== areaId))
     navigation.goBack()
   }
+  const onSave = () => {
+    // TODO: call API to store area, and get generated ID
+    const randomId = Math.floor(Math.random() * 100)
+    setAreas([...areas.filter(area => area._id !== areaId),
+      { ...area, _id: randomId }]
+    )
+    navigation.goBack()
+  }
 
   useLayoutEffect(() => {
+    const isNewArea = (areaId === undefined)
+
     navigation.setOptions({
       title: isNewArea ? "Create Area" : "Area",
       headerRight: isNewArea ? undefined : () =>
         <DeleteAreaButton onDelete={onDelete} />
     });
+    setArea(areas.find(area => area._id === areaId) || {
+      _id: 0,
+      title: "",
+      description: "",
+      action: undefined,
+      reaction: undefined
+    })
   }, [navigation]);
 
   return (
@@ -69,7 +81,7 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
       <EditArea
         area={area}
         setArea={setArea}
-        onSave={() => navigation.goBack()}
+        onSave={onSave}
       />
     </ScreenView>
   )
