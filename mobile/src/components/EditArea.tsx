@@ -7,7 +7,9 @@ import { TouchableOpacity } from "react-native";
 
 function ServiceCard({ action, isReaction } : { action: ServiceAction | undefined, isReaction?: boolean }) {
   const navigation = useNavigation<StackNavProp>()
-  const goToConfigureAction = () => navigation.push('ChooseService')
+  const goToConfigureAction = () => navigation.push('ChooseService', {
+    isReaction: isReaction ? true : false
+  })
 
   return (
     <TouchableOpacity onPress={goToConfigureAction}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavProp, StackParamList } from "../navigation/types";
@@ -8,6 +8,7 @@ import { Service, Action } from "../types";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 function ActionItem({ service, action } : { service: Service, action: Action }) {
   const navigation = useNavigation<StackNavProp>()
@@ -56,15 +57,23 @@ function ActionItem({ service, action } : { service: Service, action: Action }) 
   )
 }
 
+type ChooseActionScreenProps = NativeStackScreenProps<StackParamList, 'ChooseAction'>
 
-function ChooseActionScreen({ route } : { route: RouteProp<StackParamList, 'ChooseAction'> }) {
-  const { serviceName } = route.params
+function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
+  const { serviceName, isReaction } = route.params
   const services = useRecoilValue(servicesAtom)
   const service = services.find(service => service.name === serviceName)
 
   if (service === undefined) {
     return null
   }
+  const actions = isReaction ? service.reactions : service.actions
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isReaction ? "Choose reaction" : "Choose action"
+    });
+  }, [navigation]);
 
   return (
     <ScreenView>
@@ -81,7 +90,7 @@ function ChooseActionScreen({ route } : { route: RouteProp<StackParamList, 'Choo
       </HStack>
       <VStack w="100%" space={4}>
         {
-          service.actions.map(action =>
+          actions.map(action =>
             <ActionItem
               key={action.title}
               service={service}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavProp } from "../navigation/types";
+import { RouteProp, useNavigation } from "@react-navigation/native";
+import { StackNavProp, StackParamList } from "../navigation/types";
 import { Box, Image, VStack, Text, Input, Icon } from "native-base";
 import { useRecoilValue } from "recoil";
 import { Service } from "../types";
@@ -9,10 +9,11 @@ import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-function ServiceItem({ service } : { service: Service }) {
+function ServiceItem({ service, isReaction } : { service: Service, isReaction: boolean }) {
   const navigation = useNavigation<StackNavProp>()
   const goToChooseAction = () => navigation.push('ChooseAction', {
-    serviceName: service.name
+    serviceName: service.name,
+    isReaction: isReaction
   })
 
   return (
@@ -49,7 +50,8 @@ function ServiceItem({ service } : { service: Service }) {
   )
 }
 
-function ChooseServiceScreen() {
+function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'ChooseService'> }) {
+  const { isReaction } = route.params
   const allServices = useRecoilValue(servicesAtom)
   const [services, setServices] = useState(allServices)
 
@@ -91,7 +93,7 @@ function ChooseServiceScreen() {
         style={{ width: "100%" }}
         keyExtractor={service => service.name}
         data={services}
-        renderItem={item => <ServiceItem service={item.item} />}
+        renderItem={item => <ServiceItem service={item.item} isReaction={isReaction} />}
         numColumns={2}
       />
     </ScreenView>

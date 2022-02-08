@@ -23,7 +23,7 @@ function StackNavigation() {
         <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>
         <Stack.Screen name="EditArea" component={EditAreaScreen}/>
         <Stack.Screen name="ChooseService" component={ChooseServiceScreen} options={{ title: 'Choose a service' }}/>
-        <Stack.Screen name="ChooseAction" component={ChooseActionScreen} options={{ title: 'Choose an action' }}/>
+        <Stack.Screen name="ChooseAction" component={ChooseActionScreen}/>
         <Stack.Screen name="ConfigureAction" component={ConfigureActionScreen} options={{ title: 'Configure action' }}/>
       </Stack.Navigator>
     </NavigationContainer>
