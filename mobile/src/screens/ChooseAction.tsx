@@ -54,6 +54,15 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
       }}>
         <HStack space={4} p={4} alignItems="center">
           {
+            action.config &&
+            <Icon
+              size="sm"
+              as={MaterialIcons}
+              name="settings"
+              color="primary.500"
+            />
+          }
+          {
             action.requiresUserAuth && !service.isAuth &&
             <Icon
               size="sm"
@@ -62,7 +71,7 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
               color="primary.500"
             />
           }
-          <Text  >
+          <Text flex={1} >
             { action.title }
           </Text>
         </HStack>

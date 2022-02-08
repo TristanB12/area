@@ -20,9 +20,6 @@ const areasMock: Area[] = [
       },
       title: "Add to playlist",
       requiresUserAuth: false,
-      config: {
-        playlistName: "Gacha"
-      }
     }
   },
   {
@@ -44,9 +41,6 @@ const areasMock: Area[] = [
       },
       title: "Add to playlist",
       requiresUserAuth: false,
-      config: {
-        playlistName: "Gacha-Youtube"
-      }
     }
   },
   {
@@ -60,9 +54,6 @@ const areasMock: Area[] = [
       },
       title: "When an artist releases a new song on Spotify and I'm subscribed to that artist",
       requiresUserAuth: false,
-      config: {
-        artistName: "Lil Nas X"
-      }
     },
     reaction: {
       service: {
@@ -70,10 +61,7 @@ const areasMock: Area[] = [
         logoUri: "https://pnggrid.com/wp-content/uploads/2021/07/Microsoft-Outlook-Logo.png",
       },
       title: "Send an email",
-      requiresUserAuth: false,
-      config: {
-        receiver: "julien.pause@epitech.eu"
-      }
+      requiresUserAuth: false
     }
   },
 ]

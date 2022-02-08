@@ -1,7 +1,13 @@
+type ActionConfig = {
+  display: string,
+  example: any,
+  value: any
+}
+
 type Action = {
   title: string,
   requiresUserAuth: boolean,
-  config?: object
+  config?: ActionConfig[]
 }
 
 type Service = {
@@ -24,5 +30,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { Service, Action, ServiceAction }
+export type { ActionConfig, Action, Service, ServiceAction }
 export default Area

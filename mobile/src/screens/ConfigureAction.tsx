@@ -1,10 +1,32 @@
 import React from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackParamList } from "../navigation/types";
-import { Image, Text, HStack, Heading } from "native-base";
+import { Image, Text, HStack, Heading, VStack, FormControl, Input, Button } from "native-base";
 import { useRecoilValue } from "recoil";
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
+import { ActionConfig } from "../types";
+
+function ConfigureItem({ config } : { config: ActionConfig }) {
+  return (
+    <VStack w='100%'>
+      <FormControl isRequired>
+        <FormControl.Label _text={{ fontSize: "xl" }}>
+          { config.display }
+        </FormControl.Label>
+        <Input
+          size="lg"
+          w='100%'
+          rounded="lg"
+          variant="filled"
+          placeholder={`ex: ${config.example}`}
+          p={4}
+
+        />
+      </FormControl>
+    </VStack>
+  )
+}
 
 function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'ConfigureAction'> }) {
   const { serviceName, actionTitle } = route.params
@@ -14,9 +36,10 @@ function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'C
     return null
   }
   const action = service.actions.find(action => action.title === actionTitle)
-  if (action === undefined) {
+  if (action === undefined || action.config === undefined) {
     return null
   }
+  const canSave = false
 
   return (
     <ScreenView>
@@ -27,13 +50,29 @@ function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'C
           resizeMode="contain"
           alt={service.name}
         />
-        <Text  textAlign="center" >
+        <Text textAlign="center" >
           { service.name }
         </Text>
       </HStack>
-      <Heading>
+      <Heading textAlign="center">
         { action.title }
       </Heading>
+      <VStack w="100%" space={4} my={5}>
+        {
+          action.config.map(config =>
+            <ConfigureItem key={config.display} config={config} />
+          )
+        }
+      </VStack>
+      <Button
+        w='80%'
+        // onPress={onSubmit}
+        _text={{ fontSize: "lg" }}
+        disabled={!canSave}
+        bgColor={canSave ? "primary.500" : "primary.100"}
+      >
+        Save
+      </Button>
     </ScreenView>
   )
 }

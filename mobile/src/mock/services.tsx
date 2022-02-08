@@ -73,10 +73,18 @@ const servicesMock: Service[] = [
       {
         title: "When a youtuber reaches a certain amount of subscribers",
         requiresUserAuth: false,
-        config: {
-          youtuberName: "dream",
-          nbSubscribers: 5_000_000,
-        }
+        config: [
+          {
+            display: "Youtuber name",
+            example: "dream",
+            value: ""
+          },
+          {
+            display: "Number of subscribers",
+            example: 50_000_000,
+            value: 0
+          }
+        ]
       },
     ],
     reactions: [
