@@ -1,7 +1,11 @@
 <template>
   <main>
     <LandingHeader />
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </main>
 </template>
 
@@ -42,12 +46,19 @@ export default {
     font-family: $secondary-font;
     color: $main-dark;
 }
-
 h1, h2, h3, h4, h5, h6 {
     font-family: $primary-font;
 }
-
 a {
   text-decoration: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

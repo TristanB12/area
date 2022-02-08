@@ -13,6 +13,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "LoginPage" */ '../views/LoginPage.vue')
   },
   {
+    path: '/register',
+    name: 'RegisterPage',
+    component: () => import(/* webpackChunkName: "RegisterPage" */ '../views/RegisterPage.vue')
+  },
+  {
     path: '/login',
     name: 'MobilePage',
     component: () => import(/* webpackChunkName: "MobilePage" */ '../views/MobilePage.vue')
@@ -26,6 +31,11 @@ const routes = [
     path: '/services',
     name: 'ServicesPage',
     component: () => import(/* webpackChunkName: "ServicesPage" */ '../views/ServicesPage.vue')
+  },
+  {
+    path: '/app/areas',
+    name: 'AreasPage',
+    component: () => import(/* webpackChunkName: "AreasPage" */ '../views/AreasPage.vue')
   },
 ]
 

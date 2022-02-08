@@ -9,5 +9,29 @@
     "services": "Services",
     "signIn": "Sign in",
     "register": "register"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "or": "or",
+    "login": {
+      "title": "Login",
+      "facebook": "Login with Facebook",
+      "google": "Login with Google",
+      "accountSentence": "Don't have an account ?"
+    },
+    "register": {
+      "title": "Register",
+      "facebook": "Register with Facebook",
+      "google": "Register with Google",
+      "accountSentence": "Already have an account ?"
+    },
+    "validator": {
+      "characters": "6-42 characters",
+      "number": "1 number",
+      "specialCharacter": "1 special character",
+      "passwordIdentical": "password are identical"
+    }
   }
 }

@@ -9,5 +9,29 @@
         "services": "Services",
         "signIn": "Connexion",
         "register": "S'inscrire"
+    },
+    "auth": {
+        "email": "Email",
+        "password": "Mot de passe",
+        "confirmPassword": "Confirmer le mot de passe",
+        "or": "ou",
+        "login": {
+            "title": "Connexion",
+            "facebook": "Connexion avec Facebook",
+            "google": "Connexion avec Google",
+            "accountSentence": "Pas de compte ?"
+        },
+        "register": {
+            "title": "S'enregistrer",
+            "facebook": "S'enregistrer avec Facebook",
+            "google": "S'enregistrer avec Google",
+            "accountSentence": "Déjà un compte ?"
+        },
+        "validator": {
+            "characters": "6-42 caractères",
+            "number": "1 chiffre",
+            "specialCharacter": "1 caratère spécial",
+            "passwordIdentical": "mots de passe identiques"
+        }
     }
 }

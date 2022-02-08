@@ -3,7 +3,7 @@
         <header>
             <div class="branding" @click="$router.push({name: 'LandingPage'})">
                 <img src="@/assets/logo.png" alt="logo">
-                <h1><span>A</span>REA</h1>
+                <h1>AREA</h1>
             </div>
             <nav>
                 <ul>
@@ -20,6 +20,7 @@
                 </ul>
                 <VButton
                     :title="$t('navLinks.register')"
+                    @click="$router.push({name: 'RegisterPage'})"
                 />
                 <LanguageSwitcher />
             </nav>
@@ -80,10 +81,13 @@ header {
 }
 h1 {
     color: $main-dark;
-    font-family: 'Noto Sans Display', sans-serif;
+    font-family: $primary-font;
     font-weight: 800;
 
     span {
+        color: $main-orange;
+    }
+    &::first-letter {
         color: $main-orange;
     }
 }
