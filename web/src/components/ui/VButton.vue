@@ -1,9 +1,9 @@
 <template>
     <button class="button">
-        <img v-if="iconName && !isLoading" :src="imagePath" :alt="iconName">
         <span v-if="title && !isLoading">{{ title }}</span>
+        <img v-if="iconName && !isLoading" :src="imagePath" :alt="iconName">
         <ClipLoader
-            v-else
+            v-if="isLoading"
             size="24px"
             color="white"
         />

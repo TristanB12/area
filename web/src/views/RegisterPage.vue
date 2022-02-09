@@ -4,7 +4,7 @@
             <img src="@/assets/login_illustration.png" alt="blobs">
         </div>
         <div class="orange">
-            <AuthCard title="Register">
+            <AuthCard title="auth.register.title">
                 <RegisterForm />
             </AuthCard>
         </div>

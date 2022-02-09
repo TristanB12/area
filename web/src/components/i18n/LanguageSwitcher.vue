@@ -29,6 +29,9 @@
 </script>
 
 <style lang="scss" scoped>
+#language-switcher {
+    display: flex;
+}
 img {
     max-width: 40px;
     cursor: pointer;

@@ -35,7 +35,7 @@
             },
             model: {
                 type: String,
-                default: undefined
+                default: ""
             }
         },
         data() {

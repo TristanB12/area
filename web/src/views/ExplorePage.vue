@@ -1,6 +1,6 @@
 <template>
     <section>
-        <h1>{{$t('pages.areas.title')}}</h1>
+        <h1>{{$t('pages.explore.title')}}</h1>
     </section>
 </template>
 

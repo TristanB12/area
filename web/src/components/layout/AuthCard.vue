@@ -1,7 +1,7 @@
 <template>
     <div class="auth-card">
         <div class="header">
-            <h1>{{ title }}</h1>
+            <h1>{{ $t(title) }}</h1>
         </div>
         <div class="slot-container">
             <slot></slot>

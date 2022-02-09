@@ -1,6 +1,7 @@
 <template>
   <main>
-    <LandingHeader />
+    <LandingHeader v-if="!loggedState" />
+    <SignedHeader v-else />
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component" />
@@ -11,9 +12,16 @@
 
 <script>
 import LandingHeader from '@/components/layout/LandingHeader.vue';
+import SignedHeader from '@/components/layout/SignedHeader.vue';
 export default {
   components: {
-    LandingHeader
+    LandingHeader,
+    SignedHeader,
+  },
+  computed: {
+    loggedState() {
+      return true;
+    }
   },
   created () {
     this.getLocale();

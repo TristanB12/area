@@ -33,5 +33,14 @@
             "specialCharacter": "1 caratère spécial",
             "passwordIdentical": "mots de passe identiques"
         }
+    },
+    "pages": {
+        "areas": {
+            "title": "Areas"
+        },
+        "apps": {
+            "title": "Applications"
+        },
+        "explore": "Explorer"
     }
 }

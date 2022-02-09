@@ -4,7 +4,7 @@
             <img src="@/assets/login_illustration.png" alt="blobs">
         </div>
         <div class="orange">
-            <AuthCard title="Login">
+            <AuthCard title="auth.login.title">
                 <LoginForm />
             </AuthCard>
         </div>

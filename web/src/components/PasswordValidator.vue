@@ -76,7 +76,7 @@
                 return /\d/.test(this.password);
             },
             hasSpecialCharacter() {
-                let format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+                let format = /[ `!@#$%^&*()_+\-=!\[\]{};':"\\|,.<>\/?~]/;
 
                 return format.test(this.password);
             },

@@ -33,9 +33,26 @@ const routes = [
     component: () => import(/* webpackChunkName: "ServicesPage" */ '../views/ServicesPage.vue')
   },
   {
-    path: '/app/areas',
-    name: 'AreasPage',
-    component: () => import(/* webpackChunkName: "AreasPage" */ '../views/AreasPage.vue')
+    path: '/app',
+    name: 'AppPage',
+    component: () => import(/* webpackChunkName: "AppPage" */ '../views/AppPage.vue'),
+    children: [
+      {
+        path: 'areas',
+        name: 'AreasPage',
+        component: () => import(/* webpackChunkName: "AreasPage" */ '../views/AreasPage.vue')
+      },
+      {
+        path: 'apps',
+        name: 'AppsPage',
+        component: () => import(/* webpackChunkName: "AppsPage" */ '../views/AppsPage.vue')
+      },
+      {
+        path: 'explore',
+        name: 'ExplorePage',
+        component: () => import(/* webpackChunkName: "ExplorePage" */ '../views/ExplorePage.vue')
+      },
+    ]
   },
 ]
 
