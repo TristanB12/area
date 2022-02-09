@@ -6,19 +6,7 @@ on:
       - master
 
 jobs:
-  back-deployement:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{secrets.HEROKU_BACK_API_KEY}}
-          heroku_app_name: "ikeapi"
-          heroku_email: "tristan.bourgeois@epitech.eu"
-          appdir: "back"
-          usedocker: true
-
-  web-deployement:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
