@@ -16,4 +16,3 @@ jobs:
           heroku_app_name: "ikeapp"
           heroku_email: "tristan.bourgeois@epitech.eu"
           appdir: "web"
-          usedocker: true
