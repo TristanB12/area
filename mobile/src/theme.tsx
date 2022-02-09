@@ -134,6 +134,28 @@ const theme = extendTheme({
     heading: 'NotoSans',
     body: 'OpenSans',
     mono: 'OpenSans'
+  },
+  components: {
+    Box: {
+      variants: {
+        card: () => {
+          return {
+            shadow: 6,
+            rounded: "lg",
+            overflow: "hidden",
+            borderWidth: 1,
+            _dark: {
+              borderColor: "coolGray.600",
+              backgroundColor: "gray.700"
+            },
+            _light: {
+              borderColor: "coolGray.200",
+              backgroundColor: "gray.50"
+            }
+          }
+        }
+      }
+    }
   }
 })
 

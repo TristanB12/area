@@ -10,6 +10,7 @@ import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import editedAreaAtom from "../recoil/atoms/editedArea";
+import { useTranslation } from "react-i18next";
 
 function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
   const setArea = useSetRecoilState(editedAreaAtom)
@@ -40,11 +41,7 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
   return (
     <TouchableOpacity style={{ width: "100%" }} onPress={onPress}>
       <Box
-        shadow={6}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
+        variant="card"
         justifyContent="center"
         _dark={{
         borderColor: "coolGray.600",
@@ -83,6 +80,7 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
 type ChooseActionScreenProps = NativeStackScreenProps<StackParamList, 'ChooseAction'>
 
 function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
+  const { t } = useTranslation('navigation')
   const { serviceName, isReaction } = route.params
   const services = useRecoilValue(servicesAtom)
   const service = services.find(service => service.name === serviceName)
@@ -94,7 +92,7 @@ function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: isReaction ? "Choose reaction" : "Choose action"
+      title: isReaction ? t("choose_reaction") : t("choose_action")
     });
   }, [navigation]);
 

@@ -16,11 +16,7 @@ function ServiceCard({ action, isReaction } : { action: ServiceAction | undefine
       <Box
         w="100%"
         h="100"
-        shadow={6}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
+        variant="card"
         justifyContent="center"
         _dark={{
         borderColor: "coolGray.600",

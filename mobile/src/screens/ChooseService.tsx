@@ -19,20 +19,10 @@ function ServiceItem({ service, isReaction } : { service: Service, isReaction: b
   return (
     <TouchableOpacity style={{ flex: 1 }} onPress={goToChooseAction}>
       <Box
+        variant="card"
         m={2}
         p={4}
-        shadow={6}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
         justifyContent="center"
-        _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700"
-      }} _light={{
-        backgroundColor: "gray.50"
-      }}
       >
         <VStack space={4}  alignItems="center">
           <Image

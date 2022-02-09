@@ -11,6 +11,7 @@ type StackParamList = {
   Register: undefined,
   Login: undefined,
   Tabs: undefined,
+  Settings: undefined,
   EditArea: { areaId: number } | undefined,
   ChooseService: { isReaction: boolean },
   ChooseAction: { serviceName: string, isReaction: boolean },

@@ -33,21 +33,7 @@ function AreaItem({ area } : { area: Area }) {
 
   return (
     <Pressable w="100%" onPress={goToEditArea}>
-      <Box
-        shadow={6}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        borderWidth="1"
-        p={3}
-        _dark={{
-          borderColor: "coolGray.600",
-          backgroundColor: "gray.700"
-        }}
-        _light={{
-          backgroundColor: "gray.50"
-        }}
-      >
+      <Box variant="card" p={3}>
         <Text color="secondary.900" fontWeight="medium" fontSize="sm">
           { area.title }
         </Text>

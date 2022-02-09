@@ -11,6 +11,7 @@ import areasAtom from "../recoil/atoms/areas";
 import ScreenView from '../components/ScreenView'
 import EditArea from "../components/EditArea";
 import editedAreaAtom from "../recoil/atoms/editedArea";
+import { useTranslation } from "react-i18next";
 
 type EditAreaScreenProps = CompositeScreenProps<
   NativeStackScreenProps<StackParamList, 'EditArea'>,
@@ -42,9 +43,10 @@ function DeleteAreaButton({ onDelete } : { onDelete: () => void }) {
 
 // Used for editing areas and creating new ones
 function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
+  const { t } = useTranslation('navigation')
   const [areas, setAreas] = useRecoilState(areasAtom)
   const [area, setArea] = useRecoilState(editedAreaAtom)
-  const areaId = route.params?.areaId || area._id
+  const areaId = route.params?.areaId || area._id // TODO: fix bug when you edit an AREA then create a new one
 
   const onDelete = () => {
     setAreas(areas.filter(area => area._id !== areaId))
@@ -63,7 +65,7 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
     const isNewArea = (areaId === undefined)
 
     navigation.setOptions({
-      title: isNewArea ? "Create Area" : "Area",
+      title: isNewArea ? t('create_area') : t('area'),
       headerRight: isNewArea ? undefined : () =>
         <DeleteAreaButton onDelete={onDelete} />
     });
