@@ -4,6 +4,8 @@ import { RecoilRoot } from 'recoil';
 import theme from './theme';
 import StackNavigation from './navigation/Stack';
 
+import './i18n'
+
 function App() {
   return (
     <NativeBaseProvider theme={theme}>
