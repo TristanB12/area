@@ -40,7 +40,7 @@ function accessTokenUrlOption(code, redirect_uri) {
     params: {
       client_id: process.env.FACEBOOK_CLIENT_ID,
       redirect_uri,
-      client_secret: process.env.FACEBOOK_CLIENT_SECERT,
+      client_secret: process.env.FACEBOOK_CLIENT_SECRET,
       code,
       scope: 'email',
     }
