@@ -21,10 +21,12 @@ function StackNavigation() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName="Tabs" screenOptions={options}>
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>
+      <Stack.Navigator initialRouteName="Register" screenOptions={options}>
+        <Stack.Group screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Tabs" component={TabsNavigation}/>
+        </Stack.Group>
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: t('settings') }}/>
         <Stack.Screen name="EditArea" component={EditAreaScreen}/>
         <Stack.Screen name="ChooseService" component={ChooseServiceScreen} options={{ title: t('choose_a_service') }}/>

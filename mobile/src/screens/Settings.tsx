@@ -56,7 +56,16 @@ function Settings() {
         {/* TODO: remove mock */}
         julien.pause@epitech.eu
       </Heading>
+      <Text>
+        My services (unlink services)
+      </Text>
       <ChooseLanguage />
+      <Text>
+        Switch from light to dark
+      </Text>
+      <Text>
+        Sign out
+      </Text>
     </ScreenView>
   )
 }
