@@ -3,9 +3,8 @@ const db = require('../models');
 
 module.exports = app => {
   app.get('/', async (req, res) => {
-    const data = await db.user.find();
 
-    return res.status(200).json(data);
+    return res.status(200).json({ message: "Hello Wolrd" });
   });
 
   app.use('/auth', require('./auth'));
