@@ -18,6 +18,8 @@ type Service = {
   reactions: Action[]
 }
 
+type AuthService = Pick<Service, 'name' | 'logoUri'>
+
 type ServiceAction = {
   service: Pick<Service, 'name' | 'logoUri'>
 } & Action
@@ -30,5 +32,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { ActionConfig, Action, Service, ServiceAction }
+export type { ActionConfig, Action, Service, AuthService, ServiceAction }
 export default Area
