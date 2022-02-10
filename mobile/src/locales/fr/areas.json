@@ -1,3 +1,18 @@
 {
-  "hello": "Bonjour !"
+  "title": {
+    "label": "Titre",
+    "placeholder": "Le titre de votre Area",
+    "required": "Votre area doit obligatoirement avoir un titre"
+  },
+  "description": {
+    "label": "Description (optionnel)",
+    "placeholder": "Pas de description"
+  },
+  "configure_action": "CONFIGURER L'ACTION",
+  "configure_reaction": "CONFIGURER LA REACTION",
+  "delete": {
+    "title": "Supprimer l'AREA",
+    "message": "Souhaitez-vous vraiment supprimer l'AREA ?"
+  },
+  "search_service": "Rechercher un service"
 }

@@ -1,9 +1,11 @@
-import areas from './areas.json'
-import settings from './settings.json'
+import common from './common.json'
 import navigation from './navigation.json'
+import settings from './settings.json'
+import areas from './areas.json'
 
 export default {
-  areas,
+  common,
+  navigation,
   settings,
-  navigation
+  areas
 }

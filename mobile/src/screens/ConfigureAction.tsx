@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import { ActionConfig } from "../types";
+import { useTranslation } from "react-i18next";
 
 function ConfigureItem({ config } : { config: ActionConfig }) {
   return (
@@ -29,6 +30,8 @@ function ConfigureItem({ config } : { config: ActionConfig }) {
 }
 
 function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'ConfigureAction'> }) {
+  const { t } = useTranslation('common')
+
   const { serviceName, actionTitle } = route.params
   const services = useRecoilValue(servicesAtom)
   const service = services.find(service => service.name === serviceName)
@@ -71,7 +74,7 @@ function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'C
         disabled={!canSave}
         bgColor={canSave ? "primary.500" : "primary.100"}
       >
-        Save
+        { t('save') }
       </Button>
     </ScreenView>
   )

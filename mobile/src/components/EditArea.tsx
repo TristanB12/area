@@ -4,8 +4,10 @@ import { Box, Text, HStack, Image, Button, Input, VStack, FormControl, TextArea 
 import { useNavigation } from "@react-navigation/native";
 import { StackNavProp } from "../navigation/types";
 import { TouchableOpacity } from "react-native";
+import { useTranslation } from "react-i18next";
 
 function ServiceCard({ action, isReaction } : { action: ServiceAction | undefined, isReaction?: boolean }) {
+  const { t } = useTranslation('areas')
   const navigation = useNavigation<StackNavProp>()
   const goToConfigureAction = () => navigation.push('ChooseService', {
     isReaction: isReaction ? true : false
@@ -39,7 +41,7 @@ function ServiceCard({ action, isReaction } : { action: ServiceAction | undefine
           </HStack>
           :
           <Text fontFamily="heading" fontSize="lg" fontWeight="bold" textAlign="center" color="white">
-            CONFIGURE { isReaction && "RE" }ACTION
+            { isReaction ? t('configure_reaction') : t('configure_action') }
           </Text>
         }
       </Box>
@@ -48,6 +50,7 @@ function ServiceCard({ action, isReaction } : { action: ServiceAction | undefine
 }
 
 function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispatch<React.SetStateAction<Area>>, onSave: Function }) {
+  const { t } = useTranslation(['areas', 'common'])
   const titleIsValid = area.title.length > 0
   const canSave = (
     titleIsValid
@@ -62,14 +65,14 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
         <VStack w='100%'>
           <FormControl isRequired isInvalid={!titleIsValid}>
             <FormControl.Label _text={{ fontSize: "xl", bold: true }}>
-              Area name
+              { t('title.label') }
             </FormControl.Label>
             <Input
               size="lg"
               w='100%'
               rounded="lg"
               variant="filled"
-              placeholder="Your Area name"
+              placeholder={t('title.placeholder')}
               p={4}
               value={area.title}
               onChangeText={value => setArea({ ...area, title: value })}
@@ -77,7 +80,7 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
             {
               !titleIsValid &&
               <FormControl.ErrorMessage>
-                A title for your area is required
+                { t('title.required') }
               </FormControl.ErrorMessage>
             }
           </FormControl>
@@ -85,13 +88,13 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
         <VStack w='100%'>
           <FormControl>
             <FormControl.Label _text={{ fontSize: "xl", bold: true }}>
-              Description (optional)
+            { t('description.label') }
             </FormControl.Label>
             <TextArea
               size="md"
               variant="filled"
               rounded="lg"
-              placeholder="No description"
+              placeholder={ t('description.placeholder') }
               p={4}
               value={area.description}
               onChangeText={value => setArea({ ...area, description: value })}
@@ -110,7 +113,7 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
         disabled={!canSave}
         bgColor={canSave ? "primary.500" : "primary.100"}
       >
-        Save
+        { t('save', { ns: 'common' }) }
       </Button>
     </>
   )

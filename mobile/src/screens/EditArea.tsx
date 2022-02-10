@@ -19,17 +19,19 @@ type EditAreaScreenProps = CompositeScreenProps<
 >
 
 function DeleteAreaButton({ onDelete } : { onDelete: () => void }) {
+  const { t } = useTranslation(['areas', 'common'])
+
   const confirmDeletion = () =>
     Alert.alert(
-      "Supprimer l'AREA",
-      "Souhaitez-vous vraiment supprimer l'AREA ?",
+      t('delete.title'),
+      t('delete.message'),
       [
         {
-          text: "OUI",
+          text: t('yes', { ns: 'common' }),
           onPress: onDelete
         },
         {
-          text: "NON"
+          text: t('no', { ns: 'common' })
         },
       ]
   );

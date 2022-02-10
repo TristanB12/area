@@ -8,6 +8,7 @@ import { Service } from "../types";
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useTranslation } from "react-i18next";
 
 function ServiceItem({ service, isReaction } : { service: Service, isReaction: boolean }) {
   const navigation = useNavigation<StackNavProp>()
@@ -41,6 +42,7 @@ function ServiceItem({ service, isReaction } : { service: Service, isReaction: b
 }
 
 function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'ChooseService'> }) {
+  const { t } = useTranslation('areas')
   const { isReaction } = route.params
   const allServices = useRecoilValue(servicesAtom)
   const [services, setServices] = useState(allServices)
@@ -56,7 +58,7 @@ function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'Cho
   return (
     <ScreenView>
       <Input
-        placeholder="Search service"
+        placeholder={t('search_service')}
         width="100%"
         borderRadius="6"
         borderColor="tertiary.400"
