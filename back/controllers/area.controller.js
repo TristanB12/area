@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
+const { user } = require('../models');
 const db = require("../models");
 const jwt = require('./jwt');
 
@@ -111,4 +112,13 @@ async function signup(req, res) {
   return res.status(201).json(response);
 }
 
-module.exports = { login, signup };
+async function getUserInfos(req, res) {
+  const { user } = req;
+  
+  return res.status(200).json({
+    email: user.auth.email,
+    email_verified: user.email_verified,
+  });
+}
+
+module.exports = { login, signup, getUserInfos };
