@@ -2,7 +2,7 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { Box, HStack, VStack, Image, Text } from "native-base"
 import { useTranslation } from "react-i18next"
-import { AuthService } from "../types"
+import { AuthService } from "../../types"
 
 function AuthServiceCard({ service, action } : { service: AuthService, action: 'login' | 'register' }) {
   const { t } = useTranslation('auth')

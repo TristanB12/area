@@ -3,31 +3,15 @@ import {
   Text,
   Heading,
   VStack,
-  Button,
   Center,
   Divider
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigation/types";
-import EmailInput from "../../components/inputs/Email";
-import PasswordInput from "../../components/inputs/Password";
-import AuthServices from "../../components/AuthServices";
+import AuthServices from "../../components/auth/Services";
+import AuthEmailPassword from "../../components/auth/EmailPassword";
 import authServicesMock from "../../mock/authServices";
-
-function EmailPasswordLogin() {
-  const { t } = useTranslation('auth')
-
-  return (
-    <VStack space={4} >
-      <EmailInput />
-      <PasswordInput />
-      <Button mt="2" shadow={6} >
-        { t('login') }
-      </Button>
-    </VStack>
-  )
-}
 
 type LoginScreenProps = NativeStackScreenProps<StackParamList, 'Login'>
 
@@ -46,7 +30,7 @@ function Login({ navigation } : LoginScreenProps) {
         </Heading>
         <AuthServices services={authServicesMock} action="login"/>
         <Divider />
-        <EmailPasswordLogin />
+        <AuthEmailPassword action="login" />
         <Text textAlign="center">
           { t('no_account_yet') + ' ' }
           <Text color="tertiary.400" bold underline onPress={goToRegister}>
