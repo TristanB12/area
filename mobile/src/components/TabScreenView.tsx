@@ -4,9 +4,22 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ScreenView from "./ScreenView";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavProp } from "../navigation/types";
+import { useRecoilState } from "recoil";
+import editedAreaAtom from "../recoil/atoms/editedArea";
 
 function TabScreenView({ children } : { children: React.ReactNode }) {
   const navigation = useNavigation<StackNavProp>()
+  const [editedArea, setEditedArea] = useRecoilState(editedAreaAtom)
+  const goToEditArea = () => {
+    setEditedArea({
+      _id: 0,
+      title: "",
+      description: "",
+      action: undefined,
+      reaction: undefined
+    })
+    navigation.push('EditArea')
+  }
 
   return (
     <ScreenView>
@@ -18,7 +31,7 @@ function TabScreenView({ children } : { children: React.ReactNode }) {
         shadow={2}
         size="sm"
         icon={<Icon color="white" as={<MaterialCommunityIcons name="plus" />} />}
-        onPress={() => navigation.push('EditArea')}
+        onPress={goToEditArea}
       />
     </ScreenView>
   )

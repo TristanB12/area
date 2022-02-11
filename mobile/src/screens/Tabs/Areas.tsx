@@ -4,8 +4,9 @@ import { StackNavProp } from "../../navigation/types";
 import { Box, Image, HStack, Pressable, Text, VStack } from "native-base";
 import Area from "../../types";
 import areasAtom from "../../recoil/atoms/areas";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import TabScreenView from "../../components/TabScreenView";
+import editedAreaAtom from "../../recoil/atoms/editedArea";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {
   return (
@@ -19,13 +20,17 @@ function ServiceListItem({ title, url } : { title: string, url: string }) {
       <Text >
         { title }
       </Text>
-  </HStack>
+    </HStack>
   )
 }
 
 function AreaItem({ area } : { area: Area }) {
   const navigation = useNavigation<StackNavProp>()
-  const goToEditArea = () => navigation.navigate('EditArea', { areaId: area._id })
+  const setEditedArea = useSetRecoilState(editedAreaAtom)
+  const goToEditArea = () => {
+    setEditedArea(area)
+    navigation.push('EditArea')
+  }
 
   if (area.action === undefined || area.reaction === undefined) {
     return null

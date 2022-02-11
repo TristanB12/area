@@ -1,11 +1,11 @@
-import React, { useLayoutEffect, useCallback } from "react";
+import React, { useLayoutEffect } from "react";
 import { useRecoilState } from "recoil";
 import { TouchableOpacity, Alert } from "react-native";
-import { CompositeScreenProps, useFocusEffect } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackParamList, TabParamList } from "../navigation/types";
-import { Icon, useLayout } from "native-base"
+import { Icon } from "native-base"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import areasAtom from "../recoil/atoms/areas";
 import ScreenView from '../components/ScreenView'
@@ -47,44 +47,36 @@ function DeleteAreaButton({ onDelete } : { onDelete: () => void }) {
 function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
   const { t } = useTranslation('navigation')
   const [areas, setAreas] = useRecoilState(areasAtom)
-  const [area, setArea] = useRecoilState(editedAreaAtom)
-  const areaId = route.params?.areaId || area._id // TODO: fix bug when you edit an AREA then create a new one
+  const [editedArea, setEditedArea] = useRecoilState(editedAreaAtom)
 
   const onDelete = () => {
-    setAreas(areas.filter(area => area._id !== areaId))
+    setAreas(areas.filter(area => area._id !== editedArea._id))
     navigation.goBack()
   }
   const onSave = () => {
     // TODO: call API to store area, and get generated ID
     const randomId = Math.floor(Math.random() * 100)
-    setAreas([...areas.filter(area => area._id !== areaId),
-      { ...area, _id: randomId }]
+    setAreas([...areas.filter(area => area._id !== editedArea._id),
+      { ...editedArea, _id: randomId }]
     )
     navigation.goBack()
   }
 
   useLayoutEffect(() => {
-    const isNewArea = (areaId === undefined)
+    const isNewArea = (editedArea._id === 0)
 
     navigation.setOptions({
       title: isNewArea ? t('create_area') : t('area'),
       headerRight: isNewArea ? undefined : () =>
         <DeleteAreaButton onDelete={onDelete} />
     });
-    setArea(areas.find(area => area._id === areaId) || {
-      _id: 0,
-      title: "",
-      description: "",
-      action: undefined,
-      reaction: undefined
-    })
-  }, [navigation]);
+  }, [navigation, editedArea]);
 
   return (
     <ScreenView style={{ justifyContent: "space-between", paddingBottom: 40 }}>
       <EditArea
-        area={area}
-        setArea={setArea}
+        area={editedArea}
+        setArea={setEditedArea}
         onSave={onSave}
       />
     </ScreenView>
