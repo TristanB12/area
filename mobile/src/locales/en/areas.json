@@ -13,6 +13,5 @@
   "delete": {
     "title": "Delete AREA",
     "message": "Do you really wish to delete this AREA?"
-  },
-  "search_service": "Search service"
+  }
 }

@@ -4,10 +4,30 @@ const servicesMock: Service[] = [
   {
     name: "Snapchat",
     logoUri: "https://upload.wikimedia.org/wikipedia/fr/archive/a/ad/20190808214526%21Logo-Snapchat.png",
-    isAuth: false,
+    isAuth: true,
     actions: [
+      {
+        title: "New snap received",
+        requiresUserAuth: true
+      },
+      {
+        title: "New chat message received",
+        requiresUserAuth: true
+      },
+      {
+        title: "New friend request received",
+        requiresUserAuth: true
+      },
+      {
+        title: "New followed friend story",
+        requiresUserAuth: true
+      },
     ],
     reactions: [
+      {
+        title: "Send chat message",
+        requiresUserAuth: true
+      }
     ]
   },
   {
@@ -15,8 +35,24 @@ const servicesMock: Service[] = [
     logoUri: "https://toppng.com/uploads/preview/reddit-icon-reddit-logo-transparent-115628752708pqmsy4kgm.png",
     isAuth: false,
     actions: [
+      {
+        title: "New subreddit post",
+        requiresUserAuth: false
+      },
+      {
+        title: "New private message",
+        requiresUserAuth: true
+      }
     ],
     reactions: [
+      {
+        title: "Send private message",
+        requiresUserAuth: true
+      },
+      {
+        title: "Post comment",
+        requiresUserAuth: true
+      }
     ]
   },
   {
@@ -45,22 +81,34 @@ const servicesMock: Service[] = [
       {
         title: "Add to playlist",
         requiresUserAuth: true
+      },
+      {
+        title: "Pause current track",
+        requiresUserAuth: true
       }
     ]
   },
   {
     name: "Gmail",
     logoUri: "https://logodownload.org/wp-content/uploads/2018/03/gmail-logo-16.png",
-    isAuth: false,
+    isAuth: true,
     actions: [
+      {
+        title: "New email received",
+        requiresUserAuth: true
+      }
     ],
     reactions: [
+      {
+        title: "Send email",
+        requiresUserAuth: true
+      }
     ]
   },
   {
     name: "Youtube",
     logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
-    isAuth: false,
+    isAuth: true,
     actions: [
       {
         title: "When I watch a song's official video",
@@ -99,10 +147,14 @@ const servicesMock: Service[] = [
     logoUri: "https://pnggrid.com/wp-content/uploads/2021/07/Microsoft-Outlook-Logo.png",
     isAuth: false,
     actions: [
+      {
+        title: "New email received",
+        requiresUserAuth: true
+      }
     ],
     reactions: [
       {
-        title: "Send an email",
+        title: "Send email",
         requiresUserAuth: true
       }
     ]
@@ -112,15 +164,27 @@ const servicesMock: Service[] = [
     logoUri: "https://upload.wikimedia.org/wikipedia/fr/thumb/c/c8/Twitter_Bird.svg/2518px-Twitter_Bird.svg.png",
     isAuth: false,
     actions: [
+      {
+        title: "New private message received",
+        requiresUserAuth: true
+      }
     ],
     reactions: [
+      {
+        title: "Post a tweet",
+        requiresUserAuth: true
+      }
     ]
   },
   {
     name: "Twitch",
     logoUri: "http://assets.stickpng.com/images/580b57fcd9996e24bc43c540.png",
-    isAuth: false,
+    isAuth: true,
     actions: [
+      {
+        title: "Followed streamer went live",
+        requiresUserAuth: true
+      }
     ],
     reactions: [
     ]

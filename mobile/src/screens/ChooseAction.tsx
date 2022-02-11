@@ -1,24 +1,30 @@
 import React, { useLayoutEffect } from "react";
 import { TouchableOpacity } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackNavProp, StackParamList } from "../navigation/types";
 import { Box, Image, VStack, Text, Input, Icon, HStack } from "native-base";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import Area, { Service, Action } from "../types";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ScreenView from '../components/ScreenView'
-import servicesAtom from "../recoil/atoms/services";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import editedAreaAtom from "../recoil/atoms/editedArea";
-import { useTranslation } from "react-i18next";
+import servicesAtom from "../recoil/atoms/services";
+import Area, { Service, Action } from "../types";
+import ScreenView from '../components/ScreenView'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
   const setArea = useSetRecoilState(editedAreaAtom)
+  const needsLinking = (action.requiresUserAuth && !service.isAuth)
   const areaActionField: keyof Area = isReaction ? 'reaction' : 'action'
   const navigation = useNavigation<StackNavProp>()
 
   const onPress = () => {
-    if (action.config) {
+    if (needsLinking) {
+      navigation.push('LinkService', {
+        serviceName: service.name
+      })
+    } else if (action.config) {
       navigation.push('ConfigureAction', {
         serviceName: service.name,
         actionTitle: action.title
@@ -60,11 +66,11 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
             />
           }
           {
-            action.requiresUserAuth && !service.isAuth &&
+            needsLinking &&
             <Icon
               size="sm"
-              as={MaterialIcons}
-              name="login"
+              as={FontAwesome}
+              name="link"
               color="primary.500"
             />
           }

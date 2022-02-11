@@ -13,6 +13,5 @@
   "delete": {
     "title": "Supprimer l'AREA",
     "message": "Souhaitez-vous vraiment supprimer l'AREA ?"
-  },
-  "search_service": "Rechercher un service"
+  }
 }

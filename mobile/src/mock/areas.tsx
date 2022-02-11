@@ -24,23 +24,23 @@ const areasMock: Area[] = [
   },
   {
     _id: 23232432424,
-    title: "Song from Spotify to youtube",
-    description: "Transfer songs I listen from spotify to a youtube playlist",
+    title: "Tweet new Reddit post",
+    description: "Automatically publish a tweet when there is a new Reddit post in the /r/aww subreddit",
     action: {
       service: {
-        name: "Spotify",
-        logoUri: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png",
+        name: "Reddit",
+        logoUri: "https://toppng.com/uploads/preview/reddit-icon-reddit-logo-transparent-115628752708pqmsy4kgm.png",
       },
-      title: "When I listen to a song",
+      title: "When there is a new post",
       requiresUserAuth: false
     },
     reaction: {
       service: {
-        name: "Youtube",
-        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
+        name: "Twitter",
+        logoUri: "https://upload.wikimedia.org/wikipedia/fr/thumb/c/c8/Twitter_Bird.svg/2518px-Twitter_Bird.svg.png",
       },
-      title: "Add to playlist",
-      requiresUserAuth: false,
+      title: "Post new tweet",
+      requiresUserAuth: true,
     }
   },
   {
