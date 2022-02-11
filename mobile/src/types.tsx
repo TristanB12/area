@@ -13,7 +13,7 @@ type Action = {
 type Service = {
   name: string,
   logoUri: string,
-  isAuth: boolean,
+  isLinked: boolean,
   actions: Action[],
   reactions: Action[]
 }

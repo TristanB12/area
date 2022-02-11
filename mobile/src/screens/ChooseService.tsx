@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 
 function ServiceItem({ service, isReaction } : { service: Service, isReaction: boolean }) {
   const actions = isReaction ? service.reactions : service.actions
-  const needsLinking = (!service.isAuth && actions.every(action => action.requiresUserAuth))
+  const needsLinking = (!service.isLinked && actions.every(action => action.requiresUserAuth))
   const navigation = useNavigation<StackNavProp>()
   const navigate = () => {
     if (needsLinking) {

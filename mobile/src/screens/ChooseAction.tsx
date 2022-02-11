@@ -15,7 +15,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
   const setArea = useSetRecoilState(editedAreaAtom)
-  const needsLinking = (action.requiresUserAuth && !service.isAuth)
+  const needsLinking = (!service.isLinked && action.requiresUserAuth)
   const areaActionField: keyof Area = isReaction ? 'reaction' : 'action'
   const navigation = useNavigation<StackNavProp>()
 
