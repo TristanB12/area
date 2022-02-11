@@ -12,6 +12,7 @@ type StackParamList = {
   Login: undefined,
   Tabs: undefined,
   Settings: undefined,
+  MyServices: undefined,
   EditArea: undefined,
   ChooseService: { isReaction: boolean },
   LinkService: { serviceName: string },

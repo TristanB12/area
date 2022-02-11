@@ -1,5 +1,7 @@
 {
+  "my_services": "My services",
   "search_service": "Search service",
   "link_service": "Link service",
-  "link_service_helper_text": "In order to use this service, you must connect first."
+  "link_service_helper_text": "In order to use this service, you must connect first.",
+  "unlink": "Unlink"
 }

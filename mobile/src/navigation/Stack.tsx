@@ -9,6 +9,7 @@ import TabsNavigation from './Tabs';
 import RegisterScreen from '../screens/auth/Register';
 import LoginScreen from '../screens/auth/Login';
 import SettingsScreen from '../screens/Settings';
+import MyServicesScreen from '../screens/MyServices';
 import EditAreaScreen from '../screens/EditArea';
 import ChooseServiceScreen from '../screens/ChooseService';
 import LinkServiceScreen from '../screens/LinkService';
@@ -18,7 +19,7 @@ import ConfigureActionScreen from '../screens/ConfigureAction';
 const Stack = createNativeStackNavigator<StackParamList>();
 
 function StackNavigation() {
-  const { t } = useTranslation('navigation')
+  const { t } = useTranslation(['navigation', 'services'])
   const isSignedIn = true
 
   return (
@@ -34,6 +35,7 @@ function StackNavigation() {
             <>
               <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>
               <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: t('settings') }}/>
+              <Stack.Screen name="MyServices" component={MyServicesScreen} options={{ title: t('my_services', { ns: 'services' }) }}/>
               <Stack.Screen name="EditArea" component={EditAreaScreen}/>
               <Stack.Screen name="ChooseService" component={ChooseServiceScreen} options={{ title: t('choose_a_service') }}/>
               <Stack.Screen name="LinkService" component={LinkServiceScreen} options={{ title: t('link_service') }}/>
