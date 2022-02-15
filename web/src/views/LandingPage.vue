@@ -1,15 +1,15 @@
 <template>
   <div class="landing">
     <div class="sector">
-      <h1 class="landingText">
-        Automate your tasks and focus on what is
-        <span class="important">important</span>.
-      </h1>
+      <div>
+        <h1 class="landingText">
+          Automate your tasks and focus on what is
+          <span class="important">important</span>.
+        </h1>
+        <VButton  class="rightSide" title="Get Started" iconName="arrow.png" />
+      </div>
       <img class="landingImage" src="@/assets/Landing.png" alt="Design Image" />
     </div>
-  </div>
-  <div class="startedButton">
-    <VButton title="Get Started" iconName="arrow.png" />
   </div>
 </template>
 
@@ -31,13 +31,14 @@ export default {
   display: flex;
   width: 70%;
   margin: auto;
-  margin-top: 10px
+  margin-top: 10px;
 }
 .important {
   color: #f06543;
 }
 .landingText {
-  font-family: var($primary-font);
+  margin-top: 90px;
+  font-family: $primary-font;
   font-style: normal;
   font-weight: bold;
   font-size: 64px;
@@ -49,7 +50,7 @@ export default {
   min-width: 200px;
   min-height: 200px;
 }
-.startedButton {
-  margin-left: 50px;
+.rightSide {
+  margin-top: 30px;
 }
 </style>
