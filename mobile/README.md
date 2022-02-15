@@ -40,3 +40,7 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests.
 ### `npm lint`
 
 Runs [eslint](https://eslint.org/) to format all source files according to the rules defined in .eslintrc.js and .prettierrc.js
+
+## Ressources
+
+[Resize Icon](https://resizeappicon.com/)

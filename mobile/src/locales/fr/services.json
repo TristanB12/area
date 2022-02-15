@@ -1,0 +1,7 @@
+{
+  "my_services": "Mes services",
+  "search_service": "Rechercher un service",
+  "link_service": "Relier le service",
+  "link_service_helper_text": "Afin d'utiliser ce service, vous devez d'abord vous connecter.",
+  "unlink": "Déconnecter"
+}

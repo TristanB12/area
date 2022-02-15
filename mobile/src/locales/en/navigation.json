@@ -1,0 +1,14 @@
+{
+  "settings": "Settings",
+  "areas": "Areas",
+  "apps": "Apps",
+  "explore": "Explore",
+  "area": "Area",
+  "create_area": "Create Area",
+  "choose_a_service": "Choose a service",
+  "link_service": "Link service",
+  "choose_action": "Choose action",
+  "choose_reaction": "Choose reaction",
+  "configure_action": "Configure action",
+  "configure_reaction": "Configure reaction"
+}
