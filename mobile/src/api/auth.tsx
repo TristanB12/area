@@ -1,4 +1,5 @@
 import axiosAPI from './config'
+import { AuthTokens } from '../types/auth'
 
 type AuthForm = {
   email: string,
@@ -6,30 +7,23 @@ type AuthForm = {
   confirmPassword: string
 }
 
-type AuthResponse = {
-  access_token: string,
-  refresh_token: string,
-  expires_in: number,
-  token_type: "Bearer"
-}
-
-async function authEmail(action: 'login' | 'register', authForm: AuthForm): Promise<AuthResponse> {
-  const { data } = await axiosAPI.post<AuthResponse>(
+async function authEmail(action: 'login' | 'register', authForm: AuthForm): Promise<AuthTokens> {
+  const { data } = await axiosAPI.post<AuthTokens>(
     (action === "login") ? "/auth/login?service=area" : "/auth/signup/area",
     authForm
   )
   return data
 }
 
-async function loginEmail(authForm: AuthForm): Promise<AuthResponse> {
+async function loginEmail(authForm: AuthForm): Promise<AuthTokens> {
   return authEmail('login', authForm)
 }
 
-async function signupEmail(authForm: AuthForm): Promise<AuthResponse> {
+async function signupEmail(authForm: AuthForm): Promise<AuthTokens> {
   return authEmail('register', authForm)
 }
 
-async function loginService(service: 'google' | 'facebook'): Promise<AuthResponse> {
+async function loginService(service: 'google' | 'facebook'): Promise<AuthTokens> {
   const params = new URLSearchParams({
     var1: "value",
     var2: "value2",
@@ -38,7 +32,7 @@ async function loginService(service: 'google' | 'facebook'): Promise<AuthRespons
   console.log(params.toString());
 }
 
-async function signupService(service: 'google' | 'facebook'): Promise<AuthResponse> {
+async function signupService(service: 'google' | 'facebook'): Promise<AuthTokens> {
   const params = new URLSearchParams({
     var1: "value",
     var2: "value2",
@@ -47,5 +41,5 @@ async function signupService(service: 'google' | 'facebook'): Promise<AuthRespon
   console.log(params.toString());
 }
 
-export type { AuthForm }
+export type { AuthForm, AuthTokens }
 export { loginEmail, loginService, signupEmail, signupService }

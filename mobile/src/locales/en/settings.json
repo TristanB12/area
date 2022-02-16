@@ -4,5 +4,6 @@
   "choose_language": "Choose language",
   "choose_color_mode": "Choose color theme",
   "light": "Light",
-  "dark": "Dark"
+  "dark": "Dark",
+  "logout": "Logout"
 }

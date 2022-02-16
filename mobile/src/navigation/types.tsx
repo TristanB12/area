@@ -8,6 +8,7 @@ type TabParamList = {
 }
 
 type StackParamList = {
+  Splash: undefined,
   Register: undefined,
   Login: undefined,
   Tabs: undefined,

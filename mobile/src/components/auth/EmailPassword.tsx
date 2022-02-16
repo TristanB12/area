@@ -6,6 +6,7 @@ import {
   Input,
   Icon
 } from "native-base";
+import EncryptedStorage from 'react-native-encrypted-storage';
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from 'react-hook-form';
 import api from '../../api'
@@ -13,6 +14,9 @@ import { AuthForm } from "../../api/auth";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useSetRecoilState } from "recoil";
+import authAtom from "../../recoil/atoms/auth";
+import { AuthStorage } from "../../types/auth";
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
@@ -27,14 +31,31 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   password.current = watch("password")
   const [showPassword, setShowPassword] = useState(false)
   const shouldConfirmPassword = (action === "register")
+  const setAuth = useSetRecoilState(authAtom)
 
   const onSubmit = async (authForm: AuthForm) => {
     const { data, error } = ((action === "login")
       ? await api.auth.login.email(authForm)
       : await api.auth.signup.email(authForm)
     )
-    console.log(data)
-    console.log(error)
+    if (error || !data) {
+      return
+    }
+    try {
+      await EncryptedStorage.setItem(
+        "user_session",
+        JSON.stringify({ ...data, email: authForm.email } as AuthStorage)
+      );
+    } catch (error) {
+      console.error(error)
+    }
+    setAuth(auth => ({
+      ...auth,
+      isSignout: false,
+      email: authForm.email,
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token
+    }))
   }
 
   return (

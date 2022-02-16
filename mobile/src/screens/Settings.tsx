@@ -1,22 +1,26 @@
 import React from "react"
 import ScreenView from "../components/ScreenView"
-import { Text, Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon } from "native-base"
+import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon } from "native-base"
 import { useTranslation } from "react-i18next"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { StackNavProp } from "../navigation/types"
+import authAtom from "../recoil/atoms/auth"
+import { useRecoilValue, useSetRecoilState } from "recoil"
+import EncryptedStorage from 'react-native-encrypted-storage'
 
 function Profile() {
+  const auth = useRecoilValue(authAtom)
+
   return (
     <VStack space={4} alignItems="center">
-      <Avatar bgColor="transparent" size="2xl" source={require('../assets/logo.png')}>
-        AREA
+      <Avatar bgColor="primary.400" size="2xl" _text={{ color: "white" }}>
+        { auth.email.substring(0, 2).toUpperCase() }
       </Avatar>
       <Heading>
-        {/* TODO: remove mock */}
-        julien.pause@epitech.eu
+        { auth.email }
       </Heading>
     </VStack>
   )
@@ -126,17 +130,40 @@ function MyServices() {
   )
 }
 
+function Logout() {
+  const { t } = useTranslation('settings')
+  const setAuth = useSetRecoilState(authAtom)
+  const logout = async () => {
+    try {
+      await EncryptedStorage.removeItem("user_session")
+    } catch (error) {
+      console.error(error)
+    }
+    setAuth(auth => ({
+      ...auth,
+      isSignout: true,
+      email: "",
+      access_token: "",
+      refresh_token: ""
+    }))
+  }
+
+  return (
+    <Button rounded='lg' size="lg" w="90%" bgColor="danger.600" onPress={logout}>
+      { t('logout') }
+    </Button>
+  )
+}
+
 function Settings() {
   return (
     <ScreenView>
-      <VStack w="100%" alignItems="center" space={4}>
+      <VStack w="100%" alignItems="center" space={6}>
         <Profile />
         <MyServices />
         <ChooseLanguage />
         <ChooseColorMode />
-        <Button rounded='lg' size="lg" w="90%" bgColor="danger.600" onPress={() => console.log('heyy')}>
-          Sign out
-        </Button>
+        <Logout />
       </VStack>
     </ScreenView>
   )
