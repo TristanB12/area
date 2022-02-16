@@ -1,34 +1,26 @@
 import React, { useRef, useState } from "react";
 import {
-  Text,
-  Heading,
   VStack,
   Button,
-  Center,
-  Divider,
   FormControl,
   Input,
   Icon
 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from 'react-hook-form';
+import api from '../../api'
+import { AuthForm } from "../../api/auth";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-type FormData = {
-  email: "",
-  password: "",
-  confirmPassword: ""
-}
-
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
-  const { control, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
+  const { control, handleSubmit, watch, formState: { errors } } = useForm<AuthForm>({
     defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: ""
+      email: "toto.tata@epitech.eu",
+      password: "Epitech42#",
+      confirmPassword: "Epitech42#"
     }
   });
   const password = useRef({})
@@ -36,7 +28,14 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const [showPassword, setShowPassword] = useState(false)
   const shouldConfirmPassword = (action === "register")
 
-  const onSubmit = (data: FormData) => console.log(data)
+  const onSubmit = async (authForm: AuthForm) => {
+    const { data, error } = ((action === "login")
+      ? await api.auth.login.email(authForm)
+      : await api.auth.signup.email(authForm)
+    )
+    console.log(data)
+    console.log(error)
+  }
 
   return (
     <VStack space={4} >

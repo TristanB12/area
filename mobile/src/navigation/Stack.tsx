@@ -20,7 +20,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 
 function StackNavigation() {
   const { t } = useTranslation(['navigation', 'services'])
-  const isSignedIn = true
+  const isSignedIn = false
 
   return (
     <NavigationContainer theme={navigationTheme}>
