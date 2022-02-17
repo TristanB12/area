@@ -1,5 +1,7 @@
 import { AxiosError } from "axios";
+import axiosAPI from "./config";
 import { loginEmail, loginService, signupEmail, signupService } from "./auth";
+import { linkService } from './services'
 
 type ErrorResponse = {
   status: number,
@@ -48,6 +50,9 @@ function withErrorHandling<T extends Array<any>, U>
   };
 }
 
+function setAccessToken(access_token: string) {
+  axiosAPI.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+}
 
 const api = {
   auth: {
@@ -59,7 +64,11 @@ const api = {
       email: withErrorHandling(signupEmail),
       service: withErrorHandling(signupService),
     }
-  }
+  },
+  services: {
+    link: withErrorHandling(linkService)
+  },
+  setAccessToken: setAccessToken
 }
 
 export default api

@@ -1,3 +1,6 @@
 - deep linking oauth2
-- auth
+- associate deep linking with website (after prod, see https://reactnavigation.org/docs/deep-linking/#set-up-with-bare-react-native-projects)
+- fix .env CONFIG library
+- splash screen
+- intro screen
 - dark theme

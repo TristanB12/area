@@ -4,6 +4,10 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { StackParamList } from './types'
+import { useRecoilState } from 'recoil';
+import authAtom from '../recoil/atoms/auth';
+import { AuthStorage } from '../types/auth';
+import api from '../api';
 import { navigationTheme } from '../theme';
 
 import SplashScreen from '../screens/Splash'
@@ -17,9 +21,6 @@ import ChooseServiceScreen from '../screens/ChooseService';
 import LinkServiceScreen from '../screens/LinkService';
 import ChooseActionScreen from '../screens/ChooseAction';
 import ConfigureActionScreen from '../screens/ConfigureAction';
-import { useRecoilState } from 'recoil';
-import authAtom from '../recoil/atoms/auth';
-import { AuthStorage } from '../types/auth';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -36,21 +37,22 @@ function StackNavigation() {
       } catch (error) {
         console.error(error)
       }
-      if (session) {
-        const storage: AuthStorage = JSON.parse(session)
-        setAuth({
-          ...auth,
-          isLoading: false,
-          email: storage.email,
-          access_token: storage.access_token,
-          refresh_token: storage.access_token
-        })
-      } else {
+      if (!session) {
         setAuth({
           ...auth,
           isLoading: false
         })
+        return
       }
+      const storage: AuthStorage = JSON.parse(session)
+      api.setAccessToken(storage.access_token)
+      setAuth({
+        ...auth,
+        isLoading: false,
+        email: storage.email,
+        access_token: storage.access_token,
+        refresh_token: storage.access_token
+      })
     };
 
     retrieveAuthFromStorage();
