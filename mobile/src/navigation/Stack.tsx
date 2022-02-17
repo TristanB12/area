@@ -56,7 +56,6 @@ function StackNavigation() {
     retrieveAuthFromStorage();
   }, []);
 
-  console.log("render")
   return (
     <NavigationContainer theme={navigationTheme}>
       <Stack.Navigator screenOptions={options}>

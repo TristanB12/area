@@ -20,25 +20,35 @@ import { AuthStorage } from "../../types/auth";
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
-  const { control, handleSubmit, watch, formState: { errors } } = useForm<AuthForm>({
+  const { control, handleSubmit, watch, setError, formState: { errors } } = useForm<AuthForm>({
     defaultValues: {
-      email: "toto.tata@epitech.eu",
-      password: "Epitech42#",
-      confirmPassword: "Epitech42#"
+      email: "",
+      password: "",
+      confirmPassword: ""
     }
   });
   const password = useRef({})
   password.current = watch("password")
   const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const shouldConfirmPassword = (action === "register")
   const setAuth = useSetRecoilState(authAtom)
 
   const onSubmit = async (authForm: AuthForm) => {
+    setIsLoading(true)
     const { data, error } = ((action === "login")
       ? await api.auth.login.email(authForm)
       : await api.auth.signup.email(authForm)
     )
-    if (error || !data) {
+    setIsLoading(false)
+    if (error) {
+      if (error.status === 400) {
+        setError("password", { type: "validate", message: error.message })
+      } else if (error.status === 409) {
+        setError("email", { type: "validate", message: error.message })
+      }
+      return
+    } else if (!data) {
       return
     }
     try {
@@ -53,8 +63,8 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
       ...auth,
       isSignout: false,
       email: authForm.email,
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token
+      access_token: data.access_token,
+      refresh_token: data.refresh_token
     }))
   }
 
@@ -209,7 +219,23 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
           </FormControl.ErrorMessage>
         </FormControl>
       }
-      <Button onPress={handleSubmit(onSubmit)} mt="2" shadow={6} >
+      <Button
+        isLoading={isLoading}
+        isLoadingText={t('login_in')}
+        disabled={isLoading}
+        _loading={{
+          bg: "primary.300",
+          _text: {
+            color: "white"
+          }
+        }}
+        _spinner={{
+          color: "white"
+        }}
+        onPress={handleSubmit(onSubmit)}
+        mt="2"
+        shadow={6}
+      >
         { t(action) }
       </Button>
     </VStack>
