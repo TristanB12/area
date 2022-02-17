@@ -134,8 +134,9 @@ import {signupUser} from '@/services/api.js';
                 this.isLoading.signup = true;
                 let res = await signupUser(this.inputs);
                 if (res[0]) {
+                    this.$store.state.token = res[0].access_token;
                     localStorage.setItem('access_token', res[0].access_token);
-                    this.$router.push({name: 'DashboardPage'});
+                    this.$router.push({name: 'AppPage'});
                 }
                 else {
                     this.error = res[1].message;

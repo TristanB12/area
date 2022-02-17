@@ -2,9 +2,11 @@
   <main>
     <LandingHeader v-if="!loggedState" />
     <SignedHeader v-else />
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component, route }">
       <transition name="fade" mode="out-in">
-        <component :is="Component" />
+        <div :key="route.name">  
+          <component :is="Component" />
+        </div>
       </transition>
     </router-view>
   </main>
@@ -13,6 +15,7 @@
 <script>
 import LandingHeader from '@/components/layout/LandingHeader.vue';
 import SignedHeader from '@/components/layout/SignedHeader.vue';
+
 export default {
   components: {
     LandingHeader,
@@ -20,11 +23,14 @@ export default {
   },
   computed: {
     loggedState() {
-      return true;
+      if (this.$store.state.token)
+        return true;
+      return false;
     }
   },
   created () {
     this.getLocale();
+    this.storeToken();
   },
   methods: {
     getLocale() {
@@ -40,6 +46,13 @@ export default {
       }
       else
           this.$i18n.locale = 'en';
+    },
+    storeToken() {
+      const token = localStorage.getItem('access_token');
+
+      if (token) {
+        this.$store.state.token = token;
+      }
     }
   },
 }

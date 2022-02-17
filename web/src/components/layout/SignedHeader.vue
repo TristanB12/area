@@ -10,6 +10,7 @@
                 <div class="profile-picture">
                     <span>{{ firstUserEmailLetter }}</span>
                 </div>
+                <span class="logout strong" @click="logout">{{ $t('auth.logout') }}</span>
             </div>
         </header>
     </div>
@@ -26,6 +27,13 @@ export default {
             return 'T';
             //return this.$store.state.user.auth.email.toUpperCase()[0];
         },
+    },
+    methods: {
+        logout() {
+            localStorage.removeItem('access_token');
+            this.$store.state.token = undefined;
+            this.$router.push({name: 'LoginPage'});
+        }
     },
 }
 </script>
@@ -84,9 +92,18 @@ span {
     color: white ;
 }
 .actions-container {
-    width: 10vw;
+    width: 15vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.logout {
+    color: $main-dark;
+    cursor: pointer;
+
+    &:hover {
+        color: $main-orange;
+        text-decoration: underline;
+    }
 }
 </style>

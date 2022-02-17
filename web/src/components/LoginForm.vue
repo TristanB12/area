@@ -100,6 +100,7 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
                 let res = await loginUser(this.inputs);
                 if (res[0]) {
                     localStorage.setItem('access_token', res[0].access_token);
+                    this.$store.state.token = res[0].access_token;
                     this.$router.push({name: 'AreasPage'});
                 }
                 else {

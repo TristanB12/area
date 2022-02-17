@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LandingPage from '../views/LandingPage.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LandingPage from '../views/LandingPage.vue';
+import {isLogged} from '../services/utils.js';
 
 const routes = [
   {
@@ -36,7 +37,15 @@ const routes = [
     path: '/app',
     name: 'AppPage',
     component: () => import(/* webpackChunkName: "AppPage" */ '../views/AppPage.vue'),
+    meta: {
+      requiresAuth: true
+    },
     children: [
+      {
+        path: 'add-area',
+        name: 'AddAreaPage',
+        component: () => import(/* webpackChunkName: "AddAreaPage" */ '../views/AddAreaPage.vue')
+      },
       {
         path: 'areas',
         name: 'AreasPage',
@@ -59,6 +68,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach(async (to,from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.getItem('access_token')) {
+      next({name: 'LoginPage'})
+    }
+    else {
+      next()
+    }
+  }
+  else {
+    next()
+  }
 })
 
 export default router
