@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { FlatList } from "react-native";
-import { Box, Image, Text, Input, Icon, HStack, Button, VStack } from "native-base";
-import { useRecoilValue } from "recoil";
-import {  Service } from "../types";
+import { useTranslation } from "react-i18next";
+import { Box, Image, Text, Input, Icon, HStack, Button, VStack, AlertDialog } from "native-base";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { Service } from "../types";
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
-import { useTranslation } from "react-i18next";
-import { t } from "i18next";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-function ServiceItem({ service } : { service: Service }) {
+type ServiceItemProps = {
+  service: Service,
+  setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
+}
+
+function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
   const { t } = useTranslation('services')
 
   return (
@@ -30,7 +33,7 @@ function ServiceItem({ service } : { service: Service }) {
             { service.name }
           </Text>
         </HStack>
-        <Button w="40%" bgColor="danger.600" onPress={() => console.log('unlink')}>
+        <Button w="40%" colorScheme="danger" onPress={() => setUnlinkService(service)}>
           { t('unlink') }
         </Button>
       </HStack>
@@ -38,18 +41,80 @@ function ServiceItem({ service } : { service: Service }) {
   )
 }
 
+type UnlinkServiceDialogProps = {
+  service: Service | undefined,
+  setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
+}
+
+function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialogProps) {
+  const { t } = useTranslation(['services', 'common'])
+  const [services, setServices] = useRecoilState(servicesAtom)
+  const cancelRef = React.useRef(null);
+  const isOpen = (service !== undefined)
+
+  if (service === undefined) {
+    return null
+  }
+  const onClose = () => {
+    setUnlinkService(undefined)
+  }
+  const unlinkService = () => {
+    // TODO: call api to unlink service
+    const editedServices = [...services]
+    const unlinkServiceIndex = editedServices.findIndex(
+      otherService => otherService.name === service.name
+    )
+    if (unlinkServiceIndex === -1) {
+      return
+    }
+    editedServices[unlinkServiceIndex] = {
+      ...service,
+      isLinked: false
+    }
+    setServices(editedServices)
+    onClose()
+  }
+
+  return (
+    <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+      <AlertDialog.Content>
+        <AlertDialog.CloseButton />
+        <AlertDialog.Header>
+          <HStack space={4} alignItems="center">
+            <Image
+              source={{ uri: service.logoUri }}
+              size="xs"
+              resizeMode="contain"
+              alt={service.name}
+            />
+            <Text>
+              { service.name }
+            </Text>
+          </HStack>
+        </AlertDialog.Header>
+        <AlertDialog.Body>
+          { t('unlink_confirm')}
+        </AlertDialog.Body>
+        <AlertDialog.Footer>
+          <Button.Group space={2}>
+            <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+              { t('cancel', { ns: "common" })}
+            </Button>
+            <Button colorScheme="danger" onPress={unlinkService}>
+              { t('unlink') }
+            </Button>
+          </Button.Group>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
+  )
+}
+
 function MyServicesScreen() {
   const { t } = useTranslation('services')
   const allServices = useRecoilValue(servicesAtom)
-  const [services, setServices] = useState(allServices)
-
-  const onChangeText = (text: string) => {
-    if (text.length === 0) {
-      setServices(allServices)
-    } else {
-      setServices(allServices.filter(service => service.name.includes(text)))
-    }
-  }
+  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);
+  const [search, setSearch] = useState("")
 
   return (
     <ScreenView>
@@ -74,15 +139,27 @@ function MyServicesScreen() {
               />
           </Box>
         }
-        onChangeText={onChangeText}
+        value={search}
+        onChangeText={(text) => setSearch(text)}
       />
       <VStack w="100%" space={4}>
         {
-          services.map(service =>
-            <ServiceItem key={service.name} service={service} />
+          allServices
+            .filter(service => service.isLinked)
+            .filter(service => service.name.includes(search))
+            .map(service =>
+            <ServiceItem
+              key={service.name}
+              service={service}
+              setUnlinkService={setUnlinkService}
+            />
           )
         }
       </VStack>
+      <UnlinkServiceDialog
+        service={unlinkService}
+        setUnlinkService={setUnlinkService}
+      />
     </ScreenView>
   )
 }
