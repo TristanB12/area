@@ -158,6 +158,24 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
               value: 8,
               message: t('password_too_short')
             },
+            maxLength: {
+              value: 42,
+              message: t('password_too_long'),
+            },
+            validate: {
+              containsSpecialChar: (value) => {
+                const format = /[ `!@#$%^&*()_+\-=!\[\]{};':"\\|,.<>\/?~]/;
+                const errMessage = t('password_must_contain_special_char')
+
+                return format.test(value) || errMessage
+              },
+              containsNumber: (value) => {
+                const errMessage = t('password_must_contain_number')
+
+                return /\d/.test(value) || errMessage;
+              },
+              passwordsMatch: value => value === password.current || t('passwords_dont_match')
+            }
           }}
         />
         <FormControl.ErrorMessage>
@@ -211,7 +229,24 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
                 value: 8,
                 message: t('password_too_short')
               },
-              validate: value => value === password.current || t('passwords_dont_match')
+              maxLength: {
+                value: 42,
+                message: t('password_too_long'),
+              },
+              validate: {
+                containsSpecialChar: (value) => {
+                  const format = /[ `!@#$%^&*()_+\-=!\[\]{};':"\\|,.<>\/?~]/;
+                  const errMessage = t('password_must_contain_special_char')
+
+                  return format.test(value) || errMessage
+                },
+                containsNumber: (value) => {
+                  const errMessage = t('password_must_contain_number')
+
+                  return /\d/.test(value) || errMessage;
+                },
+                passwordsMatch: value => value === password.current || t('passwords_dont_match')
+              }
             }}
             defaultValue=""
           />
