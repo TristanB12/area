@@ -9,8 +9,9 @@ import { StackNavProp, TabParamList } from './types'
 import AreasScreen from '../screens/Tabs/Areas';
 import AppsScreen from '../screens/Tabs/Apps';
 import ExploreScreen from '../screens/Tabs/Explore';
-import { Icon } from 'native-base';
+import { Heading, Icon, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import NavHeader from '../components/NavHeader';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -79,18 +80,15 @@ function TabsNavigation() {
   )
 }
 
+
 const options: BottomTabNavigationOptions = {
   tabBarShowLabel: false,
   tabBarStyle: {
     borderTopColor: "black",
     borderTopWidth: 1,
   },
+  headerTitle: ({ children }) => <NavHeader title={children} />,
   headerShadowVisible: true,
-  headerTitleStyle: {
-    fontFamily: "NotoSans-Bold",
-    fontSize: 25,
-    paddingLeft: 5
-  },
   headerStyle: {
     elevation: 14,
     shadowOpacity: 0.25,

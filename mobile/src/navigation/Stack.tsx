@@ -23,6 +23,7 @@ import LinkServiceScreen from '../screens/EditArea/LinkService';
 import ChooseActionScreen from '../screens/EditArea/ChooseAction';
 import ConfigureActionScreen from '../screens/EditArea/ConfigureAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NavHeader from '../components/NavHeader';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -110,10 +111,7 @@ function StackNavigation() {
 }
 
 const options: NativeStackNavigationOptions = {
-  headerTitleStyle: {
-    fontFamily: "NotoSans-Bold",
-    fontSize: 25
-  },
+  headerTitle: ({ children }) => <NavHeader title={children} />,
   headerTitleAlign: 'center',
 }
 
