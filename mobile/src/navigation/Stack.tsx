@@ -16,11 +16,11 @@ import RegisterScreen from '../screens/auth/Register';
 import LoginScreen from '../screens/auth/Login';
 import SettingsScreen from '../screens/Settings';
 import MyServicesScreen from '../screens/MyServices';
-import EditAreaScreen from '../screens/EditArea';
-import ChooseServiceScreen from '../screens/ChooseService';
-import LinkServiceScreen from '../screens/LinkService';
-import ChooseActionScreen from '../screens/ChooseAction';
-import ConfigureActionScreen from '../screens/ConfigureAction';
+import EditAreaScreen from '../screens/EditArea/EditArea';
+import ChooseServiceScreen from '../screens/EditArea/ChooseService';
+import LinkServiceScreen from '../screens/EditArea/LinkService';
+import ChooseActionScreen from '../screens/EditArea/ChooseAction';
+import ConfigureActionScreen from '../screens/EditArea/ConfigureAction';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 

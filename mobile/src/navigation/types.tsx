@@ -16,9 +16,9 @@ type StackParamList = {
   MyServices: undefined,
   EditArea: undefined,
   ChooseService: { isReaction: boolean },
-  LinkService: { serviceName: string },
-  ChooseAction: { serviceName: string, isReaction: boolean },
-  ConfigureAction: { serviceName: string, actionTitle: string },
+  ChooseAction: { isReaction: boolean, serviceName: string },
+  LinkService: { isReaction: boolean, serviceName: string, actionTitle?: string },
+  ConfigureAction: { isReaction: boolean, serviceName: string, actionTitle: string },
 }
 
 type StackNavProp = NativeStackNavigationProp<StackParamList>

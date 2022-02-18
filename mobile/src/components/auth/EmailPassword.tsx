@@ -224,15 +224,6 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
         isLoading={isLoading}
         isLoadingText={t('login_in')}
         disabled={isLoading}
-        _loading={{
-          bg: "primary.300",
-          _text: {
-            color: "white"
-          }
-        }}
-        _spinner={{
-          color: "white"
-        }}
         onPress={handleSubmit(onSubmit)}
         mt="2"
         shadow={6}

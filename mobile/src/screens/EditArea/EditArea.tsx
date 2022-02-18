@@ -4,13 +4,13 @@ import { TouchableOpacity, Alert } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { StackParamList, TabParamList } from "../navigation/types";
+import { StackParamList, TabParamList } from "../../navigation/types";
 import { Icon } from "native-base"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import areasAtom from "../recoil/atoms/areas";
-import ScreenView from '../components/ScreenView'
-import EditArea from "../components/EditArea";
-import editedAreaAtom from "../recoil/atoms/editedArea";
+import areasAtom from "../../recoil/atoms/areas";
+import ScreenView from '../../components/ScreenView'
+import EditArea from "../../components/EditArea";
+import editedAreaAtom from "../../recoil/atoms/editedArea";
 import { useTranslation } from "react-i18next";
 
 type EditAreaScreenProps = CompositeScreenProps<

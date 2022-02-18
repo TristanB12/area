@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import { StackNavProp, StackParamList } from "../navigation/types";
+import { StackNavProp, StackParamList } from "../../navigation/types";
 import { Box, Image, VStack, Text, Input, Icon, Center } from "native-base";
 import { useRecoilValue } from "recoil";
-import {  Service } from "../types";
-import ScreenView from '../components/ScreenView'
-import servicesAtom from "../recoil/atoms/services";
+import {  Service } from "../../types";
+import ScreenView from '../../components/ScreenView'
+import servicesAtom from "../../recoil/atoms/services";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,7 @@ function ServiceItem({ service, isReaction } : { service: Service, isReaction: b
   const navigate = () => {
     if (needsLinking) {
       navigation.push('LinkService', {
+        isReaction: isReaction,
         serviceName: service.name
       })
     } else {

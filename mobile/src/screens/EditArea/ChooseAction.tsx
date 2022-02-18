@@ -3,13 +3,13 @@ import { TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackNavProp, StackParamList } from "../navigation/types";
+import { StackNavProp, StackParamList } from "../../navigation/types";
 import { Box, Image, VStack, Text, Input, Icon, HStack } from "native-base";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import editedAreaAtom from "../recoil/atoms/editedArea";
-import servicesAtom from "../recoil/atoms/services";
-import Area, { Service, Action } from "../types";
-import ScreenView from '../components/ScreenView'
+import editedAreaAtom from "../../recoil/atoms/editedArea";
+import servicesAtom from "../../recoil/atoms/services";
+import Area, { Service, Action } from "../../types";
+import ScreenView from '../../components/ScreenView'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -22,10 +22,13 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
   const onPress = () => {
     if (needsLinking) {
       navigation.push('LinkService', {
-        serviceName: service.name
+        isReaction: isReaction,
+        serviceName: service.name,
+        actionTitle: action.title
       })
     } else if (action.config) {
       navigation.push('ConfigureAction', {
+        isReaction: isReaction,
         serviceName: service.name,
         actionTitle: action.title
       })

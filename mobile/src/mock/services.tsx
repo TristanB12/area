@@ -108,7 +108,7 @@ const servicesMock: Service[] = [
   {
     name: "Youtube",
     logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
-    isLinked: true,
+    isLinked: false,
     actions: [
       {
         title: "When I watch a song's official video",
@@ -134,6 +134,17 @@ const servicesMock: Service[] = [
           }
         ]
       },
+      {
+        title: "When I reach a certain amount of subscribers",
+        requiresUserAuth: true,
+        config: [
+          {
+            display: "Number of subscribers",
+            example: 50_000_000,
+            value: 0
+          }
+        ]
+      }
     ],
     reactions: [
       {

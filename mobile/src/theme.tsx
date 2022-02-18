@@ -155,6 +155,19 @@ const theme = extendTheme({
           }
         }
       }
+    },
+    Button: {
+      defaultProps: {
+        _loading: {
+          bg: "primary.300",
+          _text: {
+            color: "white"
+          },
+          _spinner: {
+            color: "white"
+          }
+        }
+      }
     }
   }
 })

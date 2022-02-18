@@ -3,6 +3,7 @@
   "search_service": "Rechercher un service",
   "link_service": "Relier le service",
   "link_service_helper_text": "Afin d'utiliser ce service, vous devez d'abord vous connecter.",
+  "linking": "Reliage...",
   "unlink": "Déconnecter",
   "unlink_confirm": "Êtes-vous sûr de vouloir déconnecter ce service ?"
 }
