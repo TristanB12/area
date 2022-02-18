@@ -1,6 +1,7 @@
-- deep linking oauth2
 - associate deep linking with website (after prod, see https://reactnavigation.org/docs/deep-linking/#set-up-with-bare-react-native-projects)
+- fix passwords requirements
+- login with google & facebook
+- first letter orange in navigation header
 - fix .env CONFIG library
-- splash screen
 - intro screen
 - dark theme

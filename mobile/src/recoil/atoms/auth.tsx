@@ -6,6 +6,7 @@ const authAtom = atom({
   default: {
     isLoading: true,
     isSignout: false,
+    isFirstTimeUsingApp: true,
     email: "",
     access_token: "",
     refresh_token: ""

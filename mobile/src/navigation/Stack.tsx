@@ -11,6 +11,7 @@ import api from '../api';
 import { navigationTheme } from '../theme';
 
 import SplashScreen from '../screens/Splash'
+import AppIntroScreen from '../screens/AppIntro'
 import TabsNavigation from './Tabs';
 import RegisterScreen from '../screens/auth/Register';
 import LoginScreen from '../screens/auth/Login';
@@ -21,6 +22,7 @@ import ChooseServiceScreen from '../screens/EditArea/ChooseService';
 import LinkServiceScreen from '../screens/EditArea/LinkService';
 import ChooseActionScreen from '../screens/EditArea/ChooseAction';
 import ConfigureActionScreen from '../screens/EditArea/ConfigureAction';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -31,15 +33,23 @@ function StackNavigation() {
   useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const retrieveAuthFromStorage = async () => {
-      let session;
+      let introPassed: string | null = null;
+      let session: string | null = null;
+
+      try {
+        introPassed = await AsyncStorage.getItem("intro_passed");
+      } catch (error) {
+        introPassed = null
+      }
       try {
         session = await EncryptedStorage.getItem("user_session");
       } catch (error) {
-        console.error(error)
+        session = null
       }
       if (!session) {
         setAuth({
           ...auth,
+          isFirstTimeUsingApp: (introPassed === null),
           isLoading: false
         })
         return
@@ -53,6 +63,7 @@ function StackNavigation() {
       }
       setAuth({
         ...auth,
+        isFirstTimeUsingApp: (introPassed === null),
         isLoading: false,
         email: storage.email,
         access_token: storage.access_token,
@@ -70,12 +81,16 @@ function StackNavigation() {
           auth.isLoading ? (
             <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
           ) : !auth.access_token ? (
-            <Stack.Group screenOptions={{ headerShown: false, animation: "fade" }}>
-              <Stack.Screen name="Register" component={RegisterScreen} options={{
-                animationTypeForReplace: auth.isSignout ? 'pop' : 'push',
-              }}/>
-              <Stack.Screen name="Login" component={LoginScreen} />
-            </Stack.Group>
+            auth.isFirstTimeUsingApp ? (
+              <Stack.Screen name="AppIntro" component={AppIntroScreen} options={{ headerShown: false }}/>
+            ) : (
+              <Stack.Group screenOptions={{ headerShown: false, animation: "fade" }}>
+                <Stack.Screen name="Register" component={RegisterScreen} options={{
+                  animationTypeForReplace: auth.isSignout ? 'pop' : 'push',
+                }}/>
+                <Stack.Screen name="Login" component={LoginScreen} />
+              </Stack.Group>
+            )
           ) : (
             <>
               <Stack.Screen name="Tabs" component={TabsNavigation} options={{ headerShown: false }}/>

@@ -36,7 +36,7 @@ const LANGUAGE_DETECTOR = {
     });
   },
   init: () => {},
-  cacheUserLanguage: language => {
+  cacheUserLanguage: (language: string) => {
     AsyncStorage.setItem('user-language', language);
   }
 };

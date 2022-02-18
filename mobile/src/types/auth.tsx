@@ -8,6 +8,7 @@ type AuthTokens = {
 type AuthState = {
   isLoading: boolean,
   isSignout: boolean,
+  isFirstTimeUsingApp: boolean,
   email: string,
 } & Pick<AuthTokens, 'access_token' | 'refresh_token'>
 

@@ -7,11 +7,11 @@ function SplashScreen() {
   const { t } = useTranslation('common')
 
   return (
-    <Center flex={1} bgColor="red.100">
+    <Center flex={1}>
       <VStack space={10} alignItems="center">
-        <Heading size="4xl" color="primary.400">
+        <Heading size="3xl" color="primary.400">
           A
-          <Heading size="4xl" color="black">
+          <Heading size="3xl" color="black">
             REA
           </Heading>
         </Heading>
