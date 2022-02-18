@@ -34,6 +34,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "ServicesPage" */ '../views/ServicesPage.vue')
   },
   {
+    path: '/redirect/:service',
+    name: 'RedirectPage',
+    component: () => import(/* webpackChunkName: "redirect" */ '../views/RedirectPage.vue'),
+  },
+  {
     path: '/app',
     name: 'AppPage',
     component: () => import(/* webpackChunkName: "AppPage" */ '../views/AppPage.vue'),

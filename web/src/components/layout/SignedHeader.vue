@@ -7,7 +7,7 @@
             </div>
             <div class="actions-container">
                 <LanguageSwitcher />
-                <div class="profile-picture">
+                <div class="profile-picture" v-if="$store.state.user">
                     <span>{{ firstUserEmailLetter }}</span>
                 </div>
                 <span class="logout strong" @click="logout">{{ $t('auth.logout') }}</span>
@@ -24,8 +24,7 @@ export default {
     },
     computed: {
         firstUserEmailLetter() {
-            return 'T';
-            //return this.$store.state.user.auth.email.toUpperCase()[0];
+            return this.$store.state.user.email.toUpperCase()[0];
         },
     },
     methods: {

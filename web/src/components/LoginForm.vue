@@ -11,8 +11,8 @@
             :title="$t('auth.login.google')"
             iconName="google_icon.png"
             width="100%"
-            :isLoading="isLoading.github"
-            @click="loginWithGithub"
+            :isLoading="isLoading.google"
+            @click="loginWithGoogle"
         />
         <div>
             <span class="line"></span>
@@ -49,7 +49,7 @@ import VLightButton from '@/components/ui/VLightButton.vue';
 import VInput from '@/components/ui/VInput.vue';
 import VButton from '@/components/ui/VButton.vue';
 import {loginUser} from '@/services/api.js';
-import {facebookAuthCode, githubAuthCode} from '@/services';
+import {facebookAuthCode, googleAuthCode} from '@/services';
     export default {
         components: {
             VLightButton,
@@ -60,7 +60,7 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
             return {
                 isLoading: {
                     facebook: false,
-                    github: false,
+                    google: false,
                     login: false
                 },
                 inputs: {
@@ -77,17 +77,19 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
-                        this.$router.push({name: 'DashboardPage'});
+                        this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
-            loginWithGithub() {
-                this.isLoading.github = true;
-                let win = githubAuthCode('login');
+            loginWithGoogle() {
+                this.isLoading.google = true;
+                let win = googleAuthCode('login');
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
                         this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },

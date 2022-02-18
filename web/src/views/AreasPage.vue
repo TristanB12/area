@@ -6,7 +6,10 @@
                 :searchItems="areas"
                 v-model="searchedAreas"
             />
-            <VButton :title="$t('pages.areas.create')" />
+            <VButton
+                :title="$t('pages.areas.create')"
+                @click="$router.push({name: 'AddAreaPage'})"
+            />
         </nav>
         <div class="areas-container">
             <AreaPreview

@@ -15,7 +15,7 @@
 <script>
 import LandingHeader from '@/components/layout/LandingHeader.vue';
 import SignedHeader from '@/components/layout/SignedHeader.vue';
-
+import API from '@/services/api.js';
 export default {
   components: {
     LandingHeader,
@@ -28,9 +28,10 @@ export default {
       return false;
     }
   },
-  created () {
+  async created () {
     this.getLocale();
     this.storeToken();
+    await this.getUSer();
   },
   methods: {
     getLocale() {
@@ -52,6 +53,14 @@ export default {
 
       if (token) {
         this.$store.state.token = token;
+      }
+    },
+    async getUSer() {
+      if (!this.$store.state.token) return;
+      let res = await API.getUserInfos();
+
+      if (res[0]) {
+          this.$store.state.user = res[0];
       }
     }
   },

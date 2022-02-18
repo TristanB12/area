@@ -12,11 +12,26 @@ const spotifyAuthCode = (state) => {
     return win;
 }
 
+const googleAuthCode = (state) => {
+    let win = window.open('https://accounts.google.com/o/oauth2/v2/auth?' +
+    qs.stringify({
+        prompt: 'consent',
+        access_type: 'offline',
+        response_type: 'code',
+        client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+        scope: 'email profile',
+        redirect_uri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
+        state: state
+    }))
+    return win;
+}
+
 const facebookAuthCode = (state) => {
     let win = window.open('https://www.facebook.com/v12.0/dialog/oauth?' +
     qs.stringify({
+        response_type: 'code',
         client_id: process.env.VUE_APP_FACEBOOK_CLIENT_ID,
-        scope: 'email',
+        scope: 'email,public_profile',
         redirect_uri: process.env.VUE_APP_FACEBOOK_REDIRECT_URI,
         state: state
     }))
@@ -44,9 +59,11 @@ const twitchAuthCode = (state) => {
     }))
     return win;
 }
+
 module.exports = {
     spotifyAuthCode,
     facebookAuthCode,
     twitchAuthCode,
-    githubAuthCode
+    githubAuthCode,
+    googleAuthCode
 }

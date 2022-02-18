@@ -3,6 +3,23 @@ const baseUrl = "https://ikeapi.herokuapp.com";
 const mockAreas = require('../mock/areas.js');
 const mockServices = require('../mock/services.js');
 
+const getUserInfos = async () => {
+    let config = {
+        method: 'get',
+        url: baseUrl + '/user',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token'), 
+            'Content-Type': 'application/json'
+        },
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
+}
+
 const loginUser = async (inputs) => {
     let config = {
         method: 'post',
@@ -70,5 +87,6 @@ module.exports = {
     signupUser,
     verifyToken,
     getUserAreas,
-    getServices
+    getServices,
+    getUserInfos
 }
