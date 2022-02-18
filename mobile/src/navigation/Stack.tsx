@@ -45,7 +45,12 @@ function StackNavigation() {
         return
       }
       const storage: AuthStorage = JSON.parse(session)
-      api.setAccessToken(storage.access_token)
+      const { error } = await api.tokens.verify(storage.access_token)
+      if (!error) {
+        api.tokens.setAccessToken(storage.access_token)
+      } else {
+        await api.tokens.refresh(storage.refresh_token)
+      }
       setAuth({
         ...auth,
         isLoading: false,

@@ -9,7 +9,6 @@ async function linkService(serviceName: string, authorizationCode: string) {
     redirect_uri: `area:/${serviceName}`,
   });
   const url = `link?${params.toString()}`
-  console.log(url)
   const { data } = await axiosAPI.get(url)
   return data
 }

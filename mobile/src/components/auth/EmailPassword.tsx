@@ -59,6 +59,7 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
     } catch (error) {
       console.error(error)
     }
+    api.tokens.setAccessToken(data.access_token)
     setAuth(auth => ({
       ...auth,
       isSignout: false,
