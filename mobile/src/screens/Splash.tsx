@@ -1,14 +1,32 @@
 import React from "react"
-import { Text } from "native-base"
-import ScreenView from "../components/ScreenView"
+import { Center, Heading, Image, Text, VStack } from "native-base"
+import illustration from '../assets/illustration.png'
+import { useTranslation } from "react-i18next"
 
 function SplashScreen() {
+  const { t } = useTranslation('common')
+
   return (
-    <ScreenView>
-      <Text color="red">
-        Loading...
-      </Text>
-    </ScreenView>
+    <Center flex={1} bgColor="red.100">
+      <VStack space={10} alignItems="center">
+        <Heading size="4xl" color="primary.400">
+          A
+          <Heading size="4xl" color="black">
+            REA
+          </Heading>
+        </Heading>
+        <Image
+          source={illustration}
+          alt="Area Illustration"
+          width="250"
+          height="250"
+          resizeMode="contain"
+        />
+        <Text fontSize="lg">
+          { t('loading') }
+        </Text>
+      </VStack>
+    </Center>
   )
 }
 
