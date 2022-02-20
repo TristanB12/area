@@ -1,4 +1,7 @@
 {
+  "no_areas_yet": "Pas encore d'areas",
+  "create_area_hint": "Pourquoi pas en créer une ?",
+  "error_fetching": "Une erreur est survenue en chargeant vos areas",
   "title": {
     "label": "Titre",
     "placeholder": "Le titre de votre Area",

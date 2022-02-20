@@ -2,5 +2,6 @@
   "loading": "Chargement...",
   "save": "Sauvegarder",
   "cancel": "Annuler",
-  "delete": "Supprimer"
+  "delete": "Supprimer",
+  "retry": "Réessayer"
 }

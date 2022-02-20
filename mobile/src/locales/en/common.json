@@ -2,5 +2,6 @@
   "loading": "Loading...",
   "save": "Save",
   "cancel": "Cancel",
-  "delete": "Delete"
+  "delete": "Delete",
+  "retry": "Retry"
 }
