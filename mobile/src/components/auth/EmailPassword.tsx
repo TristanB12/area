@@ -20,7 +20,7 @@ import { AuthStorage } from "../../types/auth";
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
-  const { control, handleSubmit, watch, setError, formState: { errors } } = useForm<AuthForm>({
+  const { control, handleSubmit, watch, setError, setValue, formState: { errors } } = useForm<AuthForm>({
     defaultValues: {
       email: "",
       password: "",
@@ -78,14 +78,14 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
         <Controller
           control={control}
           name="email"
-          render={({ field: { onChange, onBlur, value }}) => (
+          render={({ field: { onChange, value }}) => (
             <Input
               type="text"
               placeholder="example@gmail.com"
               borderRadius="9"
               borderColor="primary.500"
               fontSize="14"
-              onBlur={onBlur}
+              onBlur={() => setValue('email', value.trim())}
               onChangeText={onChange}
               value={value}
               InputLeftElement={
@@ -120,10 +120,10 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
         <Controller
           control={control}
           name="password"
-          render={({ field: { onChange, onBlur, value }}) => (
+          render={({ field: { onChange, value }}) => (
             <Input
               type={showPassword ? "text" : "password"}
-              onBlur={onBlur}
+              onBlur={() => setValue('password', value.trim())}
               onChangeText={onChange}
               value={value}
               placeholder={t('password')}
@@ -173,8 +173,7 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
                 const errMessage = t('password_must_contain_number')
 
                 return /\d/.test(value) || errMessage;
-              },
-              passwordsMatch: value => value === password.current || t('passwords_dont_match')
+              }
             }
           }}
         />
@@ -191,10 +190,10 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
           <Controller
             control={control}
             name="confirmPassword"
-            render={({ field: { onChange, onBlur, value }}) => (
+            render={({ field: { onChange, value }}) => (
               <Input
                 type={showPassword ? "text" : "password"}
-                onBlur={onBlur}
+                onBlur={() => setValue('confirmPassword', value.trim())}
                 onChangeText={onChange}
                 value={value}
                 placeholder={t('confirm_password')}
