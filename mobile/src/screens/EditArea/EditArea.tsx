@@ -1,11 +1,11 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { TouchableOpacity, Alert } from "react-native";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackParamList, TabParamList } from "../../navigation/types";
-import { Icon } from "native-base"
+import { AlertDialog, Button, Icon } from "native-base"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import areasAtom from "../../recoil/atoms/areas";
 import ScreenView from '../../components/ScreenView'
@@ -18,28 +18,44 @@ type EditAreaScreenProps = CompositeScreenProps<
   BottomTabScreenProps<TabParamList>
 >
 
-function DeleteAreaButton({ onDelete } : { onDelete: () => void }) {
-  const { t } = useTranslation(['areas', 'common'])
 
-  const confirmDeletion = () =>
-    Alert.alert(
-      t('delete.title'),
-      t('delete.message'),
-      [
-        {
-          text: t('yes', { ns: 'common' }),
-          onPress: onDelete
-        },
-        {
-          text: t('no', { ns: 'common' })
-        },
-      ]
-  );
+function DeleteAreaButton({ setIsDeleteDialogOpen } : { setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
+  const toggleDeleteDialog = () => setIsDeleteDialogOpen(isOpen => !isOpen)
 
   return (
-    <TouchableOpacity onPress={confirmDeletion}>
+    <TouchableOpacity onPress={toggleDeleteDialog}>
       <Icon as={MaterialCommunityIcons} name="delete" color="primary.500" />
     </TouchableOpacity>
+  )
+}
+
+function DeleteAreaDialog({ isOpen, setIsOpen, onDelete } : { isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, onDelete: () => void}) {
+  const cancelRef = useRef(null);
+  const { t } = useTranslation(['areas', 'common'])
+  const onClose = () => setIsOpen(!isOpen)
+
+  return (
+    <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+      <AlertDialog.Content>
+        <AlertDialog.CloseButton />
+        <AlertDialog.Header>
+          { t('delete.title') }
+        </AlertDialog.Header>
+        <AlertDialog.Body>
+          { t('delete.message') }
+        </AlertDialog.Body>
+        <AlertDialog.Footer>
+          <Button.Group space={2}>
+            <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+              { t('cancel', { ns: "common" })}
+            </Button>
+            <Button colorScheme="danger" onPress={onDelete}>
+              { t('delete', { ns: "common" })}
+            </Button>
+          </Button.Group>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog>
   )
 }
 
@@ -48,6 +64,7 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
   const { t } = useTranslation('navigation')
   const [areas, setAreas] = useRecoilState(areasAtom)
   const [editedArea, setEditedArea] = useRecoilState(editedAreaAtom)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const onDelete = () => {
     setAreas(areas.filter(area => area._id !== editedArea._id))
@@ -68,7 +85,7 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
     navigation.setOptions({
       title: isNewArea ? t('create_area') : t('area'),
       headerRight: isNewArea ? undefined : () =>
-        <DeleteAreaButton onDelete={onDelete} />
+        <DeleteAreaButton setIsDeleteDialogOpen={setIsDeleteDialogOpen} />
     });
   }, [navigation, editedArea]);
 
@@ -78,6 +95,11 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
         area={editedArea}
         setArea={setEditedArea}
         onSave={onSave}
+      />
+      <DeleteAreaDialog
+        isOpen={isDeleteDialogOpen}
+        setIsOpen={setIsDeleteDialogOpen}
+        onDelete={onDelete}
       />
     </ScreenView>
   )

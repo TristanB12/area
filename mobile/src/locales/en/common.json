@@ -1,7 +1,6 @@
 {
-  "yes": "Yes",
-  "no": "No",
   "loading": "Loading...",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "delete": "Delete"
 }
