@@ -1,6 +1,3 @@
-var express = require('express');
-const db = require('../models');
-
 module.exports = app => {
   app.get('/', async (req, res) => {
 
