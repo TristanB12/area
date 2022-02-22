@@ -41,8 +41,14 @@
             "create": "créer",
             "action": {
                 "title": "Configurer l'action",
-                "chooseApp": "Choisissez une app",
-                "description": "Selectionnez une app pour déclencher l'area"
+                "chooseApp": {
+                    "title": "Choisissez une app",
+                    "description": "Selectionnez une app pour déclencher l'area"
+                },
+                "chooseTrigger": {
+                    "title": "Choisissez un déclencheur",
+                    "description": "Selectionnez l'évènement qui va déclencher l'Area"
+                }
             },
             "reaction": {
                 "title": "Configurer la réaction"

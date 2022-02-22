@@ -43,12 +43,13 @@ import VButton from '@/components/ui/VButton.vue';
 <style lang="scss" scoped>
 .adder-container {
     width: 100%;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
 }
 .button-container {
     width: 100%;
+    margin-top: 30px;
     display: flex;
     justify-content: flex-end;
 }

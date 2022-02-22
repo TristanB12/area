@@ -74,6 +74,7 @@ module.exports = [
                 title: "New recently played track",
                 requiresUserAuth: true
             },
+            
         ],
         reactions: [
             {
@@ -176,7 +177,7 @@ module.exports = [
     },
     {
         name: "Twitch",
-        logoUri: "http://assets.stickpng.com/images/580b57fcd9996e24bc43c540.png",
+        logoUri: "https://www.pngplay.com/wp-content/uploads/12/Twitch-Logo-PNG-Clip-Art-HD-Quality.png",
         isLinked: true,
         actions: [
             {

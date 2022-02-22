@@ -41,8 +41,14 @@
       "create": "create",
       "action": {
           "title": "Configure the action",
-          "chooseApp": "Choose an app",
-          "description": "Select the app that will trigger the Area"
+          "chooseApp": {
+            "title": "Choose an app",
+            "description": "Select the app that will trigger the Area"
+          },
+          "chooseTrigger": {
+            "title": "Choose a trigger",
+            "description": "Select the event that will trigger the Area"
+          }
       },
       "reaction": {
           "title": "Configure the reaction"

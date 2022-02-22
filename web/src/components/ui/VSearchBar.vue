@@ -29,11 +29,15 @@ import VInput from '@/components/ui/VInput.vue';
             modelValue: {
                 type: Array,
                 default: []
+            },
+            searchFunction: {
+                type: Function,
+                default: (items, string) => items.filter(item => item.title.toLowerCase().includes(string))
             }
         },
         methods: {
             handleSearch(e) {
-                let searchedItems = this.searchItems.filter(item => item.title.toLowerCase().includes(e));
+                let searchedItems = this.searchFunction(this.searchItems, e);
 
                 this.$emit('update:modelValue', searchedItems);
             }
