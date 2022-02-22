@@ -22,4 +22,15 @@ function accessTokenUrlOption(code, redirect_uri) {
   };
 }
 
-module.exports = { accessTokenUrlOption };
+/**
+ * Unlink spotify account
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+ async function unlink(req, res)
+ {
+   return res.status(200).json({message: 'spotify account unliked successfully.'});
+ }
+
+module.exports = { accessTokenUrlOption, unlink };

@@ -28,4 +28,14 @@ function accessTokenUrlOption(code, redirect_uri) {
   };
 }
 
-module.exports = { accessTokenUrlOption };
+/**
+ * Unlink microsoft account
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+async function unlink(req, res) {
+  return res.status(200).json({ message: 'microsoft account unliked successfully.' });
+}
+
+module.exports = { accessTokenUrlOption, unlink };

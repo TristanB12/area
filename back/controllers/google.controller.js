@@ -148,4 +148,15 @@ async function signup(req, res) {
   });
 }
 
-module.exports = { accessTokenUrlOption, signup, login };
+/**
+ * Unlink google account
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+ async function unlink(req, res)
+ {
+   return res.status(200).json({message: 'google account unliked successfully.'});
+ }
+
+module.exports = { accessTokenUrlOption, signup, login, unlink };
