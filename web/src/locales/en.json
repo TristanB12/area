@@ -11,6 +11,7 @@
     "register": "register"
   },
   "auth": {
+    "logout": "logout",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm password",
@@ -35,12 +36,36 @@
     }
   },
   "pages": {
+    "add": {
+      "next": "next",
+      "create": "create",
+      "action": {
+          "title": "Configure the action",
+          "chooseApp": {
+            "title": "Choose an app",
+            "description": "Select the app that will trigger the Area"
+          },
+          "chooseTrigger": {
+            "title": "Choose a trigger",
+            "description": "Select the event that will trigger the Area"
+          }
+      },
+      "reaction": {
+          "title": "Configure the reaction"
+      }
+    },
     "areas": {
-      "title": "Areas"
+      "title": "Areas",
+      "create": "create area",
+      "search": "Search by name",
+      "delete": "Delete area ?"
+
     },
     "apps": {
       "title": "Apps"
     },
-    "explore": "Explore"
+    "explore": {
+      "title": "Explore"
+    }
   }
 }

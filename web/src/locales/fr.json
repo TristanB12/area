@@ -11,6 +11,7 @@
         "register": "S'inscrire"
     },
     "auth": {
+        "logout": "Deconnexion",
         "email": "Email",
         "password": "Mot de passe",
         "confirmPassword": "Confirmer le mot de passe",
@@ -35,12 +36,35 @@
         }
     },
     "pages": {
+        "add": {
+            "next": "suivant",
+            "create": "créer",
+            "action": {
+                "title": "Configurer l'action",
+                "chooseApp": {
+                    "title": "Choisissez une app",
+                    "description": "Selectionnez une app pour déclencher l'area"
+                },
+                "chooseTrigger": {
+                    "title": "Choisissez un déclencheur",
+                    "description": "Selectionnez l'évènement qui va déclencher l'Area"
+                }
+            },
+            "reaction": {
+                "title": "Configurer la réaction"
+            }
+        },
         "areas": {
-            "title": "Areas"
+            "title": "Areas",
+            "create": "créer une area",
+            "search": "Rechercher par nom",
+            "delete": "Supprimer l'area ?"
         },
         "apps": {
             "title": "Applications"
         },
-        "explore": "Explorer"
+        "explore": {
+            "title": "Explorer"
+        }
     }
 }

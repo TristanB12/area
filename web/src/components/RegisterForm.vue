@@ -11,8 +11,8 @@
             :title="$t('auth.register.google')"
             iconName="google_icon.png"
             width="100%"
-            :isLoading="isLoading.github"
-            @click="signupWithGithub"
+            :isLoading="isLoading.google"
+            @click="signupWithGoogle"
         />
         <div>
             <span class="line"></span>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import {facebookAuthCode, githubAuthCode} from '@/services';
+import {facebookAuthCode, googleAuthCode} from '@/services';
 import VLightButton from '@/components/ui/VLightButton.vue';
 import PasswordValidator from '@/components/PasswordValidator.vue'
 import VInput from '@/components/ui/VInput.vue';
@@ -76,7 +76,7 @@ import {signupUser} from '@/services/api.js';
             return {
                 isLoading: {
                     facebook: false,
-                    github: false,
+                    google: false,
                     signup: false
                 },
                 inputs: {
@@ -107,17 +107,19 @@ import {signupUser} from '@/services/api.js';
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
-                        this.$router.push({name: 'DashboardPage'});
+                        this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
-            signupWithGithub() {
-                this.isLoading.github = true;
-                let win = githubAuthCode('signup');
+            signupWithGoogle() {
+                this.isLoading.google = true;
+                let win = googleAuthCode('signup');
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
-                        this.$router.push({name: 'DashboardPage'});
+                        this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
@@ -134,8 +136,9 @@ import {signupUser} from '@/services/api.js';
                 this.isLoading.signup = true;
                 let res = await signupUser(this.inputs);
                 if (res[0]) {
+                    this.$store.state.token = res[0].access_token;
                     localStorage.setItem('access_token', res[0].access_token);
-                    this.$router.push({name: 'DashboardPage'});
+                    this.$router.push({name: 'AppPage'});
                 }
                 else {
                     this.error = res[1].message;

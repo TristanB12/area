@@ -13,9 +13,30 @@
 
 <script>
 import NavigationBar from '@/components/layout/NavigationBar.vue';
+import API from '@/services/api.js';
     export default {
         components: {
             NavigationBar
+        },
+        async created() {
+            await this.getServices();
+            await this.getUser();
+        },
+        methods: {
+            async getServices() {
+                let res = await API.getServices();
+
+                if (res[0]) {
+                    this.$store.state.services = res[0];
+                }
+            },
+            async getUser() {
+                let res = await API.getUserInfos();
+
+                if (res[0]) {
+                    this.$store.state.user = res[0];
+                }
+            }
         }
     }
 </script>
