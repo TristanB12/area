@@ -4,7 +4,8 @@ const googleService = {
   tags: ["link", "auth"],
   link: {
     accessTokenUrlOption: google.accessTokenUrlOption,
-    refreshToken: undefined
+    refreshToken: undefined,
+    desactive: google.unlink
   },
   auth: {
     signup: google.signup,

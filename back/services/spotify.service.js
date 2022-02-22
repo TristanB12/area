@@ -5,6 +5,7 @@ const spotifyService = {
   link: {
     accessTokenUrlOption: spotify.accessTokenUrlOption,
     refreshToken: undefined,
+    desactive: spotify.unlink
   },
 };
 

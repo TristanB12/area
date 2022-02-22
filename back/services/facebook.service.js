@@ -5,6 +5,7 @@ const facebookService = {
   link: {
     accessTokenUrlOption: facebook.accessTokenUrlOption,
     refreshToken: undefined,
+    desactive: facebook.unlink,
   },
   auth: {
     signup: facebook.signup,
