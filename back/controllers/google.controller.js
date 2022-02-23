@@ -29,6 +29,11 @@ function accessTokenUrlOption(code, redirect_uri) {
   };
 }
 
+/**
+ * Refresh the access_token for specific user
+ * @param {*} user 
+ * @returns 
+ */
 async function refreshAccessToken(user) {
   const { refresh_token } = user.services.google;
 
