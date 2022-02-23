@@ -1,13 +1,13 @@
 const router = require('express').Router();
 
-const areaController = require('../../controllers/area.controller');
+const area = require('../../controllers/area/area');
 const tokenMiddleware = require('../../middleware/token.middleware');
 
-router.get('/', tokenMiddleware.verifyAccessToken, areaController.getAllArea);
+router.get('/', tokenMiddleware.verifyAccessToken, area.getAllArea);
 
-router.post('/', tokenMiddleware.verifyAccessToken, areaController.createArea);
+router.post('/', tokenMiddleware.verifyAccessToken, area.createArea);
 
-router.delete('/:id', tokenMiddleware.verifyAccessToken, areaController.deleteArea);
-router.delete('/', tokenMiddleware.verifyAccessToken, areaController.deleteArea);
+router.delete('/:id', tokenMiddleware.verifyAccessToken, area.deleteArea);
+router.delete('/', tokenMiddleware.verifyAccessToken, area.deleteArea);
 
 module.exports = router;

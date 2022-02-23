@@ -1,8 +1,8 @@
 var router = require('express').Router();
 
 const tokenMiddleWare = require('../../middleware/token.middleware');
-const areaController = require('../../controllers/area.controller');
+const areaUser = require('../../controllers/area/user');
 
-router.get('/', tokenMiddleWare.verifyAccessToken, areaController.getUserInfos);
+router.get('/', tokenMiddleWare.verifyAccessToken, areaUser.getInfos);
 
 module.exports = router;
