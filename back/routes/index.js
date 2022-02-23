@@ -4,10 +4,6 @@ module.exports = app => {
     return res.status(200).json({ message: "Hello Wolrd" });
   });
 
-  app.get("/debug-sentry", function mainHandler(req, res) {
-    throw new Error("My first Sentry error!");
-  });
-
   app.use('/auth', require('./auth'));
   app.use('/token', require('./token'));
   app.use('/link', require('./link'));
