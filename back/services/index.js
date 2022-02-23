@@ -11,8 +11,8 @@ const services = {
     "spotify": spotifyService,
     "google": googleService,
     "youtube": youtubeService,
-    "microsoft":microsoftService,
-    "facebook":facebookService,
+    "microsoft": microsoftService,
+    "facebook": facebookService,
     // "snapchat":snapchatService TODO: Re-try Snapchat API (problem with oauth2)
 };
 

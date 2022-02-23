@@ -4,6 +4,28 @@ const tokenController = require('./token.controller');
 
 const User = db.user;
 
+async function unlinkService(req, res)
+{
+  const serviceName = req.service;
+
+  try {
+    let userServices = req.user.services;
+    
+    if (userServices[serviceName] == undefined && services[serviceName])
+      return res.status(400).json({message: 'User not linked to specified service.'});
+
+    services[serviceName].link.desactive(req, res);
+    const { user } = req;
+    userServices[serviceName].access_token = null;
+    userServices[serviceName].refresh_token = null;
+
+    await User.findByIdAndUpdate({ _id: user._id }, { services: userServices });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: 'Specified service does not exist or support unlink.' });
+  }
+}
+
 /**
  * Link the spefic service for a special user (access_token/refresh_token)
  * @param {*} req 
@@ -40,4 +62,4 @@ async function linkService(req, res) {
   }
 }
 
-module.exports = { linkService };
+module.exports = { linkService, unlinkService };

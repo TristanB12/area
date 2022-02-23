@@ -1,5 +1,4 @@
 const microsoft = require('../controllers/microsoft.controller');
-const spotifyService = require('./spotify.service');
 
 const microsoftService = {
   tags: ["link"],
@@ -7,6 +6,7 @@ const microsoftService = {
   link: {
     accessTokenUrlOption: microsoft.accessTokenUrlOption,
     refreshToken: undefined,
+    desactive: microsoft.unlink,
   },
 };
 
