@@ -4,13 +4,13 @@ const googleService = {
   tags: ["link", "auth"],
   link: {
     accessTokenUrlOption: google.accessTokenUrlOption,
-    refreshToken: google.refreshAccessToken,
     desactive: google.unlink
   },
   auth: {
     signup: google.signup,
     login: google.login,
-  }
+  },
+  refreshToken: google.refreshAccessToken,
 };
 
 module.exports = googleService;
