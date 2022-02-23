@@ -2,11 +2,11 @@ require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-const { user } = require('../models');
 const db = require("../models");
 const jwt = require('./jwt');
 
 const User = db.user;
+const Area = db.area;
 
 /**
  * Login function for service area
@@ -112,13 +112,70 @@ async function signup(req, res) {
   return res.status(201).json(response);
 }
 
+/**
+ * Get user information for area service
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 async function getUserInfos(req, res) {
   const { user } = req;
-  
+
   return res.status(200).json({
     email: user.auth.email,
     email_verified: user.email_verified,
   });
 }
 
-module.exports = { login, signup, getUserInfos };
+/**
+ * Get all the area of specific user
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+async function getAllArea(req, res) {
+  const { user } = req;
+  const areas = await Area.find({ owner: user._id });
+
+  return res.status(200).json({
+    items: Object.keys(areas).length,
+    data: areas
+  });
+}
+
+/**
+ * Create an area with given params
+ * @param {*} req 
+ * @param {*} res 
+ */
+async function createArea(req, res) {
+  const { user } = req;
+
+  const area = await Area.create({
+    owner: user._id,
+  });
+
+  return res.status(200).json({
+    message: "Area successfully created.",
+    area
+  });
+}
+
+/**
+ * Delete specific area
+ * @param {*} req 
+ * @param {*} res 
+ */
+async function deleteArea(req, res) {
+  const id = req.params.id || req.query.id;
+
+  if (!id)
+    return res.status(400).json({message: "id must be specified in request."});
+  Area.findByIdAndDelete(id, (err) => {
+    if (err)
+      return res.status(405).json({ message: err.message || "can't delete this area." })
+    return res.status(200).json({ message: "area successfully deleted." });
+  });
+}
+
+module.exports = { login, signup, getUserInfos, getAllArea, createArea, deleteArea };
