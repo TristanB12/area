@@ -14,8 +14,9 @@ const youtubeService = {
       },
       requiresUserAuth: true,
       config: {
-        username: {
-          type: "string",
+        "Youtuber name": {
+          type: "text",
+          value: "",
         }
       },
       function: youtubeAction.actionVideoIsUpload,

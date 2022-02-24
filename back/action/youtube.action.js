@@ -66,7 +66,8 @@ async function getLatestVideoUploadFrom(username, access_token) {
 
 async function actionVideoIsUpload(user, area) {
   const { action } = area;
-  const response = await getLatestVideoUploadFrom(action.config.username, user.services.google.access_token);
+  const username = action.config['Youtuber name'].value;
+  const response = await getLatestVideoUploadFrom(username, user.services.google.access_token);
   const { latestVideoID } = action.save;
 
   if (response === undefined)
@@ -77,7 +78,15 @@ async function actionVideoIsUpload(user, area) {
   action.save.latestVideoID = response.id;
 
   await Area.findByIdAndUpdate({ _id: area._id }, { 'action.save': msave });
-  return { error: false, data: response};
+  if (latestVideoID == undefined)
+    return { error: false, data: false };
+  return { error: false, data: {
+    publishedAt: response.snippet.publishedAt,
+    title: response.snippet.title,
+    description: response.snippet.description,
+    'channel titlte': response.snippet.channelTitle,
+    'video url': `https://www.youtube.com/watch?v=${response.contentDetails.upload.videoId}`,
+  }};
 }
 
 module.exports = { actionVideoIsUpload };
