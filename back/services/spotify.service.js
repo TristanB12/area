@@ -4,9 +4,9 @@ const spotifyService = {
   tags: ["link"],
   link: {
     accessTokenUrlOption: spotify.accessTokenUrlOption,
-    refreshToken: undefined,
     desactive: spotify.unlink
   },
+  refreshToken: undefined,
 };
 
 module.exports = spotifyService;

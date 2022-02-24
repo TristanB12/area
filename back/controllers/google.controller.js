@@ -30,6 +30,40 @@ function accessTokenUrlOption(code, redirect_uri) {
 }
 
 /**
+ * Refresh the access_token for specific user
+ * @param {*} user 
+ * @returns 
+ */
+async function refreshAccessToken(user) {
+  const { refresh_token } = user.services.google;
+
+  const option = {
+    url: 'https://oauth2.googleapis.com/token',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    params: {
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      grant_type: 'refresh_token',
+      refresh_token
+    }
+  }
+
+  try {
+    const response = await axios(option);
+    const access_token = response.data.access_token;
+
+    await User.findByIdAndUpdate({_id: user._id}, { 'services.google.access_token':access_token });
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+/**
  * Get google user information
  * @param {*} access_token 
  * @returns User information
@@ -159,4 +193,4 @@ async function signup(req, res) {
    return res.status(200).json({message: 'google account unliked successfully.'});
  }
 
-module.exports = { accessTokenUrlOption, signup, login, unlink };
+module.exports = { accessTokenUrlOption, signup, login, unlink, refreshAccessToken };
