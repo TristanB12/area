@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+const db = require('../models');
+
+const User = db.user;
+
 /**
  * Module dependencies.
  */
@@ -99,3 +103,7 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+setInterval(async function() {
+  console.log("TOTOTOTOTOTOTOTOTOTOTOTOTOTOTOTO");
+}, 60000);
