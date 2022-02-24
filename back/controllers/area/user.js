@@ -10,6 +10,7 @@ async function getInfos(req, res) {
   return res.status(200).json({
     email: user.auth.email,
     email_verified: user.email_verified,
+    linked_services: Object.keys(user.services)
   });
 }
 

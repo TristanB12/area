@@ -55,12 +55,12 @@ async function createArea(req, res) {
     return res.status(400).json({ message: 'missing action field in request.' });
   if (!reaction)
     return res.status(400).json({ message: 'missing reaction field in request.' });
-  if (!title)
-    title = `${action.title},${reaction.title}`;
-
   const configAction = getActionByTag(action.service, action.tag);
   if (!configAction)
     return res.status(400).json({ message: `specified action does not exist or not supported by ${action.service} service.` });
+  
+  if (!title)
+    title = `${configAction.title},${reaction.title}`;
 
   const area = await Area.create({
     owner: user._id,
@@ -69,12 +69,11 @@ async function createArea(req, res) {
     action: {
       tag: configAction.tag,
       service: configAction.service,
-      title,
-      description,
+      title: configAction.title,
       requiresUserAuth: configAction.requiresUserAuth,
       config: action.config,
       save: {
-          _v: 0
+        _v: 0
       }
     },
     reaction,
