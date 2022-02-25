@@ -17,7 +17,24 @@ const youtubeService = {
         "Youtuber name": {
           type: "text",
           value: "",
+      },
+      binding: {
+        "Published at": {
+          type: "text",
+        },
+        title: {
+          type: "text",
+        },
+        description: {
+          type: "text",
+        },
+        "Channel title": {
+          type: "text",
+        },
+        "Video url": {
+          type: "text"
         }
+      }
       },
       function: youtubeAction.actionVideoIsUpload,
     }

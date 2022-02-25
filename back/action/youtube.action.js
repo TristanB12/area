@@ -81,11 +81,11 @@ async function actionVideoIsUpload(user, area) {
   if (latestVideoID == undefined)
     return { error: false, data: false };
   return { error: false, data: {
-    publishedAt: response.snippet.publishedAt,
+    'Published at': response.snippet.publishedAt,
     title: response.snippet.title,
     description: response.snippet.description,
-    'channel titlte': response.snippet.channelTitle,
-    'video url': `https://www.youtube.com/watch?v=${response.contentDetails.upload.videoId}`,
+    'Channel titlte': response.snippet.channelTitle,
+    'Video url': `https://www.youtube.com/watch?v=${response.contentDetails.upload.videoId}`,
   }};
 }
 
