@@ -1,5 +1,5 @@
 import React from "react"
-import { Heading } from "native-base"
+import { Heading, useColorModeValue } from "native-base"
 
 function NavHeader({ title } : { title: string }) {
   return (
@@ -10,7 +10,7 @@ function NavHeader({ title } : { title: string }) {
       paddingLeft={2}
     >
       { title.charAt(0) }
-      <Heading color="black">
+      <Heading color={useColorModeValue("black", "white")}>
         { title.slice(1) }
       </Heading>
     </Heading>

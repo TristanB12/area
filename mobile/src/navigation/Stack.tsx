@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { StackParamList } from './types'
@@ -21,6 +21,7 @@ import LinkServiceScreen from '../screens/EditArea/LinkService';
 import ChooseActionScreen from '../screens/EditArea/ChooseAction';
 import ConfigureActionScreen from '../screens/EditArea/ConfigureAction';
 import NavHeader from '../components/NavHeader';
+import { useColorModeValue } from 'native-base';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -33,7 +34,7 @@ function StackNavigation() {
   }, []);
 
   return (
-    <NavigationContainer theme={navigationTheme}>
+    <NavigationContainer theme={useColorModeValue(DefaultTheme, DarkTheme)}>
       <Stack.Navigator screenOptions={options}>
         {
           auth.isLoading ? (

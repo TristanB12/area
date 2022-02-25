@@ -1,17 +1,17 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Icon, useColorModeValue } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { StackNavProp, TabParamList } from './types'
 
+import NavHeader from '../components/NavHeader';
 import AreasScreen from '../screens/Tabs/Areas';
 import AppsScreen from '../screens/Tabs/Apps';
 import ExploreScreen from '../screens/Tabs/Explore';
-import { Heading, Icon, Text } from 'native-base';
-import { useTranslation } from 'react-i18next';
-import NavHeader from '../components/NavHeader';
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -27,7 +27,7 @@ function Settings() {
 
   return (
     <TouchableOpacity onPress={goToSettings} style={{ marginRight: 20 }}>
-      <Icon as={MaterialIcons} name="settings" color="black" />
+      <Icon as={MaterialIcons} name="settings" color={useColorModeValue("black", "white")} />
     </TouchableOpacity>
   )
 }
@@ -80,14 +80,13 @@ function TabsNavigation() {
   )
 }
 
-
 const options: BottomTabNavigationOptions = {
   tabBarShowLabel: false,
   tabBarStyle: {
     borderTopColor: "black",
     borderTopWidth: 1,
   },
-  headerTitle: ({ children }) => <NavHeader title={children} />,
+  headerTitle: ({ children, style }) => <NavHeader title={children} style={style} />,
   headerShadowVisible: true,
   headerStyle: {
     elevation: 14,

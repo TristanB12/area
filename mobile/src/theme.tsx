@@ -146,7 +146,7 @@ const theme = extendTheme({
             borderWidth: 1,
             _dark: {
               borderColor: "coolGray.600",
-              backgroundColor: "gray.700"
+              backgroundColor: "gray.800"
             },
             _light: {
               borderColor: "coolGray.200",

@@ -4,4 +4,5 @@
   - add fallback when there are no services or areas
 - verify access token before every request
 - tester l'app en mode offline
-- dark theme
+- scrollable screenview
+- change language / theme on sign up

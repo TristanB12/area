@@ -1,15 +1,17 @@
 import React from "react"
 import ScreenView from "../components/ScreenView"
-import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon, useColorMode } from "native-base"
+import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon, useColorMode, Image } from "native-base"
 import { useTranslation } from "react-i18next"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { StackNavProp } from "../navigation/types"
-import authAtom from "../recoil/atoms/auth"
 import { useRecoilValue, useSetRecoilState } from "recoil"
+import authAtom from "../recoil/atoms/auth"
 import EncryptedStorage from 'react-native-encrypted-storage'
+import frenchFlag from '../assets/french_flag_icon.png'
+import englishFlag from '../assets/english_flag_icon.png'
 
 function Profile() {
   const auth = useRecoilValue(authAtom)
@@ -32,9 +34,13 @@ function RadioFlag({ language } : { language: string }) {
 
   return (
     <VStack justifyContent="center" alignItems="center">
-      <Heading size="2xl">
-        { language === "en" ? `🇺🇸` : `🇫🇷` }
-      </Heading>
+      <Image
+        source={language === "en" ? englishFlag : frenchFlag}
+        size="sm"
+        borderRadius="sm"
+        resizeMode="contain"
+        alt={language === "en" ? t('english') : t('french')}
+      />
       <Radio value={language} size="md" color="primary.500">
         { language === "en" ? t('english') : t('french') }
       </Radio>
