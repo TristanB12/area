@@ -13,4 +13,10 @@ async function linkService(serviceName: string, authorizationCode: string) {
   return data
 }
 
-export { linkService }
+async function unlinkService(serviceName: string) {
+  const url = `unlink?service=${serviceName.toLowerCase()}`
+  const { data } = await axiosAPI.delete(url)
+  return data
+}
+
+export { linkService, unlinkService }

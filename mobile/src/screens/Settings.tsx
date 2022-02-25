@@ -1,6 +1,6 @@
 import React from "react"
 import ScreenView from "../components/ScreenView"
-import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon } from "native-base"
+import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon, useColorMode } from "native-base"
 import { useTranslation } from "react-i18next"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -86,11 +86,8 @@ function RadioColorMode({ colorMode } : { colorMode: 'light' | 'dark' }) {
 }
 
 function ChooseColorMode() {
-  const { t, i18n } = useTranslation('settings')
-
-  const setLanguage = async (language: string) => {
-    return await i18n.changeLanguage(language);
-  };
+  const { t } = useTranslation('settings')
+  const { colorMode, toggleColorMode } = useColorMode()
 
   return (
     <Box variant="card" w="100%" p={4} alignItems="center">
@@ -100,7 +97,8 @@ function ChooseColorMode() {
       <Radio.Group
         name="colorMode"
         accessibilityLabel="Color mode"
-        value='light'
+        value={colorMode || "light"}
+        onChange={toggleColorMode}
       >
         <HStack w="100%" space={12} alignItems="center" p={4}>
           <RadioColorMode colorMode="light" />

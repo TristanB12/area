@@ -9,12 +9,12 @@ function AuthServiceCard({ service, action } : { service: AuthService, action: '
   const { t } = useTranslation('auth')
 
   const onSubmit = async (service: AuthService) => {
+    const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"
     const config: AuthConfiguration = {
       issuer: 'https://accounts.google.com',
-      clientId: '641786881554-8eved1hh8uchoet6c6j8rerq08qfrb0g.apps.googleusercontent.com',
-      redirectUrl: 'area:/google',
-      scopes: ['email', 'profile'],
-      skipCodeExchange: true
+      clientId: `${appID}.apps.googleusercontent.com`,
+      redirectUrl: `com.googleusercontent.apps.${appID}:area`,
+      scopes: ['email', 'profile']
     };
 
     try {

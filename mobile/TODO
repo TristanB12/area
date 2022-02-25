@@ -1,4 +1,7 @@
-- associate deep linking with website (after prod, see https://reactnavigation.org/docs/deep-linking/#set-up-with-bare-react-native-projects)
+- associate auth redirect url with website (after prod, see https://reactnavigation.org/docs/deep-linking/#set-up-with-bare-react-native-projects)
 - login with google & facebook
-- fix .env CONFIG library
+- implement useQuery for areas and services
+  - add fallback when there are no services or areas
+- verify access token before every request
+- tester l'app en mode offline
 - dark theme

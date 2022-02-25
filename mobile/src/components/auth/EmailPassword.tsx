@@ -16,7 +16,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useSetRecoilState } from "recoil";
 import authAtom from "../../recoil/atoms/auth";
-import { AuthStorage } from "../../types/auth";
+import { AuthStorage, AuthTokens } from "../../types/auth";
+import { getTodaysTimestampInSeconds } from '../../utils'
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
@@ -33,6 +34,24 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const [isLoading, setIsLoading] = useState(false)
   const shouldConfirmPassword = (action === "register")
   const setAuth = useSetRecoilState(authAtom)
+
+  const storeUserSessionToStorage = async (authTokens: AuthTokens, email: string) => {
+    const authStorage: AuthStorage = {
+      access_token: authTokens.access_token,
+      refresh_token: authTokens.refresh_token,
+      expire_timestamp: getTodaysTimestampInSeconds() + authTokens.expires_in,
+      token_type: "Bearer",
+      email: email,
+    }
+    try {
+      await EncryptedStorage.setItem(
+        "user_session",
+        JSON.stringify(authStorage)
+      );
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const onSubmit = async (authForm: AuthForm) => {
     setIsLoading(true)
@@ -51,14 +70,7 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
     } else if (!data) {
       return
     }
-    try {
-      await EncryptedStorage.setItem(
-        "user_session",
-        JSON.stringify({ ...data, email: authForm.email } as AuthStorage)
-      );
-    } catch (error) {
-      console.error(error)
-    }
+    await storeUserSessionToStorage(data, authForm.email)
     api.tokens.setAccessToken(data.access_token)
     setAuth(auth => ({
       ...auth,
@@ -82,6 +94,7 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
             <Input
               type="text"
               placeholder="example@gmail.com"
+              autoCapitalize="none"
               borderRadius="9"
               borderColor="primary.500"
               fontSize="14"

@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useTranslation } from 'react-i18next';
 import { StackParamList } from './types'
 import { useRecoilState } from 'recoil';
 import authAtom from '../recoil/atoms/auth';
-import { AuthStorage } from '../types/auth';
-import api from '../api';
 import { navigationTheme } from '../theme';
+import { retrieveAuthFromStorage } from './onAppStart';
 
 import SplashScreen from '../screens/Splash'
 import AppIntroScreen from '../screens/AppIntro'
@@ -22,7 +20,6 @@ import ChooseServiceScreen from '../screens/EditArea/ChooseService';
 import LinkServiceScreen from '../screens/EditArea/LinkService';
 import ChooseActionScreen from '../screens/EditArea/ChooseAction';
 import ConfigureActionScreen from '../screens/EditArea/ConfigureAction';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import NavHeader from '../components/NavHeader';
 
 const Stack = createNativeStackNavigator<StackParamList>();
@@ -32,47 +29,7 @@ function StackNavigation() {
   const [auth, setAuth] = useRecoilState(authAtom)
 
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
-    const retrieveAuthFromStorage = async () => {
-      let introPassed: string | null = null;
-      let session: string | null = null;
-
-      try {
-        introPassed = await AsyncStorage.getItem("intro_passed");
-      } catch (error) {
-        introPassed = null
-      }
-      try {
-        session = await EncryptedStorage.getItem("user_session");
-      } catch (error) {
-        session = null
-      }
-      if (!session) {
-        setAuth({
-          ...auth,
-          isFirstTimeUsingApp: (introPassed === null),
-          isLoading: false
-        })
-        return
-      }
-      const storage: AuthStorage = JSON.parse(session)
-      const { error } = await api.tokens.verify(storage.access_token)
-      if (!error) {
-        api.tokens.setAccessToken(storage.access_token)
-      } else {
-        await api.tokens.refresh(storage.refresh_token)
-      }
-      setAuth({
-        ...auth,
-        isFirstTimeUsingApp: (introPassed === null),
-        isLoading: false,
-        email: storage.email,
-        access_token: storage.access_token,
-        refresh_token: storage.access_token
-      })
-    };
-
-    retrieveAuthFromStorage();
+    retrieveAuthFromStorage(setAuth);
   }, []);
 
   return (

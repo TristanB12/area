@@ -6,6 +6,7 @@ import { Service } from "../types";
 import ScreenView from '../components/ScreenView'
 import servicesAtom from "../recoil/atoms/services";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import api from "../api";
 
 type ServiceItemProps = {
   service: Service,
@@ -58,8 +59,15 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
   const onClose = () => {
     setUnlinkService(undefined)
   }
-  const unlinkService = () => {
+  const unlinkFromApi = async (): Promise<boolean> => {
     // TODO: call api to unlink service
+    const { data, error } = await api.services.unlink(service.name)
+    console.log(data)
+    console.log(error)
+    return (!error || data)
+  }
+
+  const unlinkService = async () => {
     const editedServices = [...services]
     const unlinkServiceIndex = editedServices.findIndex(
       otherService => otherService.name === service.name
@@ -71,8 +79,10 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
       ...service,
       isLinked: false
     }
-    setServices(editedServices)
-    onClose()
+    if (await unlinkFromApi()) {
+      setServices(editedServices)
+      onClose()
+    }
   }
 
   return (

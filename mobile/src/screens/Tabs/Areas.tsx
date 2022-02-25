@@ -42,7 +42,7 @@ function AreaItem({ area } : { area: Area }) {
   return (
     <Pressable w="100%" onPress={goToEditArea}>
       <Box variant="card" p={3}>
-        <Text color="secondary.900" fontWeight="medium" fontSize="sm">
+        <Text fontWeight="medium" fontSize="sm">
           { area.title }
         </Text>
         <HStack mt={2}>

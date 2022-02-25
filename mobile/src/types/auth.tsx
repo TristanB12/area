@@ -12,6 +12,12 @@ type AuthState = {
   email: string,
 } & Pick<AuthTokens, 'access_token' | 'refresh_token'>
 
-type AuthStorage = AuthTokens & Pick<AuthState, 'email'>
+type AuthStorage = {
+  access_token: string,
+  refresh_token: string,
+  expire_timestamp: number,
+  token_type: "Bearer",
+  email: string
+}
 
 export type { AuthTokens, AuthState, AuthStorage }

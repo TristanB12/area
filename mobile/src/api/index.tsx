@@ -1,7 +1,10 @@
 import { AxiosError } from "axios";
 import { loginEmail, loginService, signupEmail, signupService } from "./auth";
-import { linkService } from './services'
+import { linkService, unlinkService } from './services'
+import { createArea, getAreas, editArea, deleteArea } from './areas'
 import { setAccessToken, verify, refresh } from './tokens'
+import { useRecoilValue } from "recoil";
+import authAtom from "../recoil/atoms/auth";
 
 type ErrorResponse = {
   status: number,
@@ -61,8 +64,15 @@ const api = {
       service: withErrorHandling(signupService),
     }
   },
+  areas: {
+    create: withErrorHandling(createArea),
+    get: withErrorHandling(getAreas),
+    edit: withErrorHandling(editArea),
+    delete: withErrorHandling(deleteArea)
+  },
   services: {
-    link: withErrorHandling(linkService)
+    link: withErrorHandling(linkService),
+    unlink: withErrorHandling(unlinkService)
   },
   tokens: {
     setAccessToken: setAccessToken,
