@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
-import {isLogged} from '../services/utils.js';
+import store from '../store/index.js';
 
 const routes = [
   {

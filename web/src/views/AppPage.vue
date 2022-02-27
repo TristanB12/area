@@ -3,7 +3,7 @@
         <NavigationBar />
         <router-view v-slot="{ Component }">
             <transition name="fade" mode="out-in">
-                <div class="content-container">
+                <div class="content-container" v-if="$store.state.user">
                     <component :is="Component" />
                 </div>
             </transition>

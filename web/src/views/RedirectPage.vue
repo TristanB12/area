@@ -56,7 +56,6 @@ import axios from 'axios';
                     .catch(err => {this.error = err.response.data});
             },
             processLogin() {
-                console.log("coucou")
                 let config = {
                     method: 'post',
                     url: 'https://ikeapi.herokuapp.com/auth/login/' + this.$route.params.service,

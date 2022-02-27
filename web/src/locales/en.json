@@ -51,8 +51,37 @@
           }
       },
       "reaction": {
-          "title": "Configure the reaction"
-      }
+          "title": "Configure the reaction",
+          "chooseApp": {
+            "title": "Choose an app",
+            "description": "Select the app that will be triggered by the Area"
+        },
+        "chooseReaction": {
+            "title": "Choose a reaction",
+            "description": "choose what will happen when the Area is triggered"
+        }
+      },
+      "finalize": {
+        "title": "Finalize your Area",
+        "services": "Services",
+        "options": {
+          "title": "Options",
+          "areaName": {
+            "title": "Area name",
+            "placeholder": "Your Area name"
+          },
+          "description": {
+            "title":  "Description (optional)",
+            "placeholder": "Your Area description"
+          }
+        },
+        "connected": "connected",
+        "connect": "connect"
+      },
+      "configuration": {
+        "title": "Configurez le déclencheur",
+        "description": "Remplissez les éléments requis"
+    }
     },
     "areas": {
       "title": "Areas",
