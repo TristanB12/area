@@ -47,6 +47,7 @@ function getServicesRepr(user) {
             continue;
         reprServices.push({
             name: serviceNames[i],
+            logoUri: service.logoUri,
             isLinked: Object.keys(user.services).includes(service.authRef),
             actions,
             reactions
