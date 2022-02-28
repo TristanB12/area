@@ -68,6 +68,8 @@ async function webhookByTag(serviceName, tag) {
 async function webhookByService(serviceName) {
   const service = services[serviceName];
 
+  if (service == undefined)
+    return
   if (!service.tags.includes('actions'))
     return;
   for (let i = 0; i < service.actions.length; i++) {
