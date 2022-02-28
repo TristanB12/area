@@ -81,7 +81,7 @@ const getUserAreas = async () => {
 const getServices = async () => {
     let config = {
         method: 'get',
-        url: baseUrl + '/services',
+        url: baseUrl + '/service',
         headers: { 
             'authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
