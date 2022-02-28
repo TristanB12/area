@@ -3,13 +3,14 @@ const google = require('../controllers/google.controller');
 
 const youtubeService = {
   tags: ["actions"],
+  authRef: 'google',
   refreshToken: google.refreshAccessToken,
   actions: [
     {
       tag: "YT#UPL04D",
       title: "When a new video is upload on a Youtube account.",
       service: {
-        name: "Youtube",
+        name: "youtube",
         logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
       },
       requiresUserAuth: true,

@@ -2,6 +2,7 @@ const google = require('../controllers/google.controller');
 
 const googleService = {
   tags: ["link", "auth"],
+  authRef: 'google',
   link: {
     accessTokenUrlOption: google.accessTokenUrlOption,
     desactive: google.unlink
