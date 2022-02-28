@@ -2,9 +2,8 @@ require('dotenv').config();
 
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
-const { user } = require('../models');
-const db = require("../models");
-const jwt = require('./jwt');
+const db = require("../../models");
+const jwt = require('..//jwt');
 
 const User = db.user;
 
@@ -59,10 +58,10 @@ const checkCredentials = (credentials) => {
         break;
       case 'password':
         message = `Your password should contains:<br>
-                              - 8 to 32 characters<br>
-                              - at least two letters (upper and lowercase)<br>
-                              - one number<br>
-                              - one special character`;
+                                - 8 to 32 characters<br>
+                                - at least two letters (upper and lowercase)<br>
+                                - one number<br>
+                                - one special character`;
         break;
       case 'confirmPassword':
         message = 'Passwords are different';
@@ -112,13 +111,4 @@ async function signup(req, res) {
   return res.status(201).json(response);
 }
 
-async function getUserInfos(req, res) {
-  const { user } = req;
-  
-  return res.status(200).json({
-    email: user.auth.email,
-    email_verified: user.email_verified,
-  });
-}
-
-module.exports = { login, signup, getUserInfos };
+module.exports = { signup, login };

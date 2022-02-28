@@ -153,4 +153,15 @@ async function signup(req, res) {
   });
 }
 
-module.exports = { accessTokenUrlOption, signup, login };
+/**
+ * Unlink facebook account
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+async function unlink(req, res)
+{
+  return res.status(200).json({message: 'facebook account unliked successfully.'});
+}
+
+module.exports = { accessTokenUrlOption, signup, login, unlink };
