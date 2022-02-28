@@ -6,8 +6,8 @@
         </div>
         <div class="inputs-container">
             <div
+                v-for="(item, name) in customConfig"
                 class="input"
-                v-for="(item, name) in config"
                 :key="name"
             >
                 <h3 class="subtitle">{{ name }}</h3>
@@ -20,14 +20,26 @@
 <script>
 import VInput from '@/components/ui/VInput.vue';
     export default {
+        components: {
+            VInput,
+        },
         props: {
             config: {
                 type: Object,
                 default: undefined
             },
         },
-        components: {
-            VInput,
+        computed: {
+            customConfig() {
+                let config = {};
+
+                for (const [name, value] of Object.entries(this.config)) {
+                    if (name != 'binding') {
+                        config[name] = value;
+                    }
+                }
+                return config;
+            }
         },
         updated () {
             this.manageChanges();
@@ -36,7 +48,7 @@ import VInput from '@/components/ui/VInput.vue';
             manageChanges() {
                 let isConfigFilled = true;
 
-                for (let [name, item] of Object.entries(this.config)) {
+                for (let [name, item] of Object.entries(this.customConfig)) {
                     if (item.value.length < 1) {
                         isConfigFilled = false;
                     }
