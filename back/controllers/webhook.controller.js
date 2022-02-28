@@ -38,7 +38,7 @@ function getActionByTag(serviceName, tag) {
 async function webhookByTag(serviceName, tag) {
   const service = services[serviceName];
   const confAction = getActionByTag(serviceName, tag);
-  const areas = await Area.find({ tag: tag });
+  const areas = await Area.find({ 'action.tag': tag });
 
   for (let i = 0; i < areas.length; i++) {
     let user = await User.findById(areas[i].owner);
