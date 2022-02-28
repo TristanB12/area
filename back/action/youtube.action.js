@@ -110,7 +110,7 @@ async function actionNewSubscribe(user, area) {
   const { action } = area;
   const response = await getMySubscriptionsList(1, user.services.google.access_token);
   const { totalResults } = action.save;
-  
+
   if (totalResults === response.pageInfo.totalResults)
     return { error: false, data: false };
   let msave = action.save;
