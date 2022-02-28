@@ -60,10 +60,19 @@ const twitchAuthCode = (state) => {
     return win;
 }
 
+const functionsTable = {
+    "spotify": spotifyAuthCode,
+    "facebook": facebookAuthCode,
+    "twitch": twitchAuthCode,
+    "github": githubAuthCode,
+    "google": googleAuthCode,
+}
+
 module.exports = {
     spotifyAuthCode,
     facebookAuthCode,
     twitchAuthCode,
     githubAuthCode,
-    googleAuthCode
+    googleAuthCode,
+    functionsTable
 }

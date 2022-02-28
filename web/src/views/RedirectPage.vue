@@ -32,6 +32,8 @@ import axios from 'axios';
                     this.processLogin();
                 else if (this.$route.query.state == 'signup')
                     this.processSignup();
+                else if (this.$route.query.state == 'link')
+                    this.processLink();
             },
             processLink() {
                 let config = {
@@ -92,7 +94,7 @@ import axios from 'axios';
                         window.close();
                     })
                     .catch(err => this.error = err.response.data);
-            }
+            },
         },
     }
 </script>

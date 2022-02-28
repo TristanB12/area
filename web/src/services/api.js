@@ -59,7 +59,7 @@ const signupUser = async (inputs) => {
 }
 
 const verifyToken = async (token) => {
-    var config = {
+    let config = {
         method: 'get',
         url: baseUrl + '/token/verify',
         headers: { 
@@ -79,7 +79,19 @@ const getUserAreas = async () => {
 }
 
 const getServices = async () => {
-    return [mockServices, null];
+    let config = {
+        method: 'get',
+        url: baseUrl + '/services',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
 }
 
 module.exports = {

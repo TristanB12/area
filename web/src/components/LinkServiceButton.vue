@@ -9,6 +9,7 @@
             <VButton
                 v-else
                 :title="$t('pages.add.finalize.connect')"
+                @click="linkAccount"
             />
         </div>
     </div>
@@ -16,6 +17,8 @@
 
 <script>
 import VButton from '@/components/ui/VButton.vue';
+import API from '@/services/api.js';
+import { functionsTable } from '@/services/index.js';
     export default {
         components: {
             VButton,
@@ -36,6 +39,24 @@ import VButton from '@/components/ui/VButton.vue';
                     }
                 }
                 return false;
+            }
+        },
+        methods: {
+            linkAccount() {
+                let func = functionsTable[this.service.service.toLowerCase()];
+
+                if (!func) return;
+                let win = func('link');
+                const timer = setInterval(async () => {
+                    if (win.closed) {
+                        clearInterval(timer);
+                        let res = await API.getUserInfos();
+
+                        if (res[0]) {
+                            this.$store.state.user = res[0];
+                        }
+                    }
+                }, 500);
             }
         },
     }
