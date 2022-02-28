@@ -43,9 +43,6 @@ function getServicesRepr(user) {
         const actions = getAllActionsOfService(service);
         const reactions = getAllReactionsOfService(service);
 
-        console.log(serviceNames[i]);
-        console.log(actions);
-        console.log(reactions);
         if (actions.length == 0 && reactions.length == 0)
             continue;
         reprServices.push({
