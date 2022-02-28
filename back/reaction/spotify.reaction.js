@@ -34,17 +34,13 @@ async function followArtistById(artistId, accessToken) {
         },
         data : data
     };
-    let res = await axios(config);
-    console.log(res.data);
-    console.log("artistid: " + artistId);
+    await axios(config);
 }
 
 async function reactionFollowArtist(user, area, actionPayload) {
     const { config } = area.reaction;
     const artistId = await getArtistIdFromUsername(config["Artist name"].value, user.services.spotify.access_token); 
 
-    console.log("tototoooogototot");
-    console.log(artistId);
     if (!artistId) {
         return;
     }
