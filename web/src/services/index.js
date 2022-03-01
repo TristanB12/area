@@ -19,7 +19,7 @@ const googleAuthCode = (state) => {
         access_type: 'offline',
         response_type: 'code',
         client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-        scope: 'email profile',
+        scope: 'email profile https://www.googleapis.com/auth/youtube',
         redirect_uri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
         state: state
     }))
@@ -66,6 +66,7 @@ const functionsTable = {
     "twitch": twitchAuthCode,
     "github": githubAuthCode,
     "google": googleAuthCode,
+    "youtube": googleAuthCode,
 }
 
 module.exports = {

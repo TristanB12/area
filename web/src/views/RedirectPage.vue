@@ -32,10 +32,9 @@ import axios from 'axios';
                     this.processLogin();
                 else if (this.$route.query.state == 'signup')
                     this.processSignup();
-                else if (this.$route.query.state == 'link')
-                    this.processLink();
             },
             processLink() {
+                console.log("fsgf")
                 let config = {
                     method: 'post',
                     url: 'https://ikeapi.herokuapp.com/link',
@@ -51,8 +50,6 @@ import axios from 'axios';
                 };
                 axios(config)
                     .then(() =>  {
-                        localStorage.setItem('access_token', res.data.access_token);    
-                        this.$store.state.token = res.data.access_token;
                         window.close();
                     })
                     .catch(err => {this.error = err.response.data});
