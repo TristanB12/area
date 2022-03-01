@@ -37,6 +37,24 @@ async function followArtistById(artistId, accessToken) {
     await axios(config);
 }
 
+async function unfollowArtistById(artistId, accessToken) {
+    var data = {
+        ids: [
+            artistId
+        ]
+    };
+    let config = {
+        method: 'delete',
+        url: 'https://api.spotify.com/v1/me/following?type=artist',
+        headers: { 
+            'Authorization':`Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        },
+        data : data
+    };
+    await axios(config);
+}
+
 async function reactionFollowArtist(user, area, actionPayload) {
     const { config } = area.reaction;
     const artistId = await getArtistIdFromUsername(config["Artist name"].value, user.services.spotify.access_token); 
@@ -47,4 +65,14 @@ async function reactionFollowArtist(user, area, actionPayload) {
     await followArtistById(artistId, user.services.spotify.access_token);
 }
 
-module.exports = { reactionFollowArtist };
+async function reactionUnfollowArtist(user, area, actionPayload) {
+    const { config } = area.reaction;
+    const artistId = await getArtistIdFromUsername(config["Artist name"].value, user.services.spotify.access_token); 
+
+    if (!artistId) {
+        return;
+    }
+    await unfollowArtistById(artistId, user.services.spotify.access_token);
+}
+
+module.exports = { reactionFollowArtist, reactionUnfollowArtist };
