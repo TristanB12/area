@@ -18,6 +18,7 @@ import { useSetRecoilState } from "recoil";
 import authAtom from "../../recoil/atoms/auth";
 import { AuthStorage, AuthTokens } from "../../types/auth";
 import { getTodaysTimestampInSeconds } from '../../utils'
+import { storeUserSessionToStorage } from '../../storage'
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
@@ -34,24 +35,6 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const [isLoading, setIsLoading] = useState(false)
   const shouldConfirmPassword = (action === "register")
   const setAuth = useSetRecoilState(authAtom)
-
-  const storeUserSessionToStorage = async (authTokens: AuthTokens, email: string) => {
-    const authStorage: AuthStorage = {
-      access_token: authTokens.access_token,
-      refresh_token: authTokens.refresh_token,
-      expire_timestamp: getTodaysTimestampInSeconds() + authTokens.expires_in,
-      token_type: "Bearer",
-      email: email,
-    }
-    try {
-      await EncryptedStorage.setItem(
-        "user_session",
-        JSON.stringify(authStorage)
-      );
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   const onSubmit = async (authForm: AuthForm) => {
     setIsLoading(true)

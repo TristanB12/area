@@ -67,20 +67,20 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const onDelete = () => {
-    setAreas(areas.filter(area => area._id !== editedArea._id))
+    setAreas(areas.filter(area => area.id !== editedArea.id))
     navigation.goBack()
   }
   const onSave = () => {
     // TODO: call API to store area, and get generated ID
     const randomId = Math.floor(Math.random() * 100)
-    setAreas([...areas.filter(area => area._id !== editedArea._id),
-      { ...editedArea, _id: randomId }]
+    setAreas([...areas.filter(area => area.id !== editedArea.id),
+      { ...editedArea, id: randomId }]
     )
     navigation.goBack()
   }
 
   useLayoutEffect(() => {
-    const isNewArea = (editedArea._id === 0)
+    const isNewArea = (editedArea.id === 0)
 
     navigation.setOptions({
       title: isNewArea ? t('create_area') : t('area'),

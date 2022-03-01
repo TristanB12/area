@@ -33,6 +33,7 @@ function StackNavigation() {
     retrieveAuthFromStorage(setAuth);
   }, []);
 
+  console.log(auth)
   return (
     <NavigationContainer theme={useColorModeValue(DefaultTheme, DarkTheme)}>
       <Stack.Navigator screenOptions={options}>

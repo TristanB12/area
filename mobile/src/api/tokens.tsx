@@ -1,31 +1,34 @@
-import { AuthTokens } from "./auth";
 import axiosAPI from "./config";
 
 function setAccessToken(access_token: string) {
   axiosAPI.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
 }
 
-async function verify(access_token: string) {
-  const { data } = await axiosAPI.get("token/verify", {
-    headers: {
-      "authorization": `Bearer ${access_token}`
+const refreshAccessToken = async (refresh_token: string) => {
+  try {
+    const { data } = await axiosAPI({
+      method: "GET",
+      url: "/token/refresh",
+      params: {
+        refresh_token
+      }
+    })
+    if (data) {
+      setAccessToken(data.access_token)
     }
-  })
-  return data
-}
-
-async function refresh(refresh_token: string) {
-  const params = new URLSearchParams({
-    refresh_token: refresh_token,
-  });
-  const url = `token/refresh?${params.toString()}`
-  const { data } = await axiosAPI.get<AuthTokens>(url)
-  if (data) {
-    setAccessToken(data.access_token)
+  } catch (error) {
+    console.log(error)
+    return false
   }
-  return data
+  return true
 }
 
+const verifyAccessToken = async (access_token: string) => axiosAPI({
+  method: "GET",
+  url: "/token/verify",
+  headers: {
+    "authorization": `Bearer ${access_token}`
+  }
+})
 
-
-export { setAccessToken, refresh, verify }
+export { setAccessToken, refreshAccessToken, verifyAccessToken }

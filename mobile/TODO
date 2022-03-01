@@ -6,3 +6,5 @@
 - tester l'app en mode offline
 - scrollable screenview
 - change language / theme on sign up
+
+- optional chaining operator not working in some node versions

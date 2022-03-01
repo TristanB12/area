@@ -1,22 +1,24 @@
 import axiosAPI from "./config"
 
-async function linkService(serviceName: string, authorizationCode: string) {
+const linkService = async (serviceName: string, authorizationCode: string) => {
   serviceName = serviceName.toLowerCase()
 
-  const params = new URLSearchParams({
-    service: serviceName,
-    code: authorizationCode,
-    redirect_uri: `area:/${serviceName}`,
-  });
-  const url = `link?${params.toString()}`
-  const { data } = await axiosAPI.get(url)
-  return data
+  return axiosAPI({
+    method: "GET",
+    url: "/link",
+    params: {
+      service: serviceName,
+      code: authorizationCode,
+      redirect_uri: `area:/${serviceName}`
+    }
+  })
 }
 
-async function unlinkService(serviceName: string) {
-  const url = `unlink?service=${serviceName.toLowerCase()}`
-  const { data } = await axiosAPI.delete(url)
-  return data
-}
+const unlinkService = async (serviceName: string) => axiosAPI({
+  method: "DELETE",
+  params: {
+    service: serviceName.toLowerCase()
+  }
+})
 
 export { linkService, unlinkService }

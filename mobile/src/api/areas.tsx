@@ -1,25 +1,29 @@
 import axiosAPI from "./config";
-import axios from "axios";
 import Area from '../types'
 
-async function createArea(area: Area) {
-  const { data } = await axiosAPI.post("/areas", { area: area })
-  return data
-}
+const createArea = async (area: Area) => axiosAPI({
+  method: "POST",
+  url: "/area",
+  data: { area }
+})
 
-async function getAreas() {
-  const { data } = await axiosAPI.get("/areas")
-  return data
-}
+const getAreas = async () => axiosAPI({
+  method: "GET",
+  url: "/area"
+})
 
-async function editArea(area: Area) {
-  const { data } = await axiosAPI.patch("/areas", { area: area })
-  return data
-}
+const editArea = async (area: Area) => axiosAPI({
+  method: "PATCH",
+  url: "/area",
+  data: { area }
+})
 
-async function deleteArea(area: Area) {
-  const { data } = await axiosAPI.delete(`/areas?id=${area._id}`)
-  return data
-}
+const deleteArea = async (area: Area) => axiosAPI({
+  method: "DELETE",
+  url: "/areas",
+  params: {
+    id: area.id
+  }
+})
 
 export { createArea, getAreas, editArea, deleteArea }

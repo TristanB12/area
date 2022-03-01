@@ -1,41 +1,31 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { loginEmail, loginService, signupEmail, signupService } from "./auth";
 import { linkService, unlinkService } from './services'
 import { createArea, getAreas, editArea, deleteArea } from './areas'
-import { setAccessToken, verify, refresh } from './tokens'
-import { useRecoilValue } from "recoil";
-import authAtom from "../recoil/atoms/auth";
+import { setAccessToken, refreshAccessToken, verifyAccessToken } from './tokens'
+import { retrieveUserSessionFromStorage } from "../storage";
+import { getTodaysTimestampInSeconds } from "../utils";
 
-type ErrorResponse = {
+type APIError = {
   status: number,
   message: string
 }
 type APIResponse<T> = {
   data: T | null,
-  error: ErrorResponse | null
+  error: APIError | null
 }
-type Awaited<T> = T extends PromiseLike<infer U> ? U : T
 
-// function withErrorHandling<T extends Array<any>, U>
-// (fn: (...args: T) => U): (...args: T) => U | Promise<ErrorResponse> {
-//   return async function(...args: T): U | Promise<ErrorResponse> {
-//     try {
-//       return await fn(...args);
-//     } catch (error) {
-//       const err = error as AxiosError
-//       return {
-//         status: err.response?.status || 404,
-//         message: err.response?.data || "Unknown error"
-//       }
-//     }
-//   };
-// }
+function withErrorHandling<T extends Array<any>, U>(
+  fn: (...args: T) => Promise<AxiosResponse<U, any>>
+): (...args: T) => Promise<APIResponse<U>> {
+  return async function(...args: T): Promise<APIResponse<U>> {
+    const storage = await retrieveUserSessionFromStorage()
 
-function withErrorHandling<T extends Array<any>, U>
-(fn: (...args: T) => U): (...args: T) => Promise<APIResponse<Awaited<U>>> {
-  return async function(...args: T): Promise<APIResponse<Awaited<U>>> {
+    if (storage && storage.expire_timestamp < getTodaysTimestampInSeconds()) {
+      await refreshAccessToken(storage.access_token)
+    }
     try {
-      const data = await fn(...args)
+      const { data } = await fn(...args)
       return {
         data: data,
         error: null
@@ -76,9 +66,10 @@ const api = {
   },
   tokens: {
     setAccessToken: setAccessToken,
-    verify: withErrorHandling(verify),
-    refresh: withErrorHandling(refresh)
+    refresh: refreshAccessToken,
+    verify: withErrorHandling(verifyAccessToken),
   }
 }
 
+export type { APIError, APIResponse }
 export default api

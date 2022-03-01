@@ -7,21 +7,14 @@ type AuthForm = {
   confirmPassword: string
 }
 
-async function authEmail(action: 'login' | 'register', authForm: AuthForm): Promise<AuthTokens> {
-  const { data } = await axiosAPI.post<AuthTokens>(
-    (action === "login") ? "/auth/login?service=area" : "/auth/signup/area",
-    authForm
-  )
-  return data
-}
+const authEmail = async (action: 'login' | 'register', authForm: AuthForm) => axiosAPI.request<AuthTokens>({
+  method: "POST",
+  url: (action === "login") ? "/auth/login?service=area" : "/auth/signup/area",
+  data: authForm
+})
 
-async function loginEmail(authForm: AuthForm): Promise<AuthTokens> {
-  return authEmail('login', authForm)
-}
-
-async function signupEmail(authForm: AuthForm): Promise<AuthTokens> {
-  return authEmail('register', authForm)
-}
+const loginEmail = async (authForm: AuthForm) => authEmail('login', authForm)
+const signupEmail = async (authForm: AuthForm) => authEmail('register', authForm)
 
 async function loginService(service: 'google' | 'facebook'): Promise<AuthTokens> {
   const params = new URLSearchParams({

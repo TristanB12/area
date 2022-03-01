@@ -25,7 +25,7 @@ type ServiceAction = {
 } & Action
 
 type Area = {
-  _id: number,
+  id: number,
   title: string,
   description: string,
   action: ServiceAction | undefined

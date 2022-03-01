@@ -2,7 +2,7 @@ import Area from "../types"
 
 const areasMock: Area[] = [
   {
-    _id: 1424242232,
+    id: 1424242232,
     title: "Song from youtube to Spotify",
     description: "Transfer songs I watch from youtube to a Spotify playlist",
     action: {
@@ -23,7 +23,7 @@ const areasMock: Area[] = [
     }
   },
   {
-    _id: 23232432424,
+    id: 23232432424,
     title: "Tweet new Reddit post",
     description: "Automatically publish a tweet when there is a new Reddit post in the /r/aww subreddit",
     action: {
@@ -44,7 +44,7 @@ const areasMock: Area[] = [
     }
   },
   {
-    _id: 322472748,
+    id: 322472748,
     title: "Send me an email when Lil Nas X releases new Song on spotify",
     description: "",
     action: {
