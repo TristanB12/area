@@ -5,7 +5,6 @@ function getAllActionsOfService(service) {
 
     if (!service.tags.includes('actions'))
         return actions;
-    console.log(service);
 
     for (let j = 0; j < service.actions.length; j++)
         actions.push({
@@ -21,9 +20,10 @@ function getAllActionsOfService(service) {
 function getAllReactionsOfService(service) {
     let reactions = [];
 
-    if (!service.tags.includes('reactions'))
+    if (!service.tags.includes('reactions')) {
         return reactions;
-    for (let j = 0; j < service.reactions; j++)
+    }
+    for (let j = 0; j < service.reactions.length; j++)
         reactions.push({
             service: service.reactions[j].service,
             tag: service.reactions[j].tag,
@@ -44,7 +44,7 @@ function getServicesRepr(user) {
         const reactions = getAllReactionsOfService(service);
 
         if (actions.length == 0 && reactions.length == 0)
-            continue;
+        continue;
         reprServices.push({
             name: serviceNames[i],
             logoUri: service.logoUri,
