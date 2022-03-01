@@ -2,14 +2,16 @@ const google = require('../controllers/google.controller');
 
 const googleService = {
   tags: ["link", "auth"],
+  authRef: 'google',
   link: {
     accessTokenUrlOption: google.accessTokenUrlOption,
-    refreshToken: undefined
+    desactive: google.unlink
   },
   auth: {
     signup: google.signup,
     login: google.login,
-  }
+  },
+  refreshToken: google.refreshAccessToken,
 };
 
 module.exports = googleService;

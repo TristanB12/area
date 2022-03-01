@@ -1,10 +1,11 @@
-const area = require('../controllers/area.controller');
+const areaAuth = require('../controllers/area/auth');
 
 const areaService = {
     tags: ["auth"],
+    authRef: 'area',
     auth: {
-        login: area.login,
-        signup: area.signup
+        login: areaAuth.login,
+        signup: areaAuth.signup
     }
 };
 

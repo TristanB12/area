@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <img
-      class="landingText"
-      src="@/assets/LandingText.png"
-      alt="Automate your tasks and focus on what is important"
-    />
-    <img class="landingImage" src="@/assets/Landing.png" alt="Design Image" />
-  </div>
-  <div class="startedButton">
-    <VButton 
-    title="Get Started" 
-    iconName="arrow.png" />
+  <div class="landing">
+    <div class="sector">
+      <div>
+        <h1 class="landingText">
+          Automate your tasks and focus on what is
+          <span class="important">important</span>.
+        </h1>
+        <VButton  class="rightSide" title="Get Started" iconName="arrow.png" />
+      </div>
+      <img class="landingImage" src="@/assets/Landing.png" alt="Design Image" />
+    </div>
   </div>
 </template>
 
@@ -24,15 +23,34 @@ export default {
 </script>
 
 <style>
+.landing {
+  display: flex;
+  justify-content: space-between;
+}
+.sector {
+  display: flex;
+  width: 70%;
+  margin: auto;
+  margin-top: 10px;
+}
+.important {
+  color: #f06543;
+}
 .landingText {
-  margin: 50px;
-  height: 325px;
+  margin-top: 90px;
+  font-family: $primary-font;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 64px;
+  line-height: 87px;
+  letter-spacing: -1px;
 }
 .landingImage {
   margin-top: 50px;
-  height: 450px;
+  min-width: 200px;
+  min-height: 200px;
 }
-.startedButton {
-  margin-left: 50px;
+.rightSide {
+  margin-top: 30px;
 }
 </style>

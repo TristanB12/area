@@ -2,59 +2,47 @@
   <div>
     <img class="explore" src="@/assets/Explore.png" alt="Explore" />
   </div>
-  <div>
+  <div class="iconSet">
     <img 
-        class="iconSet" 
-        src="@/assets/snapchat.png" 
-        alt="snapchat"
-    />
+        class="icon"
+        src="@/assets/snapchat.png"
+        alt="snapchat" />
     <img 
-        class="iconSet" 
-        src="@/assets/spotify.png" 
-        alt="spotify" 
-    />
+        class="icon"
+        src="@/assets/spotify.png"
+        alt="spotify" />
     <img 
-        class="iconSet" 
-        src="@/assets/youtube.png" 
-        alt="youtube" 
-    />
+        class="icon"
+        src="@/assets/youtube.png"
+        alt="youtube" />
     <img 
-        class="iconSet" 
-        src="@/assets/outlook.png" 
-        alt="outlook" 
-    />
+        class="icon"
+        src="@/assets/outlook.png"
+        alt="outlook" />
     <img 
-        class="iconSet" 
-        src="@/assets/intranet.png" 
-        alt="intranet - Epitech" 
-    />
-  </div>
-  <div>
+        class="icon"
+        src="@/assets/intranet.png"
+        alt="intranet - Epitech" />
     <img 
-        class="iconSet" 
-        src="@/assets/gmail.png" 
-        alt="gmail"
-    />
+        class="icon"
+        src="@/assets/gmail.png"
+        alt="gmail" />
     <img 
-        class="iconSet" 
-        src="@/assets/reddit.png" 
-        alt="reddit" 
-    />
+        class="icon"
+        src="@/assets/reddit.png"
+        alt="reddit" />
     <img 
-        class="iconSet" 
-        src="@/assets/twitter.png" 
-        alt="twitter" 
-    />
+        class="icon"
+        src="@/assets/twitter.png"
+        alt="twitter" />
     <img 
-        class="iconSet" 
-        src="@/assets/vinted.png" 
-        alt="vinted" 
-    />
+        class="icon"
+        src="@/assets/vinted.png"
+        alt="vinted" />
     <img 
-        class="iconSet" 
-        src="@/assets/orange.png" 
-        alt="orange" 
-    />
+        class="icon"
+        src="@/assets/orange.png"
+        alt="orange" />
   </div>
 </template>
 
@@ -64,10 +52,17 @@ export default {};
 
 <style lang="scss" scoped>
 .explore {
-  margin: 30px;
+  margin: 40px;
 }
 .iconSet {
-  margin-left: 5%;
-  margin-bottom: 5%;
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
+  margin: auto;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.icon {
+  margin: 30px;
 }
 </style>
