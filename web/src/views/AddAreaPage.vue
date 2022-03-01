@@ -63,6 +63,20 @@ import FinalizeAreaCreation from '@/components/FinalizeAreaCreation.vue';
             }
         },
         methods: {
+            isConnected(serviceToCheck) {
+                let linkedServices = this.$store.state.user.linked_services;
+
+                for (let service of linkedServices) {
+                    console.log(service, serviceToCheck)
+                    if (service.toLowerCase() == serviceToCheck.toLowerCase()) {
+                        return true;
+                    }
+                    console.log(service, );
+                    if (['youtube', 'gmail', 'google'].includes(serviceToCheck) && service.toLowerCase() == 'google')
+                        return true;
+                }
+                return false;
+            },
             ManageActionChange(...args) {
                 let [isSelected, action] = args;
 
@@ -78,13 +92,16 @@ import FinalizeAreaCreation from '@/components/FinalizeAreaCreation.vue';
             ManageFinalizeChange(...args) {
                 let [title, description] = args;
 
-                console.log(description);
                 this.area.title = title;
                 this.area.description = description;
                 if (title && title.length > 0) {
                     this.isButtonDisabled = false;
                 } else {
-                    this.isButtonDisabled = true;
+                    if (this.isConnected(this.action.service.name) && this.isConnected(this.reaction.service.name)) {
+                        this.isButtonDisabled = true;
+                    } else {
+                        this.isButtonDisabled = false;
+                    }
                 }
             }
         },
