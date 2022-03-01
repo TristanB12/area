@@ -2,7 +2,7 @@
     <div class="service-button">
         <div class="service">
             <img :src="service.logoUri" alt="">
-            <h4 class="subtitle">{{ service.service }}</h4>
+            <h4 class="subtitle">{{ service.service.name }}</h4>
         </div>
         <div class="connected-state">
             <span v-if="isConnected"  class="button">{{ $t('pages.add.finalize.connected') }}</span>
@@ -34,7 +34,7 @@ import { functionsTable } from '@/services/index.js';
                 let linkedServices = this.$store.state.user.linked_services;
 
                 for (let service of linkedServices) {
-                    if (service.toLowerCase() == this.service.service.toLowerCase()) {
+                    if (service.toLowerCase() == this.service.service.name.toLowerCase()) {
                         return true;
                     }
                 }
@@ -43,7 +43,7 @@ import { functionsTable } from '@/services/index.js';
         },
         methods: {
             linkAccount() {
-                let func = functionsTable[this.service.service.toLowerCase()];
+                let func = functionsTable[this.service.service.name.toLowerCase()];
 
                 if (!func) return;
                 let win = func('link');

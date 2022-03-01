@@ -87,7 +87,8 @@
             "title": "Areas",
             "create": "créer une area",
             "search": "Rechercher par nom",
-            "delete": "Supprimer l'area ?"
+            "delete": "Supprimer l'area ?",
+            "noArea": "Vous n'avez pas d'Area..."
         },
         "apps": {
             "title": "Applications"

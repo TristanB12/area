@@ -75,7 +75,19 @@ const verifyToken = async (token) => {
 }
 
 const getUserAreas = async () => {
-    return [mockAreas, null];
+    let config = {
+        method: 'get',
+        url: baseUrl + '/area',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
 }
 
 const getServices = async () => {

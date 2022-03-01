@@ -1,5 +1,5 @@
 <template>
-    <div class="action-adder">
+    <div class="action-adder" v-if="this.$store.state.services">
         <div class="container">
             <div class="header">
                 <span>
@@ -75,7 +75,14 @@ import EventPreview from '@/components/EventPreview.vue';
         },
         computed: {
             allServices() {
-                return this.$store.state.services; 
+                let  services = [];
+
+                for (let service of this.$store.state.services) {
+                    if (service.actions && service.actions.length > 0) {
+                        services.push(service);
+                    }
+                }
+                return services; 
             },
             triggers() {
                 if (!this.serviceSelected) return undefined;

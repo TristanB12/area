@@ -79,16 +79,16 @@
         "connect": "connect"
       },
       "configuration": {
-        "title": "Configurez le déclencheur",
-        "description": "Remplissez les éléments requis"
+        "title": "Configurez the trigger",
+        "description": "Fill in required elements"
     }
     },
     "areas": {
       "title": "Areas",
       "create": "create area",
       "search": "Search by name",
-      "delete": "Delete area ?"
-
+      "delete": "Delete area ?",
+      "noArea": "You have no Areas"
     },
     "apps": {
       "title": "Apps"

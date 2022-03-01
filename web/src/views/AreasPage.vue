@@ -1,6 +1,6 @@
 <template>
     <AppPageContainer :title="$t('pages.areas.title')">
-        <nav>
+        <nav v-if="areas && areas.length > 0">
             <VSearchBar
                 :placeholder="$t('pages.areas.search')"
                 :searchItems="areas"
@@ -11,12 +11,15 @@
                 @click="$router.push({name: 'AddAreaPage'})"
             />
         </nav>
-        <div class="areas-container">
+        <div class="areas-container" v-if="areas && areas.length > 0">
             <AreaPreview
                 v-for="area in searchedAreas"
                 :key="area._id"
                 :infos="area"
             />
+        </div>
+        <div class="error-container" v-else>
+            <h4 class="subtitle">{{ $t('pages.areas.noArea') }}</h4>
         </div>
     </AppPageContainer>
 </template>
@@ -48,8 +51,8 @@ import API from '@/services/api.js';
                 let res = await API.getUserAreas();
 
                 if (res[0]) {
-                    this.areas = res[0];
-                    this.searchedAreas = res[0]
+                    this.areas = res[0].data;
+                    this.searchedAreas = res[0].data;
                 }
             }
         }
@@ -73,5 +76,9 @@ nav {
         width: 48%;
         margin: 15px 0;
     }
+}
+.error-container {
+    margin-top: 20vh;
+    text-align: center;
 }
 </style>
