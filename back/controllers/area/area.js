@@ -42,6 +42,20 @@ function getActionByTag(serviceName, tag) {
   return undefined;
 }
 
+function getReactionByTag(serviceName, tag) {
+  const service = services[serviceName];
+
+  try {
+    for (let i = 0; i < service.reactions.length; i++) {
+      if (service.reactions[i].tag === tag)
+        return service.reactions[i];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return undefined;
+}
+
 /**
  * Create an area with given params
  * @param {*} req 
@@ -58,9 +72,12 @@ async function createArea(req, res) {
   const configAction = getActionByTag(action.service, action.tag);
   if (!configAction)
     return res.status(400).json({ message: `specified action does not exist or not supported by ${action.service} service.` });
+  const configReaction = getReactionByTag(reaction.service, reaction.tag);
+    if (!configReaction)
+      return res.status(400).json({ message: `specified reaction does not exist or not supported by ${reaction.service} service.` });
   
   if (!title)
-    title = `${configAction.title},${reaction.title}`;
+    title = `${configAction.title},${configReaction.title}`;
 
   const area = await Area.create({
     owner: user._id,
@@ -76,7 +93,16 @@ async function createArea(req, res) {
         _v: 0
       }
     },
-    reaction,
+    reaction: {
+      tag: configReaction.tag,
+      service: configReaction.service,
+      title: configReaction.title,
+      requiresUserAuth: configReaction.requiresUserAuth,
+      config: reaction.config,
+      save: {
+        _v: 0
+      }
+    },
   });
 
   return res.status(200).json({

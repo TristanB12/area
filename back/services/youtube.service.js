@@ -48,7 +48,7 @@ const youtubeService = {
         logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
       },
       requiresUserAuth: true,
-      config: {},
+      config: null,
       binding: {},
       function: youtubeAction.actionNewSubscribe,
     }

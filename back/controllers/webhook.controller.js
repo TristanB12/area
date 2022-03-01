@@ -4,6 +4,20 @@ const db = require('../models');
 const Area = db.area;
 const User = db.user;
 
+function getReactionByTag(serviceName, tag) {
+  const service = services[serviceName];
+
+  try {
+    for (let i = 0; i < service.reactions.length; i++) {
+      if (service.reactions[i].tag === tag)
+        return service.reactions[i];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  return undefined;
+}
+
 async function doActionAndReaction(confAction, user, area) {
   const responce = await confAction.function(user, area);
 
@@ -16,8 +30,26 @@ async function doActionAndReaction(confAction, user, area) {
     return false; // The webhook is not trigger
 
   console.log("TRIGGER !!!");
-  // TODO: launch the function reaction with the responce of action
+  const confReaction = getReactionByTag(area.reaction.service.name, area.reaction.tag);
+  try {
+    await confReaction.function(user, area, responce);
+  } catch (error) {
+    console.log(confReaction.requiresUserAuth)
+    console.log(confReaction.service.name)
+    console.log(services[confReaction.service.name].refreshToken)
+    if (!confReaction.requiresUserAuth || !services[confReaction.service.name].refreshToken) {
+      return true;
+    }
+    console.log(error);
+    await services[confReaction.service.name].refreshToken(user);
+    const user = await User.findById(area.owner);
 
+    try {
+      await confReaction.function(user, area, responce);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return true;
 }
 
@@ -38,7 +70,7 @@ function getActionByTag(serviceName, tag) {
 async function webhookByTag(serviceName, tag) {
   const service = services[serviceName];
   const confAction = getActionByTag(serviceName, tag);
-  const areas = await Area.find({ tag: tag });
+  const areas = await Area.find({ 'action.tag': tag });
 
   for (let i = 0; i < areas.length; i++) {
     let user = await User.findById(areas[i].owner);
@@ -56,7 +88,7 @@ async function webhookByTag(serviceName, tag) {
       user = await User.findById(areas[i].owner);
 
       try {
-       await doActionAndReaction(confAction, user, areas[i]);
+        await doActionAndReaction(confAction, user, areas[i]);
       } catch (err) {
         console.log(err);
         // TODO: refresh the access_token doesn't work
