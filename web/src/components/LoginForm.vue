@@ -11,8 +11,8 @@
             :title="$t('auth.login.google')"
             iconName="google_icon.png"
             width="100%"
-            :isLoading="isLoading.github"
-            @click="loginWithGithub"
+            :isLoading="isLoading.google"
+            @click="loginWithGoogle"
         />
         <div>
             <span class="line"></span>
@@ -25,14 +25,14 @@
             :placeholder="$t('auth.email')"
             width="100%"
             iconName="email_icon.png"
-            @input-updated="setEmail"
+            v-model="inputs.email"
         />
         <VInput
             type="password"
             :placeholder="$t('auth.password')"
             width="100%"
             iconName="password_icon.png"
-            @input-updated="setPassword"
+            v-model="inputs.password"
         />
         <VButton
             :title="$t('auth.login.title')"
@@ -49,7 +49,7 @@ import VLightButton from '@/components/ui/VLightButton.vue';
 import VInput from '@/components/ui/VInput.vue';
 import VButton from '@/components/ui/VButton.vue';
 import {loginUser} from '@/services/api.js';
-import {facebookAuthCode, githubAuthCode} from '@/services';
+import {facebookAuthCode, googleAuthCode} from '@/services';
     export default {
         components: {
             VLightButton,
@@ -60,7 +60,7 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
             return {
                 isLoading: {
                     facebook: false,
-                    github: false,
+                    google: false,
                     login: false
                 },
                 inputs: {
@@ -77,17 +77,19 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
-                        this.$router.push({name: 'DashboardPage'});
+                        this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
-            loginWithGithub() {
-                this.isLoading.github = true;
-                let win = githubAuthCode('login');
+            loginWithGoogle() {
+                this.isLoading.google = true;
+                let win = googleAuthCode('login');
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
                         this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
@@ -100,6 +102,7 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
                 let res = await loginUser(this.inputs);
                 if (res[0]) {
                     localStorage.setItem('access_token', res[0].access_token);
+                    this.$store.state.token = res[0].access_token;
                     this.$router.push({name: 'AreasPage'});
                 }
                 else {
@@ -108,12 +111,6 @@ import {facebookAuthCode, githubAuthCode} from '@/services';
                     this.isLoading.login = false;
                 }
             },
-            setEmail(event) {
-                this.inputs.email = event;
-            },
-            setPassword(event) {
-                this.inputs.password = event;
-            }
         },
     }
 </script>

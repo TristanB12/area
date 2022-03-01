@@ -11,6 +11,7 @@
         "register": "S'inscrire"
     },
     "auth": {
+        "logout": "Deconnexion",
         "email": "Email",
         "password": "Mot de passe",
         "confirmPassword": "Confirmer le mot de passe",
@@ -35,12 +36,65 @@
         }
     },
     "pages": {
+        "add": {
+            "next": "suivant",
+            "create": "créer",
+            "action": {
+                "title": "Configurer l'action",
+                "chooseApp": {
+                    "title": "Choisissez une app",
+                    "description": "Selectionnez une app pour déclencher l'area"
+                },
+                "chooseTrigger": {
+                    "title": "Choisissez un déclencheur",
+                    "description": "Selectionnez l'évènement qui va déclencher l'Area"
+                }
+            },
+            "reaction": {
+                "title": "Configurer la réaction",
+                "chooseApp": {
+                    "title": "Choisissez une app",
+                    "description": "Selectionnez une app qui sera déclenchée par l'Area"
+                },
+                "chooseReaction": {
+                    "title": "Choisissez une reaction",
+                    "description": "CHoisisez ce qu'il va arriver quand l'Area sera  déclenchée"
+                }
+            },
+            "finalize": {
+                "title": "Finalisez votre Area",
+                "services": "Services",
+                "options": {
+                    "title": "Options",
+                    "areaName": {
+                        "title": "Titre",
+                        "placeholder": "Titre de votre Area"
+                    },
+                    "description": {
+                        "title":  "Description (optionnelle)",
+                        "placeholder": "Description de votre Area"
+                    }
+                },
+                "connected": "connecté",
+                "connect": "connexion"
+            },
+            "configuration": {
+                "title": "Configurez le déclencheur",
+                "description": "Remplissez les éléments requis"
+            }
+        },
         "areas": {
-            "title": "Areas"
+            "title": "Areas",
+            "create": "créer une area",
+            "search": "Rechercher par nom",
+            "delete": "Supprimer l'area ?",
+            "noArea": "Vous n'avez pas d'Area..."
         },
         "apps": {
             "title": "Applications"
         },
-        "explore": "Explorer"
+        "explore": {
+            "title": "Explorer"
+        }
     }
 }

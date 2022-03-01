@@ -1,18 +1,16 @@
 <template>
-    <section>
-        <h1>{{$t('pages.apps.title')}}</h1>
-    </section>
+    <AppPageContainer :title="$t('pages.apps.title')">
+    </AppPageContainer>
 </template>
 
 <script>
+import AppPageContainer from '@/components/layout/AppPageContainer.vue'; 
     export default {
-        
+        components: {
+            AppPageContainer
+        }
     }
 </script>
 
 <style lang="scss" scoped>
-section {
-    width: 80%;
-    margin: auto;
-}
 </style>
