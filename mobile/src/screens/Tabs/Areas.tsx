@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { useQuery } from "react-query";
 import { Box, Image, HStack, Pressable, Text, VStack, Heading, Icon, Center, Fab, Skeleton, Button } from "native-base";
 import { StackNavProp } from "../../navigation/types";
 import Area from "../../types";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import areasAtom from "../../recoil/atoms/areas";
+import { useSetRecoilState } from "recoil";
 import TabScreenView from "../../components/TabScreenView";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
 import Entypo from 'react-native-vector-icons/Entypo'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import api, { APIError } from "../../api";
+import { APIError } from "../../api";
+import useAreas from "../../hooks/useAreas";
+import ErrorFetching from "../../components/ErrorFetching";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {
   return (
@@ -98,51 +98,6 @@ function NoAreas() {
   )
 }
 
-function ErrorFetching({ error } : { error: APIError | null | undefined}) {
-  const { t } = useTranslation(['areas', 'common'])
-  const [isLoading, setIsLoading] = useState(false)
-  const { refetch } = useQuery("areas", async () => await api.areas.get(), {
-    enabled: false
-  })
-
-  const refetchAreas = () => {
-    setIsLoading(true)
-    refetch()
-    setIsLoading(false)
-  }
-
-  return (
-    <Center flex={1}>
-      <VStack space={8} alignItems="center">
-        <HStack w="80%" space={4} alignItems="center">
-          <Heading textAlign="center" size="md" color="danger.400">
-            { t('error_fetching') }
-          </Heading>
-          <Icon
-            size="lg"
-            color="primary.400"
-            as={<MaterialIcons name="error-outline" />}
-          />
-        </HStack>
-        {
-          error &&
-          <>
-            <Text fontSize="xl" color="red.600">
-              { error.status }
-            </Text>
-            <Text fontSize="lg" textAlign="center">
-              { error.message }
-            </Text>
-          </>
-        }
-        <Button isLoading={isLoading} size="lg" shadow={6} onPress={refetchAreas}>
-          { t('retry', { ns: 'common' }) }
-        </Button>
-      </VStack>
-    </Center>
-  )
-}
-
 function AreaItemSkeleton() {
   return (
     <Box w="100%" variant="card" p={3}>
@@ -168,14 +123,9 @@ function AreaListSkeleton() {
 }
 
 function AreasScreen() {
-  const { isLoading, data } = useQuery(
-    "areas",
-    async () => await api.areas.get(),
-    {
-      retry: false
-    }
-  )
-  const areas = data?.data?.data
+  const { t } = useTranslation('areas')
+  const { isLoading, data, refetch } = useAreas()
+  const areas: Area[] = data?.data?.data || []
 
   return (
     <TabScreenView>
@@ -183,7 +133,11 @@ function AreasScreen() {
         isLoading ? (
           <AreaListSkeleton />
         ) : (data === undefined || data.error) ? (
-          <ErrorFetching error={data?.error}/>
+          <ErrorFetching
+            title={t('error_fetching')}
+            error={data?.error}
+            refetch={refetch}
+          />
         ) : (
           areas.length > 0 ? <AreaList areas={areas} /> : <NoAreas />
         )

@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, Image, Text, Input, Icon, HStack, Button, VStack, AlertDialog } from "native-base";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Service } from "../types";
-import ScreenView from '../components/ScreenView'
-import servicesAtom from "../recoil/atoms/services";
+import { Service } from "../../types";
+import ScreenView from '../../components/ScreenView'
+import servicesAtom from "../../recoil/atoms/services";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import api from "../api";
+import api from "../../api";
 
 type ServiceItemProps = {
   service: Service,

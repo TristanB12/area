@@ -7,11 +7,13 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackParamList, TabParamList } from "../../navigation/types";
 import { AlertDialog, Button, Icon } from "native-base"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import areasAtom from "../../recoil/atoms/areas";
 import ScreenView from '../../components/ScreenView'
 import EditArea from "../../components/EditArea";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
 import { useTranslation } from "react-i18next";
+import api from "../../api";
+import { useMutation, useQueryClient } from "react-query";
+import Area from "../../types";
 
 type EditAreaScreenProps = CompositeScreenProps<
   NativeStackScreenProps<StackParamList, 'EditArea'>,
@@ -62,21 +64,22 @@ function DeleteAreaDialog({ isOpen, setIsOpen, onDelete } : { isOpen: boolean, s
 // Used for editing areas and creating new ones
 function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
   const { t } = useTranslation('navigation')
-  const [areas, setAreas] = useRecoilState(areasAtom)
   const [editedArea, setEditedArea] = useRecoilState(editedAreaAtom)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const queryClient = useQueryClient()
+  const { mutateAsync } = useMutation(async (area: Area) => await api.areas.create(area), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("areas")
+    }
+  })
 
   const onDelete = () => {
-    setAreas(areas.filter(area => area.id !== editedArea.id))
     navigation.goBack()
   }
-  const onSave = () => {
-    // TODO: call API to store area, and get generated ID
-    const randomId = Math.floor(Math.random() * 100)
-    setAreas([...areas.filter(area => area.id !== editedArea.id),
-      { ...editedArea, id: randomId }]
-    )
-    navigation.goBack()
+  const onSave = async () => {
+    const { data, error } = await mutateAsync(editedArea)
+    console.log(data, error)
+    // navigation.goBack()
   }
 
   useLayoutEffect(() => {

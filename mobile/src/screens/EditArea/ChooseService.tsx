@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavProp, StackParamList } from "../../navigation/types";
-import { Box, Image, VStack, Text, Input, Icon, Center } from "native-base";
-import { useRecoilValue } from "recoil";
+import { Box, Image, VStack, Text, Input, Icon, Center, Skeleton, HStack } from "native-base";
 import {  Service } from "../../types";
 import ScreenView from '../../components/ScreenView'
-import servicesAtom from "../../recoil/atoms/services";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from "react-i18next";
+import useServices from "../../hooks/useServices";
+import ErrorFetching from "../../components/ErrorFetching";
 
 function ServiceItem({ service, isReaction } : { service: Service, isReaction: boolean }) {
   const actions = isReaction ? service.reactions : service.actions
@@ -59,53 +59,131 @@ function ServiceItem({ service, isReaction } : { service: Service, isReaction: b
   )
 }
 
-function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'ChooseService'> }) {
-  const { t } = useTranslation('services')
-  const { isReaction } = route.params
-  const allServices = useRecoilValue(servicesAtom)
-  const [services, setServices] = useState(allServices)
+function ServiceItemSkeleton() {
+  return (
+    <Box
+      variant="card"
+      flex={1}
+      m={2}
+      p={4}
+      justifyContent="center"
+    >
+      <VStack space={4} alignItems="center">
+        <Skeleton size="10" rounded="full" />
+        <Skeleton.Text lines={1} w="50%" />
+      </VStack>
+    </Box>
+  )
+}
 
-  const onChangeText = (text: string) => {
-    if (text.length === 0) {
-      setServices(allServices)
-    } else {
-      setServices(allServices.filter(service => service.name.includes(text)))
-    }
-  }
+type SearchBarProps = {
+  placeholder: string,
+  search: string,
+  setSearch: React.Dispatch<React.SetStateAction<string>>,
+}
+
+function SearchBar({ placeholder, search, setSearch } : SearchBarProps) {
+  return (
+    <Input
+      placeholder={placeholder}
+      width="100%"
+      borderRadius="6"
+      borderColor="tertiary.400"
+      _focus={{
+        borderColor: "tertiary.400"
+      }}
+      py="3"
+      px="3"
+      my="5"
+      fontSize="14"
+      InputLeftElement={
+        <Box p={2} h="100%" alignItems="center" bgColor="tertiary.400">
+          <Icon
+            size="md"
+            color="white"
+            as={<MaterialIcons name="search" />}
+            />
+        </Box>
+      }
+      value={search}
+      onChangeText={(text) => setSearch(text)}
+    />
+  )
+}
+
+function SearchServices({ services, isReaction } : { services: Service[], isReaction: boolean }) {
+  const { t } = useTranslation('services')
+  const [search, setSearch] = useState("")
 
   return (
-    <ScreenView>
-      <Input
+    <>
+      <SearchBar
         placeholder={t('search_service')}
-        width="100%"
-        borderRadius="6"
-        borderColor="tertiary.400"
-        _focus={{
-          borderColor: "tertiary.400"
-        }}
-        py="3"
-        px="3"
-        my="5"
-        fontSize="14"
-        InputLeftElement={
-          <Box p={2} h="100%" alignItems="center" bgColor="tertiary.400">
-            <Icon
-              size="md"
-              color="white"
-              as={<MaterialIcons name="search" />}
-              />
-          </Box>
-        }
-        onChangeText={onChangeText}
+        search={search}
+        setSearch={setSearch}
       />
       <FlatList
         columnWrapperStyle={{justifyContent: 'space-between'}}
         style={{ width: "100%" }}
         keyExtractor={service => service.name}
-        data={services}
+        data={services ? services.filter(service => service.name.includes(search)) : []}
         renderItem={item => <ServiceItem service={item.item} isReaction={isReaction} />}
         numColumns={2}
       />
+    </>
+  )
+}
+
+function SearchBarSkeleton() {
+  return (
+    <Box
+      variant="card"
+      my={5}
+      justifyContent="center"
+      w="100%"
+    >
+      <Skeleton w="15%"/>
+    </Box>
+  )
+}
+
+function SearchServicesSkeleton() {
+  return (
+    <>
+      <SearchBarSkeleton />
+      <FlatList
+        columnWrapperStyle={{justifyContent: 'space-between'}}
+        style={{ width: "100%" }}
+        keyExtractor={(item) => item.toString()}
+        data={[...Array(6).keys()]}
+        renderItem={() => <ServiceItemSkeleton />}
+        numColumns={2}
+      />
+    </>
+  )
+}
+
+function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'ChooseService'> }) {
+  const { isReaction } = route.params
+  const { t } = useTranslation('services')
+  const { isLoading, data, refetch } = useServices()
+  const services: Service[] = data?.data || []
+
+  return (
+    <ScreenView>
+      {
+        isLoading ? (
+          <SearchServicesSkeleton />
+        ) : (data === undefined || data.error) ? (
+          <ErrorFetching
+            title={t('error_fetching')}
+            error={data?.error}
+            refetch={refetch}
+          />
+        ) : (
+          <SearchServices services={services} isReaction={isReaction} />
+        )
+      }
     </ScreenView>
   )
 }

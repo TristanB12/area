@@ -13,8 +13,8 @@ import AppIntroScreen from '../screens/AppIntro'
 import TabsNavigation from './Tabs';
 import RegisterScreen from '../screens/auth/Register';
 import LoginScreen from '../screens/auth/Login';
-import SettingsScreen from '../screens/Settings';
-import MyServicesScreen from '../screens/MyServices';
+import SettingsScreen from '../screens/Settings/Settings';
+import MyServicesScreen from '../screens/Settings/MyServices';
 import EditAreaScreen from '../screens/EditArea/EditArea';
 import ChooseServiceScreen from '../screens/EditArea/ChooseService';
 import LinkServiceScreen from '../screens/EditArea/LinkService';
@@ -33,7 +33,6 @@ function StackNavigation() {
     retrieveAuthFromStorage(setAuth);
   }, []);
 
-  console.log(auth)
   return (
     <NavigationContainer theme={useColorModeValue(DefaultTheme, DarkTheme)}>
       <Stack.Navigator screenOptions={options}>

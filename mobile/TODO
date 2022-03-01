@@ -2,7 +2,6 @@
 - login with google & facebook
 - implement useQuery for areas and services
   - add fallback when there are no services or areas
-- verify access token before every request
 - tester l'app en mode offline
 - scrollable screenview
 - change language / theme on sign up

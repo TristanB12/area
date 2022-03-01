@@ -1,5 +1,10 @@
 import axiosAPI from "./config"
 
+const getServices = async () => axiosAPI({
+  method: "GET",
+  url: "/service"
+})
+
 const linkService = async (serviceName: string, authorizationCode: string) => {
   serviceName = serviceName.toLowerCase()
 
@@ -21,4 +26,4 @@ const unlinkService = async (serviceName: string) => axiosAPI({
   }
 })
 
-export { linkService, unlinkService }
+export { getServices, linkService, unlinkService }

@@ -57,7 +57,7 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
     && area.action !== undefined
     && area.reaction !== undefined
   )
-  const onSubmit = () => canSave && onSave()
+  const onSubmit = async () => canSave && await onSave()
 
   return (
     <>

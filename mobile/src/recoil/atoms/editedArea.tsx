@@ -4,7 +4,7 @@ import Area from "../../types"
 const editedAreaAtom = atom({
   key: "editedArea",
   default: {
-    _id: 0,
+    id: 0,
     title: "",
     description: "",
     action: undefined,

@@ -12,7 +12,7 @@ function TabScreenView({ children } : { children: React.ReactNode }) {
   const [editedArea, setEditedArea] = useRecoilState(editedAreaAtom)
   const goToEditArea = () => {
     setEditedArea({
-      _id: 0,
+      id: 0,
       title: "",
       description: "",
       action: undefined,

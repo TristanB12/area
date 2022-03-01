@@ -4,7 +4,7 @@ import Area from '../types'
 const createArea = async (area: Area) => axiosAPI({
   method: "POST",
   url: "/area",
-  data: { area }
+  data: area,
 })
 
 const getAreas = async () => axiosAPI({
@@ -15,7 +15,7 @@ const getAreas = async () => axiosAPI({
 const editArea = async (area: Area) => axiosAPI({
   method: "PATCH",
   url: "/area",
-  data: { area }
+  data: area
 })
 
 const deleteArea = async (area: Area) => axiosAPI({
