@@ -15,6 +15,16 @@ function getAllActionsOfService(service) {
       config: service.actions[j].config
     });
   return actions;
+
+  for (let j = 0; j < service.actions.length; j++)
+    actions.push({
+      service: service.actions[j].service,
+      tag: service.actions[j].tag,
+      title: service.actions[j].title,
+      requiresUserAuth: service.actions[j].requiresUserAuth,
+      config: service.actions[j].config
+    });
+  return actions;
 }
 
 function getAllReactionsOfService(service) {
@@ -22,7 +32,7 @@ function getAllReactionsOfService(service) {
 
   if (!service.tags.includes('reactions'))
     return reactions;
-  for (let j = 0; j < service.reactions; j++)
+  for (let j = 0; j < service.reactions.length; j++)
     reactions.push({
       service: service.reactions[j].service,
       tag: service.reactions[j].tag,
