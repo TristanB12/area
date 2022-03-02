@@ -6,7 +6,6 @@ import {
   Input,
   Icon
 } from "native-base";
-import EncryptedStorage from 'react-native-encrypted-storage';
 import { useTranslation } from "react-i18next";
 import { useForm, Controller } from 'react-hook-form';
 import api from '../../api'
@@ -16,8 +15,6 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useSetRecoilState } from "recoil";
 import authAtom from "../../recoil/atoms/auth";
-import { AuthStorage, AuthTokens } from "../../types/auth";
-import { getTodaysTimestampInSeconds } from '../../utils'
 import { storeUserSessionToStorage } from '../../storage'
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
@@ -29,12 +26,12 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
       confirmPassword: ""
     }
   });
+  const setAuth = useSetRecoilState(authAtom)
+  const [isLoading, setIsLoading] = useState(false)
   const password = useRef({})
   password.current = watch("password")
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const shouldConfirmPassword = (action === "register")
-  const setAuth = useSetRecoilState(authAtom)
 
   const onSubmit = async (authForm: AuthForm) => {
     setIsLoading(true)

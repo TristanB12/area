@@ -1,28 +1,20 @@
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { AuthConfiguration, authorize } from 'react-native-app-auth';
 import { Box, HStack, VStack, Image, Text } from "native-base"
 import { useTranslation } from "react-i18next"
 import { AuthService } from "../../types"
+import api from "../../api";
 
 function AuthServiceCard({ service, action } : { service: AuthService, action: 'login' | 'register' }) {
   const { t } = useTranslation('auth')
 
   const onSubmit = async (service: AuthService) => {
-    const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"
-    const config: AuthConfiguration = {
-      issuer: 'https://accounts.google.com',
-      clientId: `${appID}.apps.googleusercontent.com`,
-      redirectUrl: `com.googleusercontent.apps.${appID}:area`,
-      scopes: ['email', 'profile']
-    };
-
-    try {
-      const result = await authorize(config)
-      console.log(result)
-    } catch (error) {
-      console.log(error);
-    }
+    const { data, error } = ((action === "login")
+      ? await api.auth.login.service(service)
+      : await api.auth.signup.service(service)
+    )
+    console.log(data)
+    console.log(error)
   }
 
   return (
