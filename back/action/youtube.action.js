@@ -1,7 +1,6 @@
 require('dotenv').config();
 const db = require('../models');
 const axios = require('axios');
-const { compareSync } = require('bcryptjs');
 
 const Area = db.area;
 
@@ -75,18 +74,85 @@ async function actionVideoIsUpload(user, area) {
   if (response.id === latestVideoID)
     return { error: false, data: false };
   let msave = action.save;
-  action.save.latestVideoID = response.id;
+  msave.latestVideoID = response.id;
 
   await Area.findByIdAndUpdate({ _id: area._id }, { 'action.save': msave });
   if (latestVideoID == undefined)
     return { error: false, data: false };
   return { error: false, data: {
-    publishedAt: response.snippet.publishedAt,
+    'Published at': response.snippet.publishedAt,
     title: response.snippet.title,
     description: response.snippet.description,
-    'channel titlte': response.snippet.channelTitle,
-    'video url': `https://www.youtube.com/watch?v=${response.contentDetails.upload.videoId}`,
+    'Channel titlte': response.snippet.channelTitle,
+    'Video url': `https://www.youtube.com/watch?v=${response.contentDetails.upload.videoId}`,
   }};
 }
 
-module.exports = { actionVideoIsUpload };
+async function getMySubscriptionsList(maxResults, access_token) {
+  const options = {
+    url: 'https://youtube.googleapis.com/youtube/v3/subscriptions',
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    },
+    params: {
+      part: 'snippet,contentDetails',
+      maxResults,
+      mine: true,
+    }
+  };
+
+  const responce = await axios(options);
+  return responce.data;
+}
+
+async function actionNewSubscribe(user, area) {
+  const { action } = area;
+  const response = await getMySubscriptionsList(1, user.services.google.access_token);
+  const { totalResults } = action.save;
+
+  if (totalResults === response.pageInfo.totalResults)
+    return { error: false, data: false };
+  let msave = action.save;
+  msave.totalResults = response.pageInfo.totalResults;
+  await Area.findByIdAndUpdate({ _id: area._id }, { 'action.save': msave });
+  if (totalResults === undefined || totalResults > msave.totalResults)
+    return { error: false, data: false };
+  return { error: false, data: response.items[0] };
+}
+
+async function getListOfMyLikedVideo(maxResults, access_token) {
+  const option = {
+    url: 'https://youtube.googleapis.com/youtube/v3/videos',
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    },
+    params: {
+      part: 'snippet,contentDetails,statistics',
+      maxResults,
+      myRating: 'like',
+    }
+  };
+
+  const responce = await axios(option);
+  return responce.data;
+}
+
+async function actionLikedVideo(user, area) {
+  const { action } = area;
+
+  const responce = await getListOfMyLikedVideo(1, user.services.google.access_token);
+  const { totalResults } = action.save;
+
+  if (totalResults === responce.pageInfo)
+    return { error: false, data: false };
+  let msave = action.save;
+  msave.totalResults = responce.pageInfo.totalResults;
+  await Area.findByIdAndUpdate({ _id: area._id }, { 'action.save':msave });
+  if (totalResults === undefined || totalResults > msave.totalResults)
+    return { error: false, data: false };
+  return { error: false, data: responce.items[0] };
+}
+
+module.exports = { actionVideoIsUpload, actionNewSubscribe, actionLikedVideo };
