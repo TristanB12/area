@@ -106,11 +106,47 @@ const getServices = async () => {
     }
 }
 
+const createArea = async (data) => {
+    let config = {
+        method: 'post',
+        url: baseUrl + '/area',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        data: data
+    };
+
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
+}
+
+const deleteArea = async (areaId) => {
+    let config = {
+        method: 'delete',
+        url: baseUrl + '/area/' + areaId,
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
+}
+
 module.exports = {
     loginUser,
     signupUser,
     verifyToken,
     getUserAreas,
     getServices,
-    getUserInfos
+    getUserInfos,
+    createArea,
+    deleteArea
 }

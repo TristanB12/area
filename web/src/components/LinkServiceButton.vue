@@ -34,11 +34,9 @@ import { functionsTable } from '@/services/index.js';
                 let linkedServices = this.$store.state.user.linked_services;
 
                 for (let service of linkedServices) {
-                    console.log(service, this.service.service.name)
                     if (service.toLowerCase() == this.service.service.name.toLowerCase()) {
                         return true;
                     }
-                    console.log(service, );
                     if (['youtube', 'gmail', 'google'].includes(this.service.service.name) && service.toLowerCase() == 'google')
                         return true;
                 }

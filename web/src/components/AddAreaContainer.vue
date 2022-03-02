@@ -6,6 +6,7 @@
                 :disabled="disabled"
                 :title="buttonTitle"
                 @click="handleChange"
+                :isLoading="isLoading"
             />
         </div>
     </div>
@@ -27,6 +28,11 @@ import VButton from '@/components/ui/VButton.vue';
                 default: true
             }
         },
+        data() {
+            return {
+                isLoading: false
+            }
+        },
         computed: {
             buttonTitle() {
                 if (this.modelValue == 'action') {
@@ -40,7 +46,13 @@ import VButton from '@/components/ui/VButton.vue';
         },
         methods: {
             handleChange(e) {
+                if (this.modelValue == "finished") {
+                    this.isLoading = true;
+                    this.$emit('add-area');
+                    return;
+                }
                 const newStep = this.modelValue == 'action' ? 'reaction' : 'finished';
+
                 this.$emit('update:modelValue', newStep);
                 this.$emit('step-changed');
             },
