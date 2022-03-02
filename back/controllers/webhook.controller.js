@@ -29,7 +29,7 @@ async function doActionAndReaction(confAction, user, area) {
   if (!responce.data)
     return false; // The webhook is not trigger
 
-  console.log("TRIGGER !!!");
+  console.log(`TRIGGER: ${confAction.tag}`);
 
   const confReaction = getReactionByTag(area.reaction.service.name, area.reaction.tag);
   const serviceName = confReaction.service.name;
@@ -38,6 +38,7 @@ async function doActionAndReaction(confAction, user, area) {
 
   try {
     await confReaction.function(user, area, responce);
+    console.log(`REACTION: ${confReaction.tag}`);
   } catch (error) {
     if (!confReaction.requiresUserAuth || !services[confReaction.service.name].refreshToken) {
       return true;
@@ -53,6 +54,7 @@ async function doActionAndReaction(confAction, user, area) {
     user = await User.findById(area.owner);
     try {
       await confReaction.function(user, area, responce);
+      console.log(`REACTION: ${confReaction.tag}`);
     } catch (error) {
       console.log(error);
     }
