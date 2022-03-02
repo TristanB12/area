@@ -4,6 +4,7 @@
             v-model="step"
             :disabled="isButtonDisabled"
             @step-changed="isButtonDisabled = true"
+            @add-area="addArea"
         >
             <component
                 :area="area"
@@ -22,6 +23,7 @@ import AddAreaAction from '@/components/AddAreaAction.vue';
 import AddAreaReaction from '@/components/AddAreaReaction.vue';
 import AddAreaContainer from '@/components/AddAreaContainer.vue';
 import FinalizeAreaCreation from '@/components/FinalizeAreaCreation.vue';
+import API from '../services/api.js';
     export default {
         components: {
             AppPageContainer,
@@ -63,6 +65,18 @@ import FinalizeAreaCreation from '@/components/FinalizeAreaCreation.vue';
             }
         },
         methods: {
+            isConnected(serviceToCheck) {
+                let linkedServices = this.$store.state.user.linked_services;
+
+                for (let service of linkedServices) {
+                    if (service.toLowerCase() == serviceToCheck.toLowerCase()) {
+                        return true;
+                    }
+                    if (['youtube', 'gmail', 'google'].includes(serviceToCheck) && service.toLowerCase() == 'google')
+                        return true;
+                }
+                return false;
+            },
             ManageActionChange(...args) {
                 let [isSelected, action] = args;
 
@@ -77,14 +91,39 @@ import FinalizeAreaCreation from '@/components/FinalizeAreaCreation.vue';
             },
             ManageFinalizeChange(...args) {
                 let [title, description] = args;
+                const {action, reaction} = this.area;
 
-                console.log(description);
                 this.area.title = title;
                 this.area.description = description;
                 if (title && title.length > 0) {
-                    this.isButtonDisabled = false;
+                    if (this.isConnected(action.service.name) && this.isConnected(reaction.service.name)) {
+                        this.isButtonDisabled = false;
+                    } else {
+                        this.isButtonDisabled = true;
+                    }
                 } else {
                     this.isButtonDisabled = true;
+                }
+            },
+            async addArea() {
+                let data = {
+                    title: this.area.title,
+                    description: this.area.description,
+                    action: {
+                        service: this.area.action.service.name,
+                        tag: this.area.action.tag,
+                        config: this.area.action.config || null
+                    },
+                    reaction: {
+                        service: this.area.reaction.service.name,
+                        tag: this.area.reaction.tag,
+                        config: this.area.reaction.config || null
+                    }
+                };
+                let res = await API.createArea(data);
+
+                if (res[0]) {
+                    this.$router.push({name: 'AreasPage'});
                 }
             }
         },
