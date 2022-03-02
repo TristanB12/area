@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { FlatList, TouchableOpacity } from "react-native";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { StackNavProp, StackParamList } from "../../navigation/types";
-import { Box, Image, VStack, Text, Input, Icon, Center, Skeleton, HStack } from "native-base";
-import {  Service } from "../../types";
+import { Box, Image, VStack, Text, Center, Skeleton, Icon} from "native-base";
+import { Service } from "../../types";
 import ScreenView from '../../components/ScreenView'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useTranslation } from "react-i18next";
 import useServices from "../../hooks/useServices";
 import ErrorFetching from "../../components/ErrorFetching";
+import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
 
 function ServiceItem({ service, isReaction } : { service: Service, isReaction: boolean }) {
   const actions = isReaction ? service.reactions : service.actions
@@ -76,41 +76,6 @@ function ServiceItemSkeleton() {
   )
 }
 
-type SearchBarProps = {
-  placeholder: string,
-  search: string,
-  setSearch: React.Dispatch<React.SetStateAction<string>>,
-}
-
-function SearchBar({ placeholder, search, setSearch } : SearchBarProps) {
-  return (
-    <Input
-      placeholder={placeholder}
-      width="100%"
-      borderRadius="6"
-      borderColor="tertiary.400"
-      _focus={{
-        borderColor: "tertiary.400"
-      }}
-      py="3"
-      px="3"
-      my="5"
-      fontSize="14"
-      InputLeftElement={
-        <Box p={2} h="100%" alignItems="center" bgColor="tertiary.400">
-          <Icon
-            size="md"
-            color="white"
-            as={<MaterialIcons name="search" />}
-            />
-        </Box>
-      }
-      value={search}
-      onChangeText={(text) => setSearch(text)}
-    />
-  )
-}
-
 function SearchServices({ services, isReaction } : { services: Service[], isReaction: boolean }) {
   const { t } = useTranslation('services')
   const [search, setSearch] = useState("")
@@ -131,19 +96,6 @@ function SearchServices({ services, isReaction } : { services: Service[], isReac
         numColumns={2}
       />
     </>
-  )
-}
-
-function SearchBarSkeleton() {
-  return (
-    <Box
-      variant="card"
-      my={5}
-      justifyContent="center"
-      w="100%"
-    >
-      <Skeleton w="15%"/>
-    </Box>
   )
 }
 

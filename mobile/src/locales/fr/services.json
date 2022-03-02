@@ -1,5 +1,6 @@
 {
   "my_services": "Mes services",
+  "no_services_yet": "Pas encore de service relié",
   "search_service": "Rechercher un service",
   "error_fetching": "Une erreur est survenue en chargeant les services disponible",
   "link_service": "Relier le service",
