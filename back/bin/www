@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const db = require('../models');
+const webhookController = require('../controllers/webhook.controller');
 
 const User = db.user;
 
@@ -105,5 +106,6 @@ function onListening() {
 }
 
 setInterval(async function() {
-  console.log("TOTOTOTOTOTOTOTOTOTOTOTOTOTOTOTO");
+  await webhookController.runAllWebhook();
+  console.log('RUN WEBHOOK');
 }, 60000);

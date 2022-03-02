@@ -6,7 +6,8 @@ const areaService = {
     auth: {
         login: areaAuth.login,
         signup: areaAuth.signup
-    }
+    },
+    links: null,
 };
 
 module.exports = areaService;

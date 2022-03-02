@@ -35,7 +35,7 @@ View the website at: http://localhost:8080
 | :-------- | :------- | :------------------------- |
 | `service` | `string` | ***Required**. The service to signup [google, area, facebook] |
 | `code`    | `string` | ***Optional**. Code given by the authorization code flow (oauth2). [facebook, google]  |
-| `redirect_uri` | `string` | ***Optional**. Redirect URI used to get the 'code'. [facebook, google]|
+| `platform` | `string` | ***Optional**. What platform used to auth (web, ios, android), by default web. [facebook, google]|
 
 | Body | Type     | Description                |
 | :-------- | :------- | :------------------------- |
@@ -60,7 +60,7 @@ The response from this request, if successful, will be JSON of the following for
 
 ## Token
 
-Refresh the access_token of AREA account.
+### Refresh the access_token of AREA account.
 
 ```http
   GET /token/refresh
@@ -80,7 +80,7 @@ The response from this request, if successful, will be JSON of the following for
 }
 ```
 
-Verify if the given access_token still available.
+### Verify if the given access_token still available.
 
 ```http
   GET /token/verify
@@ -91,10 +91,10 @@ Verify if the given access_token still available.
 
 ## Link
 
-Link new service to an existing account.
+### Link new service to an existing account.
 
 ```http
-  GET /link/:service
+  POST /link/:service
 ```
 
 | Headers | Type     | Description                |
@@ -103,8 +103,135 @@ Link new service to an existing account.
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `service` | `string` | **Required**. The service to link. [google, spotify, facebook, microsoft] |
+| `service` | `string` | ***Required**. The service to link. [google, spotify, facebook, microsoft] |
 | `code`    | `string` | **Required**. Code given by the authorization code flow (oauth2). |
-| `redirect_uri` | `string` | **Required**. Redirect URI used to get the 'code'.|
+| `platform` | `string` | **Optional**. What platform used to auth (web, ios, android), by default web.|
 
 ** Required but can be in the query or in url request. ( "/link/google" or "/link?service=google" )
+
+## User
+
+### Get information about connected user.
+
+```http
+  GET /user
+```
+
+| Headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `authorization` | `string` | **Required**. The access_token given when signup or login. (ex: "Bearer Your access_token") |
+
+The response from this request, if successful, will be JSON of the following format:
+
+```
+{
+    "email": Your email,
+    "email_verified": Boolean True/False if email is verified,
+    "linked_services": Array of linked service name
+}
+```
+
+## AREA
+
+### Get information about an area.
+
+```http
+  GET /area
+```
+
+| Headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `authorization` | `string` | **Required**. The access_token given when signup or login. (ex: "Bearer Your access_token") |
+
+The response from this request, if successful, will be JSON of the following format:
+
+```
+{
+    "items": Your number of area,
+    "data": Array of area
+}
+```
+
+### Create an area.
+
+```http
+  POST /area
+```
+
+| Headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `authorization` | `string` | **Required**. The access_token given when signup or login. (ex: "Bearer Your access_token") |
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `title` | `string` | **Optional**. Title you want to give to new area. (byt default it would be 'action title' and 'reaction title' ) |
+| `description`    | `string` | **Optional**. Description you want to give to new area. |
+| `action` | `Object` | **Required**. The config of action who trigger the new area (see an example below).|
+| `reaction` | `Object` | **Required**. The reaction's config of the new area (see an example below).|
+
+The body from this request, will be JSON of the following format:
+
+```
+{
+    "title": A title for the area,
+    "description": Simple description,
+    "action": {
+        "service": needed service to run this action,
+        "tag": tag of this action,
+        "config": Object that contain all config the action need to run (can be null),
+    },
+    "reaction": {
+        "service": needed service to run this reaction,
+        "tag": tag of this reaction,
+        "config": Object that contain all config the action need to run (can be null),
+    }
+}
+```
+
+### Delete an area.
+
+```http
+  DELETE /area/:id
+```
+
+| Headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `authorization` | `string` | **Required**. The access_token given when signup or login. (ex: "Bearer Your access_token") |
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. ID of area to delete. |
+
+** Required but can be in the query or in url request. ( "/delete/08a78c28" or "/delete?id=08a78c28" )
+
+## Service
+
+### Get all service
+
+```http
+  GET /service/:mode
+```
+
+| Headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `authorization` | `string` | **Optional**. The access_token given when signup or login. (ex: "Bearer Your access_token"), must be given if mode not in 'offline' |
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `mode` | `string` | **Optional**. How to see the service information (offline or not). |
+| `platform` | `string` | **Optional**. What platform to get information about the link (web, ios, android), by default web. |
+
+The response from this request, if successful, will be JSON of the following format:
+
+```
+[
+  {
+        "tags": Array of tag ('auth', 'link', 'action', 'reaction')
+        "name": Name of the service
+        "link": Object that contain all information to auth or link account (depend of selected platform),
+        "actions": Array of action,
+        "reactions": Array of reaction
+    },
+    ...
+]
+```

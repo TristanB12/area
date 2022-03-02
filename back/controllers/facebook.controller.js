@@ -33,16 +33,16 @@ async function getUserInfos(access_token, fields_list) {
  * @param {*} redirect_uri
  * @returns 
  */
-function accessTokenUrlOption(code, redirect_uri) {
+function accessTokenUrlOption(code, link) {
   return {
     url: 'https://graph.facebook.com/v12.0/oauth/access_token',
     method: 'GET',
     params: {
-      client_id: process.env.FACEBOOK_CLIENT_ID,
-      redirect_uri,
-      client_secret: process.env.FACEBOOK_CLIENT_SECRET,
+      client_id: link.clientID,
+      redirect_uri: link.redirectUri,
+      client_secret: link.clientSecret,
       code,
-      scope: 'email',
+      scope: link.scope,
     }
   }
 }
@@ -55,13 +55,11 @@ function accessTokenUrlOption(code, redirect_uri) {
  */
 async function login(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req.query;
+  const { link } = req;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to auth with the given code.' });
@@ -83,7 +81,8 @@ async function login(req, res) {
     $set: {
       'services.facebook': {
         access_token: response.data.access_token,
-        refresh_token: undefined
+        refresh_token: undefined,
+        latestPlatformUsed: link.platform
       }
     }
   });
@@ -103,16 +102,14 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req.query;
+  const { link } = req;
 
   let facebookUser = undefined;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to link the service with the given code.' });
@@ -138,7 +135,8 @@ async function signup(req, res) {
     services: {
       facebook: {
         access_token: response.data.access_token,
-        refresh_token: null
+        refresh_token: null,
+        latestPlatformUsed: link.platform
       }
     }
   });
