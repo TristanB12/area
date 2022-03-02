@@ -1,5 +1,6 @@
 {
   "my_services": "My services",
+  "no_services_yet": "No linked services yet",
   "search_service": "Search service",
   "error_fetching": "There was an error fetching available services",
   "link_service": "Link service",

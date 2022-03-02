@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Image, Text, Input, Icon, HStack, Button, VStack, AlertDialog } from "native-base";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { Box, Image, Text, Icon, HStack, Button, VStack, AlertDialog, Skeleton, Center, Heading } from "native-base";
+import { useRecoilState } from "recoil";
 import { Service } from "../../types";
 import ScreenView from '../../components/ScreenView'
 import servicesAtom from "../../recoil/atoms/services";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import api from "../../api";
+import useServices from "../../hooks/useServices";
+import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
+import ErrorFetching from "../../components/ErrorFetching";
+import Entypo from "react-native-vector-icons/Entypo";
 
 type ServiceItemProps = {
   service: Service,
@@ -42,6 +45,59 @@ function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
   )
 }
 
+function ServiceItemSkeleton() {
+  return (
+    <Box
+      variant="card"
+      p={4}
+      alignItems="center"
+    >
+      <HStack w="100%" justifyContent="space-between" alignItems="center">
+        <HStack w="60%" space={4} alignItems="center">
+          <Skeleton size="10" rounded="full" />
+          <Skeleton.Text lines={1} w="40%"/>
+        </HStack>
+        <Skeleton w="40%" />
+      </HStack>
+    </Box>
+  )
+}
+
+type ServiceListProps = {
+  services: Service[],
+  search: string,
+  setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
+}
+
+function ServiceList({ services, search, setUnlinkService } : ServiceListProps) {
+  return (
+    <VStack w="100%" space={4}>
+      {
+        services
+          .filter(service => service.isLinked)
+          .filter(service => service.name.includes(search))
+          .map(service =>
+          <ServiceItem
+            key={service.name}
+            service={service}
+            setUnlinkService={setUnlinkService}
+          />
+        )
+      }
+    </VStack>
+  )
+}
+
+function ServiceListSkeleton() {
+  return (
+    <VStack w="100%" space={4}>
+      <ServiceItemSkeleton />
+      <ServiceItemSkeleton />
+      <ServiceItemSkeleton />
+    </VStack>
+  )
+}
+
 type UnlinkServiceDialogProps = {
   service: Service | undefined,
   setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
@@ -49,7 +105,7 @@ type UnlinkServiceDialogProps = {
 
 function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialogProps) {
   const { t } = useTranslation(['services', 'common'])
-  const [services, setServices] = useRecoilState(servicesAtom)
+  const [services, setServices] = useRecoilState(servicesAtom)// TODO: replace by mutate
   const cancelRef = React.useRef(null);
   const isOpen = (service !== undefined)
 
@@ -120,56 +176,79 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
   )
 }
 
-function MyServicesScreen() {
+function MyServices({ services } : { services: Service[] }) {
   const { t } = useTranslation('services')
-  const allServices = useRecoilValue(servicesAtom)
-  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);
+  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);  // TODO: filter only connected services
   const [search, setSearch] = useState("")
 
   return (
-    <ScreenView>
-      <Input
+    <>
+      <SearchBar
         placeholder={t('search_service')}
-        width="100%"
-        borderRadius="6"
-        borderColor="tertiary.400"
-        _focus={{
-          borderColor: "tertiary.400"
-        }}
-        py="3"
-        px="3"
-        mb="5"
-        fontSize="14"
-        InputLeftElement={
-          <Box p={2} h="100%" alignItems="center" bgColor="tertiary.400">
-            <Icon
-              size="md"
-              color="white"
-              as={<MaterialIcons name="search" />}
-              />
-          </Box>
-        }
-        value={search}
-        onChangeText={(text) => setSearch(text)}
+        search={search}
+        setSearch={setSearch}
       />
-      <VStack w="100%" space={4}>
-        {
-          allServices
-            .filter(service => service.isLinked)
-            .filter(service => service.name.includes(search))
-            .map(service =>
-            <ServiceItem
-              key={service.name}
-              service={service}
-              setUnlinkService={setUnlinkService}
-            />
-          )
-        }
-      </VStack>
+      <ServiceList
+        services={services}
+        search={search}
+        setUnlinkService={setUnlinkService}
+      />
       <UnlinkServiceDialog
         service={unlinkService}
         setUnlinkService={setUnlinkService}
       />
+    </>
+  )
+}
+
+function MyServicesSkeleton() {
+  return (
+    <>
+      <SearchBarSkeleton />
+      <ServiceListSkeleton />
+    </>
+  )
+}
+
+function NoLinkedServices() {
+  const { t } = useTranslation('services')
+
+  return (
+    <Center flex={1} w="90%">
+      <HStack space={4} alignItems="center">
+        <Heading textAlign="center" color="primary.400">
+          { t('no_services_yet') }
+        </Heading>
+        <Icon
+          size="sm"
+          color="primary.400"
+          as={<Entypo name="emoji-sad" />}
+        />
+      </HStack>
+    </Center>
+  )
+}
+
+function MyServicesScreen() {
+  const { t } = useTranslation('services')
+  const { isLoading, data, refetch } = useServices()
+  const services: Service[] = data?.data || []
+
+  return (
+    <ScreenView>
+      {
+        isLoading ? (
+          <MyServicesSkeleton />
+        ) : (data === undefined || data.error) ? (
+          <ErrorFetching
+            title={t('error_fetching')}
+            error={data?.error}
+            refetch={refetch}
+          />
+        ) : (
+          services.length > 0 ? <MyServices services={services} /> : <NoLinkedServices />
+        )
+      }
     </ScreenView>
   )
 }
