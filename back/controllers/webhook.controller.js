@@ -127,4 +127,11 @@ async function webhookByService(serviceName) {
   }
 }
 
-module.exports = { webhookByTag, webhookByService };
+async function runAllWebhook() {
+  const serviceName = Object.keys(services);
+  for (let i = 0; i < serviceName.length; i++) {
+    await webhookByService(serviceName[i]);
+  }
+}
+
+module.exports = { webhookByTag, webhookByService, runAllWebhook };
