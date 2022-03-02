@@ -37,7 +37,6 @@ function accessTokenUrlOption(code, link) {
 async function refreshAccessToken(user, link) {
   const { refresh_token } = user.services.google;
 
-  console.log("GOOGLE REFERSH_TOKEN");
   const option = {
     url: 'https://oauth2.googleapis.com/token',
     method: 'POST',
