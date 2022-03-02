@@ -121,4 +121,38 @@ async function actionNewSubscribe(user, area) {
   return { error: false, data: response.items[0] };
 }
 
-module.exports = { actionVideoIsUpload, actionNewSubscribe };
+async function getListOfMyLikedVideo(maxResults, access_token) {
+  const option = {
+    url: 'https://youtube.googleapis.com/youtube/v3/videos',
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    },
+    params: {
+      part: 'snippet,contentDetails,statistics',
+      maxResults,
+      myRating: 'like',
+    }
+  };
+
+  const responce = await axios(option);
+  return responce.data;
+}
+
+async function actionLikedVideo(user, area) {
+  const { action } = area;
+
+  const responce = await getListOfMyLikedVideo(1, user.services.google.access_token);
+  const { totalResults } = action.save;
+
+  if (totalResults === responce.pageInfo)
+    return { error: false, data: false };
+  let msave = action.save;
+  msave.totalResults = responce.pageInfo.totalResults;
+  await Area.findByIdAndUpdate({ _id: area._id }, { 'action.save':msave });
+  if (totalResults === undefined || totalResults > msave.totalResults)
+    return { error: false, data: false };
+  return { error: false, data: responce.items[0] };
+}
+
+module.exports = { actionVideoIsUpload, actionNewSubscribe, actionLikedVideo };
