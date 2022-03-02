@@ -11,6 +11,7 @@
     "register": "register"
   },
   "auth": {
+    "logout": "logout",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm password",
@@ -35,12 +36,65 @@
     }
   },
   "pages": {
+    "add": {
+      "next": "next",
+      "create": "create",
+      "action": {
+          "title": "Configure the action",
+          "chooseApp": {
+            "title": "Choose an app",
+            "description": "Select the app that will trigger the Area"
+          },
+          "chooseTrigger": {
+            "title": "Choose a trigger",
+            "description": "Select the event that will trigger the Area"
+          }
+      },
+      "reaction": {
+          "title": "Configure the reaction",
+          "chooseApp": {
+            "title": "Choose an app",
+            "description": "Select the app that will be triggered by the Area"
+        },
+        "chooseReaction": {
+            "title": "Choose a reaction",
+            "description": "choose what will happen when the Area is triggered"
+        }
+      },
+      "finalize": {
+        "title": "Finalize your Area",
+        "services": "Services",
+        "options": {
+          "title": "Options",
+          "areaName": {
+            "title": "Area name",
+            "placeholder": "Your Area name"
+          },
+          "description": {
+            "title":  "Description (optional)",
+            "placeholder": "Your Area description"
+          }
+        },
+        "connected": "connected",
+        "connect": "connect"
+      },
+      "configuration": {
+        "title": "Configurez the trigger",
+        "description": "Fill in required elements"
+    }
+    },
     "areas": {
-      "title": "Areas"
+      "title": "Areas",
+      "create": "create area",
+      "search": "Search by name",
+      "delete": "Delete area ?",
+      "noArea": "You have no Areas"
     },
     "apps": {
       "title": "Apps"
     },
-    "explore": "Explore"
+    "explore": {
+      "title": "Explore"
+    }
   }
 }
