@@ -15,16 +15,6 @@ function getAllActionsOfService(service) {
       config: service.actions[j].config
     });
   return actions;
-
-  for (let j = 0; j < service.actions.length; j++)
-    actions.push({
-      service: service.actions[j].service,
-      tag: service.actions[j].tag,
-      title: service.actions[j].title,
-      requiresUserAuth: service.actions[j].requiresUserAuth,
-      config: service.actions[j].config
-    });
-  return actions;
 }
 
 function getAllReactionsOfService(service) {

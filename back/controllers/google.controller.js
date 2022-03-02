@@ -12,7 +12,7 @@ const User = db.user;
  * @param {*} redirect_uri 
  * @returns 
  */
-function accessTokenUrlOption(code, redirect_uri) {
+function accessTokenUrlOption(code, link) {
   return {
     url: 'https://oauth2.googleapis.com/token',
     method: 'POST',
@@ -21,9 +21,9 @@ function accessTokenUrlOption(code, redirect_uri) {
     },
     params: {
       code,
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
-      redirect_uri,
+      client_id: link.clientID,
+      client_secret: link.clientSecret,
+      redirect_uri: link.redirectUri,
       grant_type: 'authorization_code',
     }
   };
@@ -34,9 +34,10 @@ function accessTokenUrlOption(code, redirect_uri) {
  * @param {*} user 
  * @returns 
  */
-async function refreshAccessToken(user) {
+async function refreshAccessToken(user, link) {
   const { refresh_token } = user.services.google;
 
+  console.log("GOOGLE REFERSH_TOKEN");
   const option = {
     url: 'https://oauth2.googleapis.com/token',
     method: 'POST',
@@ -44,12 +45,12 @@ async function refreshAccessToken(user) {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     params: {
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      client_id: link.clientID,
+      client_secret: link.clientSecret,
       grant_type: 'refresh_token',
       refresh_token
     }
-  }
+  };
 
   try {
     const response = await axios(option);
@@ -85,13 +86,11 @@ async function getUserInfo(access_token) {
  */
 async function login(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req.query;
+  const { link } = req;
 
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
+  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to auth with the given code.' });
@@ -111,7 +110,8 @@ async function login(req, res) {
     $set: {
       'services.google': {
         access_token: response.data.access_token,
-        refresh_token: response.data.refresh_token
+        refresh_token: response.data.refresh_token,
+        latestPlatformUsed: link.platform
       }
     }
   });
@@ -131,16 +131,14 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
-  const { redirect_uri } = req.query;
+  const { link } = req;
 
   let googleUser = undefined;
 
+  console.log(link);
   if (!code)
     return res.status(400).json({ mesage: 'You should provide code.' });
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
-
-    const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, redirect_uri));
+    const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
 
   if (response.data === undefined)
     return res.status(400).json({ message: 'Problem to link the service with the given code.' });
@@ -167,7 +165,8 @@ async function signup(req, res) {
     services: {
       google: {
         access_token: response.data.access_token,
-        refresh_token: response.data.refresh_token
+        refresh_token: response.data.refresh_token,
+        latestPlatformUsed: link.platform
       }
     }
   });

@@ -8,8 +8,16 @@ const services = require('../services');
  */
 async function signup(req, res) {
   const serviceName = req.service;
-  
+  const { platform } = req;
+
   try {
+    req.link = !services[serviceName].links ? null : {
+      platform,
+      clientID: services[serviceName].links.clientID[platform],
+      redirectUri: services[serviceName].links.redirectUri[platform],
+      clientSecret: services[serviceName].links.clientSecret[platform],
+      scope: services[serviceName].links.scope
+    };
     return services[serviceName].auth.signup(req, res);
   } catch (error) {
     console.log(error);
@@ -25,8 +33,16 @@ async function signup(req, res) {
  */
 async function login(req, res) {
   const serviceName = req.service;
+  const { platform } = req;
 
   try {
+    req.link = !services[serviceName].links ? null : {
+      platform,
+      clientID: services[serviceName].links.clientID[platform],
+      redirectUri: services[serviceName].links.redirectUri[platform],
+      clientSecret: services[serviceName].links.clientSecret[platform],
+      scope: services[serviceName].links.scope
+    };
     return services[serviceName].auth.login(req, res);
   } catch (error) {
     console.log(error);

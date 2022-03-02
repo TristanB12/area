@@ -22,7 +22,7 @@ const spotifyService = {
       web: process.env.SPOTIFY_REDIRECT_URI_WEB,
       ios: process.env.SPOTIFY_REDIRECT_URI_IOS,
       android: process.env.SPOTIFY_REDIRECT_URI_ANDROID,
-      dev: process.env.SPOTIFY_REDIRECT_URI_WEB,
+      dev: process.env.SPOTIFY_REDIRECT_URI_DEV,
     },
     clientSecret: {
       web: process.env.SPOTIFY_CLIENT_SECRET_WEB,

@@ -30,20 +30,27 @@ async function doActionAndReaction(confAction, user, area) {
     return false; // The webhook is not trigger
 
   console.log("TRIGGER !!!");
+
   const confReaction = getReactionByTag(area.reaction.service.name, area.reaction.tag);
+  const serviceName = confReaction.service.name;
+  const serviceAuthRef = services[serviceName].authRef;
+  const platform = user.services[serviceAuthRef].latestPlatformUsed;
+
   try {
     await confReaction.function(user, area, responce);
   } catch (error) {
-    console.log(confReaction.requiresUserAuth)
-    console.log(confReaction.service.name)
-    console.log(services[confReaction.service.name].refreshToken)
     if (!confReaction.requiresUserAuth || !services[confReaction.service.name].refreshToken) {
       return true;
     }
-    console.log(error);
-    await services[confReaction.service.name].refreshToken(user);
-    const user = await User.findById(area.owner);
-
+    const link = {
+      platform,
+      clientID: services[serviceAuthRef].links.clientID[platform],
+      redirectUri: services[serviceAuthRef].links.redirectUri[platform],
+      clientSecret: services[serviceAuthRef].links.clientSecret[platform],
+      scope: services[serviceAuthRef].links.scope
+    };
+    await services[serviceName].refreshToken(user, link);
+    user = await User.findById(area.owner);
     try {
       await confReaction.function(user, area, responce);
     } catch (error) {
@@ -84,7 +91,15 @@ async function webhookByTag(serviceName, tag) {
         continue;
 
       // Try to refresh_token
-      await service.refreshToken(user);
+      const serviceAuthRef = services[serviceName].authRef;
+      const platform = user.services[serviceAuthRef].latestPlatformUsed;
+      await service.refreshToken(user, {
+        platform,
+        clientID: services[serviceAuthRef].links.clientID[platform],
+        redirectUri: services[serviceAuthRef].links.redirectUri[platform],
+        clientSecret: services[serviceAuthRef].links.clientSecret[platform],
+        scope: services[serviceAuthRef].links.scope
+      });
       user = await User.findById(areas[i].owner);
 
       try {
