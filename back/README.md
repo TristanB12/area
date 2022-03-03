@@ -227,7 +227,8 @@ The response from this request, if successful, will be JSON of the following for
 [
   {
         "tags": Array of tag ('auth', 'link', 'action', 'reaction')
-        "name": Name of the service
+        "name": Name of the service,
+        "logoUri": Logo of the service can be null,
         "link": Object that contain all information to auth or link account (depend of selected platform),
         "actions": Array of action,
         "reactions": Array of reaction
