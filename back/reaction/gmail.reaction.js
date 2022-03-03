@@ -18,10 +18,7 @@ ${config.Content.value}`;
     }
   };
 
-  console.log(option);
-  console.log(message);
   const responce = await axios(option);
-  console.log(responce.data);
 }
 
 async function reactionSendEmail(user, area, actionPlayload) {
