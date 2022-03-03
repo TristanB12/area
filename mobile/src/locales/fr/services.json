@@ -1,0 +1,11 @@
+{
+  "my_services": "Mes services",
+  "no_services_yet": "Pas encore de service relié",
+  "search_service": "Rechercher un service",
+  "error_fetching": "Une erreur est survenue en chargeant les services disponible",
+  "link_service": "Relier le service",
+  "link_service_helper_text": "Afin d'utiliser ce service, vous devez d'abord vous connecter.",
+  "linking": "Reliage...",
+  "unlink": "Déconnecter",
+  "unlink_confirm": "Êtes-vous sûr de vouloir déconnecter ce service ?"
+}
