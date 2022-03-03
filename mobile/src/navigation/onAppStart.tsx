@@ -33,10 +33,8 @@ const retrieveAuthFromStorage = async (setAuth: SetterOrUpdater<AuthState>) => {
   setAuth(auth => ({
     ...auth,
     isFirstTimeUsingApp: (!introIsPassed),
-    isLoading: false,
-    email: session?.email || auth.email,
-    access_token: session?.access_token || auth.access_token,
-    refresh_token: session?.refresh_token || auth.refresh_token
+    isSignedIn: (session !== undefined),
+    isLoading: false
   }))
 };
 

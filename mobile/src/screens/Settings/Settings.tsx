@@ -1,29 +1,40 @@
 import React from "react"
 import ScreenView from "../../components/ScreenView"
-import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon, useColorMode, Image } from "native-base"
+import { Avatar, Heading, Box, Radio, HStack, VStack, Button, Icon, useColorMode, Image, Skeleton } from "native-base"
 import { useTranslation } from "react-i18next"
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { TouchableOpacity } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { StackNavProp } from "../../navigation/types"
-import { useRecoilValue, useSetRecoilState } from "recoil"
+import { useSetRecoilState } from "recoil"
 import authAtom from "../../recoil/atoms/auth"
 import EncryptedStorage from 'react-native-encrypted-storage'
 import frenchFlag from '../../assets/french_flag_icon.png'
 import englishFlag from '../../assets/english_flag_icon.png'
+import useProfile from "../../hooks/useProfile"
 
 function Profile() {
-  const auth = useRecoilValue(authAtom)
+  const { data } = useProfile()
+  const profile = data?.data
 
   return (
     <VStack space={4} alignItems="center">
       <Avatar bgColor="primary.400" size="2xl" _text={{ color: "white" }}>
-        { auth.email.substring(0, 2).toUpperCase() }
+        { profile?.email.substring(0, 2).toUpperCase() || "AR" }
       </Avatar>
       <Heading>
-        { auth.email }
+        { profile?.email || "email" }
       </Heading>
+    </VStack>
+  )
+}
+
+function ProfileSkeleton() {
+  return (
+    <VStack w="100%" space={4} alignItems="center" >
+      <Skeleton size="40" rounded="full" />
+      <Skeleton.Text lines={1} w="50%" />
     </VStack>
   )
 }
@@ -146,9 +157,7 @@ function Logout() {
     setAuth(auth => ({
       ...auth,
       isSignout: true,
-      email: "",
-      access_token: "",
-      refresh_token: ""
+      isSignedIn: false
     }))
   }
 
@@ -160,10 +169,14 @@ function Logout() {
 }
 
 function Settings() {
+  const { isLoading } = useProfile()
+
   return (
     <ScreenView>
       <VStack w="100%" alignItems="center" space={6}>
-        <Profile />
+        {
+          isLoading ? <ProfileSkeleton /> : <Profile />
+        }
         <MyServices />
         <ChooseLanguage />
         <ChooseColorMode />

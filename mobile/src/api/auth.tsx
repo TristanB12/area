@@ -1,3 +1,4 @@
+import { Platform } from "react-native"
 import axiosAPI from './config'
 import { AuthTokens } from '../types/auth'
 import { Service } from '../types'
@@ -19,22 +20,21 @@ const loginEmail = async (authForm: AuthForm) => authEmail('login', authForm)
 const signupEmail = async (authForm: AuthForm) => authEmail('signup', authForm)
 
 const authService = async (action: 'login' | 'signup', service: Service) => {
-  const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"
-  const authorizationCode = await authorizeService(service)
+  const authorizeResult = await authorizeService(service)
 
-  if (authorizationCode === null) {
+  if (authorizeResult === null) {
     throw new Error()
   }
 
-  // return axiosAPI.request<AuthTokens>({
-  //   method: "POST",
-  //   url: `/auth/${action}`,
-  //   params: {
-  //     service: service.name,
-  //     code: authorizationCode,
-  //     redirect_uri: `com.googleusercontent.apps.${appID}:/google`
-  //   }
-  // })
+  return axiosAPI.request<AuthTokens>({
+    method: "POST",
+    url: `/auth/${action}`,
+    params: {
+      service: service.name,
+      code: authorizeResult.authorizationCode,
+      platform: Platform.OS
+    }
+  })
 }
 
 const loginService = async (service: Service) => authService('login', service)

@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { loginEmail, loginService, signupEmail, signupService } from "./auth";
 import { getServices, authorizeService, linkService, unlinkService } from './services'
+import { getUser } from "./user";
 import { createArea, getAreas, editArea, deleteArea } from './areas'
 import { setAccessToken, refreshAccessToken, verifyAccessToken } from './tokens'
 import { retrieveUserSessionFromStorage } from "../storage";
@@ -53,6 +54,9 @@ const api = {
       email: withErrorHandling(signupEmail),
       service: withErrorHandling(signupService),
     }
+  },
+  user: {
+    get: withErrorHandling(getUser)
   },
   areas: {
     create: withErrorHandling(createArea),

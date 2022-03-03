@@ -63,18 +63,14 @@ function ServiceItemSkeleton() {
 
 type ServiceListProps = {
   services: Service[],
-  search: string,
   setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
 }
 
-function ServiceList({ services, search, setUnlinkService } : ServiceListProps) {
+function ServiceList({ services, setUnlinkService } : ServiceListProps) {
   return (
     <VStack w="100%" space={4}>
       {
-        services
-          .filter(service => service.isLinked)
-          .filter(service => service.name.includes(search))
-          .map(service =>
+        services.map(service =>
           <ServiceItem
             key={service.name}
             service={service}
@@ -172,7 +168,7 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
 
 function MyServices({ services } : { services: Service[] }) {
   const { t } = useTranslation('services')
-  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);  // TODO: filter only connected services
+  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);
   const [search, setSearch] = useState("")
 
   return (
@@ -183,8 +179,7 @@ function MyServices({ services } : { services: Service[] }) {
         setSearch={setSearch}
       />
       <ServiceList
-        services={services}
-        search={search}
+        services={services.filter(service => service.name.includes(search))}
         setUnlinkService={setUnlinkService}
       />
       <UnlinkServiceDialog
@@ -225,7 +220,12 @@ function NoLinkedServices() {
 
 function MyServicesScreen() {
   const { t } = useTranslation('services')
-  const { isLoading, data, refetch } = useServices()
+  const { isLoading, data, refetch } = useServices("", {
+    select: (data) => (data.data === null) ? data : ({
+      data: data.data.filter(service => service.isLinked),
+      error: null
+    })
+  })
   const services: Service[] = data?.data || []
 
   return (

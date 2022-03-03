@@ -18,6 +18,7 @@ type ServiceLink = {
 }
 
 type Service = {
+  tags: Array<"auth" | 'link' | 'action' | 'reaction'>
   name: string,
   logoUri: string,
   link: ServiceLink,
@@ -25,8 +26,6 @@ type Service = {
   actions: Action[],
   reactions: Action[]
 }
-
-type AuthService = Pick<Service, 'name' | 'logoUri'>
 
 type ServiceAction = {
   service: Pick<Service, 'name' | 'logoUri'>
@@ -40,5 +39,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { ActionConfig, Action, Service, AuthService, ServiceAction }
+export type { ActionConfig, Action, Service, ServiceAction }
 export default Area

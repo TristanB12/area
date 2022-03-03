@@ -118,11 +118,11 @@ function SearchServicesSkeleton() {
 function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'ChooseService'> }) {
   const { isReaction } = route.params
   const { t } = useTranslation('services')
-  const { isLoading, data, refetch } = useServices({
-    // select: (data) => (data.data === null) ? data : ({
-    //   data: data.data.filter(service => service[(isReaction) ? 'reactions' : 'actions'].length > 0),
-    //   error: null
-    // })
+  const { isLoading, data, refetch } = useServices("", {
+    select: (data) => (data.data === null) ? data : ({
+      data: data.data.filter(service => service[(isReaction) ? 'reactions' : 'actions'].length > 0),
+      error: null
+    })
   })
   const services: Service[] = data?.data || []
 

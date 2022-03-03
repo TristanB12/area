@@ -3,16 +3,15 @@ import { Platform } from "react-native"
 import { Service } from "../types"
 import { AppAuthError, AuthConfiguration, authorize } from "react-native-app-auth"
 
-const getServices = async () => axiosAPI({
+const getServices = async (mode: "" | "offline") => axiosAPI({
   method: "GET",
-  url: "/service",
+  url: `/service/${mode}`,
   params: {
     platform: Platform.OS
   }
 })
 
 const authorizeService = async (service: Service) => {
-  console.log(service.link)
   const config: AuthConfiguration = {
     clientId: service.link.clientID,
     redirectUrl: service.link.redirectUri,

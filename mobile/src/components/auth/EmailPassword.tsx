@@ -16,6 +16,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useSetRecoilState } from "recoil";
 import authAtom from "../../recoil/atoms/auth";
 import { storeUserSessionToStorage } from '../../storage'
+import { signIn } from "../../utils";
 
 function AuthEmailPassword({ action } : { action: "login" | "register" }) {
   const { t } = useTranslation('auth')
@@ -50,15 +51,7 @@ function AuthEmailPassword({ action } : { action: "login" | "register" }) {
     } else if (!data) {
       return
     }
-    await storeUserSessionToStorage(data, authForm.email)
-    api.tokens.setAccessToken(data.access_token)
-    setAuth(auth => ({
-      ...auth,
-      isSignout: false,
-      email: authForm.email,
-      access_token: data.access_token,
-      refresh_token: data.refresh_token
-    }))
+    await signIn(data, setAuth)
   }
 
   return (

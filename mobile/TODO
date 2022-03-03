@@ -3,6 +3,7 @@
 - implement useQuery for areas and services
   - add fallback when there are no services or areas
 - tester l'app en mode offline
+- tester avec refresh token de 5 minutes
 - scrollable screenview
 - change language / theme on sign up
 
