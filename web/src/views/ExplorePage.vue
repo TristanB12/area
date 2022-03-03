@@ -5,10 +5,6 @@
         :placeholder="$t('pages.areas.search')"
         :searchItems="allServices"
         v-model="servicesToDisplay"
-        :searchFunction="
-          (items, string) =>
-            items.filter((item) => item.name.toLowerCase().includes(string))
-        "
       />
     </div>
     <div class="iconSet">
@@ -36,27 +32,12 @@ export default {
   },
   data() {
     return {
-      serviceSelected: undefined,
-      triggerSelected: undefined,
       servicesToDisplay: undefined,
     };
   },
   computed: {
     allServices() {
       return this.$store.state.services;
-    },
-    triggers() {
-      if (!this.serviceSelected) return undefined;
-
-      let services = [...this.allServices];
-
-      let triggerService = services.find(
-        (item) => item.name == this.serviceSelected
-      );
-      for (let trigger of triggerService.actions) {
-        trigger.logoUri = triggerService.logoUri;
-      }
-      return triggerService.actions;
     },
   },
   methods: {},
@@ -66,12 +47,12 @@ export default {
 <style lang="scss" scoped>
 .searchBar {
     width: fit-content;
-    margin: 10px;
+    margin-top: 10px;
 }
 .iconSet {
   display: flex;
-  justify-content: space-around;
-  width: 70%;
+  justify-content: space-between;
+  width: 90%;
   margin: auto;
   margin-top: 10px;
   flex-wrap: wrap;
