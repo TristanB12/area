@@ -1,3 +1,4 @@
+const { platform } = require('os');
 const qs = require('querystring');
 
 const spotifyAuthCode = (state) => {
@@ -7,7 +8,7 @@ const spotifyAuthCode = (state) => {
         client_id: process.env.VUE_APP_SPOTIFY_CLIENT_ID,
         scope: 'user-read-private user-read-email user-top-read',
         redirect_uri: process.env.VUE_APP_SPOTIFY_REDIRECT_URI,
-        state: state
+        state: state,
     }))
     return win;
 }
