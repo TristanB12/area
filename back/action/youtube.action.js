@@ -145,7 +145,7 @@ async function actionLikedVideo(user, area) {
   const responce = await getListOfMyLikedVideo(1, user.services.google.access_token);
   const { totalResults } = action.save;
 
-  if (totalResults === responce.pageInfo)
+  if (totalResults === responce.pageInfo.totalResults)
     return { error: false, data: false };
   let msave = action.save;
   msave.totalResults = responce.pageInfo.totalResults;
@@ -155,4 +155,4 @@ async function actionLikedVideo(user, area) {
   return { error: false, data: responce.items[0] };
 }
 
-module.exports = { actionVideoIsUpload, actionNewSubscribe, actionLikedVideo };
+module.exports = { actionVideoIsUpload, actionNewSubscribe, actionLikedVideo, getChannelIDByName };

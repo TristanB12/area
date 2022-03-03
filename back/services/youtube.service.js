@@ -1,8 +1,9 @@
 const youtubeAction = require('../action/youtube.action');
+const youtubeReaction = require('../reaction/youtube.reaction');
 const google = require('../controllers/google.controller');
 
 const youtubeService = {
-  tags: ["actions"],
+  tags: ["actions", "reactions"],
   authRef: 'google',
   logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
   refreshToken: google.refreshAccessToken,
@@ -19,6 +20,7 @@ const youtubeService = {
         "Youtuber name": {
           type: "text",
           value: "",
+        }
       },
       binding: {
         "Published at": {
@@ -36,7 +38,6 @@ const youtubeService = {
         "Video url": {
           type: "text"
         }
-      }
       },
       function: youtubeAction.actionVideoIsUpload,
     },
@@ -63,6 +64,24 @@ const youtubeService = {
       config: null,
       binding: {},
       function: youtubeAction.actionLikedVideo,
+    }
+  ],
+  reactions: [
+    {
+      tag: "YT#5U82R18E",
+      title: "Then subscribe to a given youtuber name",
+      service: {
+        name: "youtube",
+        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
+      },
+      requiresUserAuth: true,
+      config: {
+        "Youtuber name": {
+          type: "text",
+          value: "",
+        },
+      },
+      function: youtubeReaction.reactionSubscribeYoutber
     }
   ]
 };
