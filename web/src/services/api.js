@@ -59,7 +59,7 @@ const signupUser = async (inputs) => {
 }
 
 const verifyToken = async (token) => {
-    var config = {
+    let config = {
         method: 'get',
         url: baseUrl + '/token/verify',
         headers: { 
@@ -75,11 +75,69 @@ const verifyToken = async (token) => {
 }
 
 const getUserAreas = async () => {
-    return [mockAreas, null];
+    let config = {
+        method: 'get',
+        url: baseUrl + '/area',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
 }
 
 const getServices = async () => {
-    return [mockServices, null];
+    let config = {
+        method: 'get',
+        url: baseUrl + '/service',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
+}
+
+const createArea = async (data) => {
+    let config = {
+        method: 'post',
+        url: baseUrl + '/area',
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        data: data
+    };
+
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
+}
+
+const deleteArea = async (areaId) => {
+    let config = {
+        method: 'delete',
+        url: baseUrl + '/area/' + areaId,
+        headers: { 
+            'authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+    };
+    try {
+        let res = await axios(config);
+        return [res.data, null];
+    } catch (err) {
+        return [null, err.response.data];
+    }
 }
 
 module.exports = {
@@ -88,5 +146,7 @@ module.exports = {
     verifyToken,
     getUserAreas,
     getServices,
-    getUserInfos
+    getUserInfos,
+    createArea,
+    deleteArea
 }

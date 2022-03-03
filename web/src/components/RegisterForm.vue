@@ -25,7 +25,7 @@
             :placeholder="$t('auth.email')"
             width="100%"
             iconName="email_icon.png"
-            @input-updated="setEmail"
+            v-model="inputs.email"
         />
         <PasswordValidator
             @validator-state="setValidatorState"
@@ -38,15 +38,14 @@
             :placeholder="$t('auth.password')"
             width="100%"
             iconName="password_icon.png"
-            @input-updated="setPassword"
-
+            v-model="inputs.password"
         />
         <VInput
             type="password"
             :placeholder="$t('auth.confirmPassword')"
             width="100%"
             iconName="password_icon.png"
-            @input-updated="setConfirmPassword"
+            v-model="inputs.confirmPassword"
         />
         <VButton
             :title="$t('auth.register.title')"
@@ -91,15 +90,6 @@ import {signupUser} from '@/services/api.js';
         methods: {
             setValidatorState(data) {
                 this.validatorState = data;
-            },
-            setEmail(data) {
-                this.inputs.email = data;
-            },
-            setPassword(data) {
-                this.inputs.password = data;
-            },
-            setConfirmPassword(data) {
-                this.inputs.confirmPassword = data;
             },
             signupWithFacebook() {
                 this.isLoading.facebook = true;

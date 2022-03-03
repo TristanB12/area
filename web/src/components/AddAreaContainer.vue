@@ -3,8 +3,10 @@
         <slot></slot>
         <div class="button-container">
             <VButton
+                :disabled="disabled"
                 :title="buttonTitle"
                 @click="handleChange"
+                :isLoading="isLoading"
             />
         </div>
     </div>
@@ -20,11 +22,22 @@ import VButton from '@/components/ui/VButton.vue';
             modelValue: {
                 type: String,
                 default: "action"
+            },
+            disabled: {
+                type: Boolean,
+                default: true
+            }
+        },
+        data() {
+            return {
+                isLoading: false
             }
         },
         computed: {
             buttonTitle() {
                 if (this.modelValue == 'action') {
+                    return this.$t('pages.add.next');
+                } else if (this.modelValue == 'reaction') {
                     return this.$t('pages.add.next');
                 } else {
                     return this.$t('pages.add.create');
@@ -33,9 +46,16 @@ import VButton from '@/components/ui/VButton.vue';
         },
         methods: {
             handleChange(e) {
+                if (this.modelValue == "finished") {
+                    this.isLoading = true;
+                    this.$emit('add-area');
+                    return;
+                }
                 const newStep = this.modelValue == 'action' ? 'reaction' : 'finished';
+
                 this.$emit('update:modelValue', newStep);
-            }
+                this.$emit('step-changed');
+            },
         },
     }
 </script>

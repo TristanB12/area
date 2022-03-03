@@ -25,14 +25,14 @@
             :placeholder="$t('auth.email')"
             width="100%"
             iconName="email_icon.png"
-            @input-updated="setEmail"
+            v-model="inputs.email"
         />
         <VInput
             type="password"
             :placeholder="$t('auth.password')"
             width="100%"
             iconName="password_icon.png"
-            @input-updated="setPassword"
+            v-model="inputs.password"
         />
         <VButton
             :title="$t('auth.login.title')"
@@ -106,17 +106,10 @@ import {facebookAuthCode, googleAuthCode} from '@/services';
                     this.$router.push({name: 'AreasPage'});
                 }
                 else {
-                    console.log(res);
                     this.error = res[1].message;
                     this.isLoading.login = false;
                 }
             },
-            setEmail(event) {
-                this.inputs.email = event;
-            },
-            setPassword(event) {
-                this.inputs.password = event;
-            }
         },
     }
 </script>

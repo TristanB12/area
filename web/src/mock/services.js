@@ -120,18 +120,16 @@ module.exports = [
             {
                 title: "When a youtuber reaches a certain amount of subscribers",
                 requiresUserAuth: false,
-                config: [
-                    {
-                        display: "Youtuber name",
-                        example: "dream",
-                        value: ""
+                config: {
+                    "Youtuber name": {
+                        type: "text",
+                        value: "",
                     },
-                    {
-                        display: "Number of subscribers",
-                        example: 50_000_000,
-                        value: 0
-                    }
-                ]
+                    "Number of subscribers": {
+                        type: "number",
+                        value: "",
+                    },
+                },
             },
         ],
         reactions: [
@@ -186,6 +184,16 @@ module.exports = [
             }
         ],
         reactions: [
+            {
+                title: "Subscribe to a streamer",
+                requiresUserAuth: true,
+                config: {
+                    "Streamer name": {
+                        type: "text",
+                        value: "",
+                    }
+                }
+            }
         ]
     },
 ]

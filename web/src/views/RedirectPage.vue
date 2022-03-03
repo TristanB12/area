@@ -49,14 +49,11 @@ import axios from 'axios';
                 };
                 axios(config)
                     .then(() =>  {
-                        localStorage.setItem('access_token', res.data.access_token);    
-                        this.$store.state.token = res.data.access_token;
                         window.close();
                     })
                     .catch(err => {this.error = err.response.data});
             },
             processLogin() {
-                console.log("coucou")
                 let config = {
                     method: 'post',
                     url: 'https://ikeapi.herokuapp.com/auth/login/' + this.$route.params.service,
@@ -93,7 +90,7 @@ import axios from 'axios';
                         window.close();
                     })
                     .catch(err => this.error = err.response.data);
-            }
+            },
         },
     }
 </script>

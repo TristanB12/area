@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     loggedState() {
-      if (this.$store.state.token)
+      if (this.$store.state.user)
         return true;
       return false;
     }
@@ -61,6 +61,9 @@ export default {
 
       if (res[0]) {
           this.$store.state.user = res[0];
+      } else {
+        localStorage.removeItem('access_token');
+        this.$router.push({name: 'LoginPage'});
       }
     }
   },

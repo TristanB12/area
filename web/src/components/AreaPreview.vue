@@ -47,6 +47,8 @@
 
 <script>
 import VButton from '@/components/ui/VButton.vue';
+import API from '@/services/api.js';
+
     export default {
         components: {
             VButton
@@ -64,9 +66,12 @@ import VButton from '@/components/ui/VButton.vue';
             }
         },
         methods: {
-            startDeleteArea() {
+            async startDeleteArea() {
                 this.isDeleteLoading = true;
-                this.$emit('delete-area');
+                let res = await API.deleteArea(this.infos.id);
+                if (res[0]) {
+                    this.$emit('delete-area');
+                }
             }
         },
     }

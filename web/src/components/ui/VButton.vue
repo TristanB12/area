@@ -1,6 +1,6 @@
 <template>
-    <button class="button">
-        <span v-if="title && !isLoading">{{ title }}</span>
+    <button :class="disabled ? 'disabled' : 0">
+        <span v-if="title && !isLoading" class="button">{{ title }}</span>
         <img v-if="iconName && !isLoading" :src="imagePath" :alt="iconName">
         <ClipLoader
             v-if="isLoading"
@@ -32,6 +32,10 @@ import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
             width: {
                 type: String,
                 default: 'auto'
+            },
+            disabled: {
+                type: Boolean,
+                default: false
             }
         },
         computed: {
@@ -62,5 +66,14 @@ button {
 }
 span {
     color: white;
+}
+.disabled {
+    background-color: rgba($main-orange, 0.2);
+    box-shadow: none;
+    cursor: not-allowed;
+
+    &:hover {
+        box-shadow: none;
+    }
 }
 </style>
