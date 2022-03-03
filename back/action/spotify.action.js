@@ -12,7 +12,7 @@ async function getUserNbFollowers(accessToken) {
             'Authorization': 'Bearer ' + accessToken, 
         }
     }
-    const res = await axios(options);
+    const res = await axios(config);
     return res.data;
 }
 
