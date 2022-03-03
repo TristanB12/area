@@ -1,10 +1,18 @@
 <template>
     <div>
-        <input
+        <textarea
+            v-if="type == 'textarea'"
             :type="type"
             :placeholder="placeholder"
             :style="styleObject"
-            v-model="input"
+            v-model="modelValue"
+        />
+        <input
+            v-else
+            :type="type"
+            :placeholder="placeholder"
+            :style="styleObject"
+            v-model="modelValue"
         >
         <img v-if="iconName" :src="imagePath" alt="iconName">
     </div>
@@ -33,14 +41,9 @@
                 type: String,
                 default: undefined
             },
-            model: {
+            modelValue: {
                 type: String,
                 default: ""
-            }
-        },
-        data() {
-            return {
-                input: this.model
             }
         },
         computed: {
@@ -63,14 +66,15 @@
         },
         methods: {
             sendInput() {
-                this.$emit('input-updated', this.input);
+                this.$emit('update:modelValue', this.modelValue);
+                this.$emit('input-updated', this.modelValue);
             }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-input {
+input, textarea {
     padding: 12px;
     font-size: 20px;
     font-weight: 600;

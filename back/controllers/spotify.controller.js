@@ -1,5 +1,6 @@
 require('dotenv').config();
 const db = require('../models');
+const axios = require('axios');
 const User = db.user;
 
 /**
@@ -8,23 +9,23 @@ const User = db.user;
  * @param {*} redirect_uri
  * @returns 
  */
-function accessTokenUrlOption(code, redirect_uri) {
+function accessTokenUrlOption(code, link) {
   return {
     url: 'https://accounts.spotify.com/api/token',
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')}`
+      'Authorization': `Basic ${Buffer.from(`${link.clientID}:${link.clientSecret}`).toString('base64')}`
     },
     params: {
       code,
       grant_type: 'authorization_code',
-      redirect_uri
+      redirect_uri: link.redirectUri
     }
   };
 }
 
-async function refreshAccessToken(user) {
+async function refreshAccessToken(user, link) {
   const { refresh_token } = user.services.spotify;
 
   const option = {
@@ -32,13 +33,13 @@ async function refreshAccessToken(user) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')}`
+      'Authorization': `Basic ${Buffer.from(`${link.clientID}:${link.clientSecret}`).toString('base64')}`
     },
     params: {
       grant_type: 'refresh_token',
       refresh_token
     }
-  }
+  };
 
   try {
     const response = await axios(option);

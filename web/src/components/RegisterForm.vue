@@ -11,8 +11,8 @@
             :title="$t('auth.register.google')"
             iconName="google_icon.png"
             width="100%"
-            :isLoading="isLoading.github"
-            @click="signupWithGithub"
+            :isLoading="isLoading.google"
+            @click="signupWithGoogle"
         />
         <div>
             <span class="line"></span>
@@ -25,7 +25,7 @@
             :placeholder="$t('auth.email')"
             width="100%"
             iconName="email_icon.png"
-            @input-updated="setEmail"
+            v-model="inputs.email"
         />
         <PasswordValidator
             @validator-state="setValidatorState"
@@ -38,15 +38,14 @@
             :placeholder="$t('auth.password')"
             width="100%"
             iconName="password_icon.png"
-            @input-updated="setPassword"
-
+            v-model="inputs.password"
         />
         <VInput
             type="password"
             :placeholder="$t('auth.confirmPassword')"
             width="100%"
             iconName="password_icon.png"
-            @input-updated="setConfirmPassword"
+            v-model="inputs.confirmPassword"
         />
         <VButton
             :title="$t('auth.register.title')"
@@ -59,7 +58,7 @@
 </template>
 
 <script>
-import {facebookAuthCode, githubAuthCode} from '@/services';
+import {facebookAuthCode, googleAuthCode} from '@/services';
 import VLightButton from '@/components/ui/VLightButton.vue';
 import PasswordValidator from '@/components/PasswordValidator.vue'
 import VInput from '@/components/ui/VInput.vue';
@@ -76,7 +75,7 @@ import {signupUser} from '@/services/api.js';
             return {
                 isLoading: {
                     facebook: false,
-                    github: false,
+                    google: false,
                     signup: false
                 },
                 inputs: {
@@ -92,32 +91,25 @@ import {signupUser} from '@/services/api.js';
             setValidatorState(data) {
                 this.validatorState = data;
             },
-            setEmail(data) {
-                this.inputs.email = data;
-            },
-            setPassword(data) {
-                this.inputs.password = data;
-            },
-            setConfirmPassword(data) {
-                this.inputs.confirmPassword = data;
-            },
             signupWithFacebook() {
                 this.isLoading.facebook = true;
                 let win = facebookAuthCode('signup');
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
-                        this.$router.push({name: 'DashboardPage'});
+                        this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
-            signupWithGithub() {
-                this.isLoading.github = true;
-                let win = githubAuthCode('signup');
+            signupWithGoogle() {
+                this.isLoading.google = true;
+                let win = googleAuthCode('signup');
                 const timer = setInterval(() => {
                     if (win.closed) {
                         clearInterval(timer);
-                        this.$router.push({name: 'DashboardPage'});
+                        this.$router.push({name: 'AreasPage'});
+                        this.$store.state.token = localStorage.getItem('access_token');
                     }
                 }, 500);
             },
@@ -134,8 +126,9 @@ import {signupUser} from '@/services/api.js';
                 this.isLoading.signup = true;
                 let res = await signupUser(this.inputs);
                 if (res[0]) {
+                    this.$store.state.token = res[0].access_token;
                     localStorage.setItem('access_token', res[0].access_token);
-                    this.$router.push({name: 'DashboardPage'});
+                    this.$router.push({name: 'AppPage'});
                 }
                 else {
                     this.error = res[1].message;

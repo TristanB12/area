@@ -1,8 +1,8 @@
 <template>
     <aside>
-        <VButton
-            iconName="add_icon.png"
-        />
+        <router-link :to="{name: 'AddAreaPage'}">
+            <VButton iconName="add_icon.png" />
+        </router-link>
         <nav>
             <router-link :to="{name: 'AreasPage'}">
                 <img src="../../assets/areas_icon.svg" alt="areas">
@@ -51,7 +51,7 @@ a {
 button {
     margin: 20px 0;
 }
-.router-link-active {
+nav .router-link-active {
     background-color: #3773ff10;
     border-radius: 9px;
 

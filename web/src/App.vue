@@ -2,9 +2,11 @@
   <main>
     <LandingHeader v-if="!loggedState" />
     <SignedHeader v-else />
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component, route }">
       <transition name="fade" mode="out-in">
-        <component :is="Component" />
+        <div :key="route.name">  
+          <component :is="Component" />
+        </div>
       </transition>
     </router-view>
   </main>
@@ -13,6 +15,7 @@
 <script>
 import LandingHeader from '@/components/layout/LandingHeader.vue';
 import SignedHeader from '@/components/layout/SignedHeader.vue';
+import API from '@/services/api.js';
 export default {
   components: {
     LandingHeader,
@@ -20,11 +23,15 @@ export default {
   },
   computed: {
     loggedState() {
-      return true;
+      if (this.$store.state.user)
+        return true;
+      return false;
     }
   },
-  created () {
+  async created () {
     this.getLocale();
+    this.storeToken();
+    await this.getUSer();
   },
   methods: {
     getLocale() {
@@ -40,6 +47,24 @@ export default {
       }
       else
           this.$i18n.locale = 'en';
+    },
+    storeToken() {
+      const token = localStorage.getItem('access_token');
+
+      if (token) {
+        this.$store.state.token = token;
+      }
+    },
+    async getUSer() {
+      if (!this.$store.state.token) return;
+      let res = await API.getUserInfos();
+
+      if (res[0]) {
+          this.$store.state.user = res[0];
+      } else {
+        localStorage.removeItem('access_token');
+        this.$router.push({name: 'LoginPage'});
+      }
     }
   },
 }

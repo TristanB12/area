@@ -51,6 +51,18 @@ const youtubeService = {
       config: null,
       binding: {},
       function: youtubeAction.actionNewSubscribe,
+    },
+    {
+      tag: "YT#L1K3V1D30",
+      title: "When you like a video",
+      service: {
+        name: "youtube",
+        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
+      },
+      requiresUserAuth: true,
+      config: null,
+      binding: {},
+      function: youtubeAction.actionLikedVideo,
     }
   ]
 };

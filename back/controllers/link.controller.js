@@ -4,20 +4,18 @@ const tokenController = require('./token.controller');
 
 const User = db.user;
 
-async function unlinkService(req, res)
-{
+async function unlinkService(req, res) {
   const serviceName = req.service;
 
   try {
     let userServices = req.user.services;
-    
+
     if (userServices[serviceName] == undefined && services[serviceName])
-      return res.status(400).json({message: 'User not linked to specified service.'});
+      return res.status(400).json({ message: 'User not linked to specified service.' });
 
     services[serviceName].link.desactive(req, res);
     const { user } = req;
-    userServices[serviceName].access_token = null;
-    userServices[serviceName].refresh_token = null;
+    delete userServices[serviceName];
 
     await User.findByIdAndUpdate({ _id: user._id }, { services: userServices });
   } catch (error) {
@@ -35,24 +33,30 @@ async function unlinkService(req, res)
 async function linkService(req, res) {
   const serviceName = req.service;
   const { code } = req.query;
-  const { redirect_uri } = req.query;
+  const { platform } = req;
 
   if (!code)
     return res.status(200).json({ message: 'Code is required.' });
-  if (!redirect_uri)
-    return res.status(400).json({ message: 'No redirect_uri.' });
 
   const user = req.user;
   let userServices = user.services;
   try {
-    const axiosOpts = services[serviceName].link.accessTokenUrlOption(code, redirect_uri);
+    const link = !services[serviceName].links ? null : {
+      platform,
+      clientID: services[serviceName].links.clientID[platform],
+      redirectUri: services[serviceName].links.redirectUri[platform],
+      clientSecret: services[serviceName].links.clientSecret[platform],
+      scope: services[serviceName].links.scope
+    };
+    const axiosOpts = services[serviceName].link.accessTokenUrlOption(code, link);
     const response = await tokenController.getServiceAccessToken(axiosOpts);
 
     if (response.data === undefined)
       return res.status(400).json({ message: 'Problem to link the service with the given code.' });
     userServices[serviceName] = {
       access_token: response.data.access_token,
-      refresh_token: response.data.refresh_token || undefined
+      refresh_token: response.data.refresh_token || undefined,
+      latestPlatformUsed: link.platform
     }
     await User.findByIdAndUpdate({ _id: user._id }, { services: userServices });
     return res.status(200).json({ message: `${serviceName} account linked successfully.` });
