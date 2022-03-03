@@ -15,6 +15,7 @@ const refreshAccessToken = async (refresh_token: string) => {
     })
     if (data) {
       setAccessToken(data.access_token)
+      // TODO: store token locally
     }
   } catch (error) {
     console.log(error)

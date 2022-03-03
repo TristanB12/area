@@ -1,7 +1,7 @@
 import axiosAPI from './config'
 import { AuthTokens } from '../types/auth'
-import { AuthConfiguration, authorize, AppAuthError } from 'react-native-app-auth'
 import { Service } from '../types'
+import { authorizeService } from './services'
 
 type AuthForm = {
   email: string,
@@ -17,27 +17,6 @@ const authEmail = async (action: 'login' | 'signup', authForm: AuthForm) => axio
 
 const loginEmail = async (authForm: AuthForm) => authEmail('login', authForm)
 const signupEmail = async (authForm: AuthForm) => authEmail('signup', authForm)
-
-const authorizeService = async (service: Service) => {
-  const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"
-  const config: AuthConfiguration = {
-    clientId: `${appID}.apps.googleusercontent.com`,
-    redirectUrl: `com.googleusercontent.apps.${appID}:/google`,
-    scopes: ['email', 'profile'],
-    serviceConfiguration: {
-      authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
-      tokenEndpoint: "https://oauth2.googleapis.com/token"
-    },
-    usePKCE: false,
-    skipCodeExchange: true
-  };
-  try {
-    return await authorize(config)
-  } catch (err) {
-    const error = err as AppAuthError
-    return null
-  }
-}
 
 const authService = async (action: 'login' | 'signup', service: Service) => {
   const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"

@@ -12,6 +12,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { APIError } from "../../api";
 import useAreas from "../../hooks/useAreas";
 import ErrorFetching from "../../components/ErrorFetching";
+import NetworkView from "../../components/NetworkView";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {
   return (
@@ -129,19 +130,14 @@ function AreasScreen() {
 
   return (
     <TabScreenView>
-      {
-        isLoading ? (
-          <AreaListSkeleton />
-        ) : (data === undefined || data.error) ? (
-          <ErrorFetching
-            title={t('error_fetching')}
-            error={data?.error}
-            refetch={refetch}
-          />
-        ) : (
-          areas.length > 0 ? <AreaList areas={areas} /> : <NoAreas />
-        )
-      }
+      <NetworkView
+        isLoading={isLoading}
+        skeleton={<AreaListSkeleton />}
+        data={data}
+        errorTitle={t('error_fetching')}
+        refetch={refetch}
+        render={areas.length > 0 ? <AreaList areas={areas} /> : <NoAreas />}
+      />
     </TabScreenView>
   )
 }

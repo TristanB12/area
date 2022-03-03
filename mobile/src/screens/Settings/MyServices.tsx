@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, Image, Text, Icon, HStack, Button, VStack, AlertDialog, Skeleton, Center, Heading } from "native-base";
-import { useRecoilState } from "recoil";
 import { Service } from "../../types";
 import ScreenView from '../../components/ScreenView'
-import servicesAtom from "../../recoil/atoms/services";
 import api from "../../api";
 import useServices from "../../hooks/useServices";
 import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
-import ErrorFetching from "../../components/ErrorFetching";
 import Entypo from "react-native-vector-icons/Entypo";
+import NetworkView from "../../components/NetworkView";
 
 type ServiceItemProps = {
   service: Service,
@@ -105,7 +103,7 @@ type UnlinkServiceDialogProps = {
 
 function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialogProps) {
   const { t } = useTranslation(['services', 'common'])
-  const [services, setServices] = useRecoilState(servicesAtom)// TODO: replace by mutate
+  const [isUnlinking, setIsUnlinking] = useState(false)
   const cancelRef = React.useRef(null);
   const isOpen = (service !== undefined)
 
@@ -115,28 +113,18 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
   const onClose = () => {
     setUnlinkService(undefined)
   }
+
   const unlinkFromApi = async (): Promise<boolean> => {
-    // TODO: call api to unlink service
-    const { data, error } = await api.services.unlink(service.name)
-    console.log(data)
-    console.log(error)
-    return (!error || data)
+    const { error } = await api.services.unlink(service.name)
+    // TODO: invalidate 'services' query to get updated isLinked
+    return (!error)
   }
 
   const unlinkService = async () => {
-    const editedServices = [...services]
-    const unlinkServiceIndex = editedServices.findIndex(
-      otherService => otherService.name === service.name
-    )
-    if (unlinkServiceIndex === -1) {
-      return
-    }
-    editedServices[unlinkServiceIndex] = {
-      ...service,
-      isLinked: false
-    }
-    if (await unlinkFromApi()) {
-      setServices(editedServices)
+    setIsUnlinking(true)
+    const unlinked = await unlinkFromApi()
+    setIsUnlinking(false)
+    if (unlinked) {
       onClose()
     }
   }
@@ -166,7 +154,13 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
             <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
               { t('cancel', { ns: "common" })}
             </Button>
-            <Button colorScheme="danger" onPress={unlinkService}>
+            <Button
+              isLoading={isUnlinking}
+              isLoadingText={t('unlinking')}
+              disabled={isUnlinking}
+              colorScheme="danger"
+              onPress={unlinkService}
+            >
               { t('unlink') }
             </Button>
           </Button.Group>
@@ -236,19 +230,14 @@ function MyServicesScreen() {
 
   return (
     <ScreenView>
-      {
-        isLoading ? (
-          <MyServicesSkeleton />
-        ) : (data === undefined || data.error) ? (
-          <ErrorFetching
-            title={t('error_fetching')}
-            error={data?.error}
-            refetch={refetch}
-          />
-        ) : (
-          services.length > 0 ? <MyServices services={services} /> : <NoLinkedServices />
-        )
-      }
+      <NetworkView
+        isLoading={isLoading}
+        skeleton={<MyServicesSkeleton />}
+        data={data}
+        errorTitle={t('error_fetching')}
+        refetch={refetch}
+        render={services.length > 0 ? <MyServices services={services} /> : <NoLinkedServices />}
+      />
     </ScreenView>
   )
 }

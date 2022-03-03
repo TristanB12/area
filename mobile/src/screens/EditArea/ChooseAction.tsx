@@ -4,14 +4,14 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackNavProp, StackParamList } from "../../navigation/types";
-import { Box, Image, VStack, Text, Input, Icon, HStack } from "native-base";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { Box, Image, VStack, Text, Icon, HStack } from "native-base";
+import { useSetRecoilState } from "recoil";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
-import servicesAtom from "../../recoil/atoms/services";
 import Area, { Service, Action } from "../../types";
 import ScreenView from '../../components/ScreenView'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import useServices from "../../hooks/useServices";
 
 function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
   const setArea = useSetRecoilState(editedAreaAtom)
@@ -91,19 +91,19 @@ type ChooseActionScreenProps = NativeStackScreenProps<StackParamList, 'ChooseAct
 function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
   const { t } = useTranslation('navigation')
   const { serviceName, isReaction } = route.params
-  const services = useRecoilValue(servicesAtom)
-  const service = services.find(service => service.name === serviceName)
-
-  if (service === undefined) {
-    return null
-  }
-  const actions = isReaction ? service.reactions : service.actions
+  const { data } = useServices()
+  const service = data?.data?.find(service => service.name === serviceName)
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isReaction ? t("choose_reaction") : t("choose_action")
     });
   }, [navigation]);
+
+  if (service === undefined) {
+    return null
+  }
+  const actions = isReaction ? service.reactions : service.actions
 
   return (
     <ScreenView>

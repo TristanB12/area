@@ -2,11 +2,10 @@ import React from "react";
 import { RouteProp } from "@react-navigation/native";
 import { StackParamList } from "../../navigation/types";
 import { Image, Text, HStack, Heading, VStack, FormControl, Input, Button } from "native-base";
-import { useRecoilValue } from "recoil";
 import ScreenView from '../../components/ScreenView'
-import servicesAtom from "../../recoil/atoms/services";
 import { ActionConfig } from "../../types";
 import { useTranslation } from "react-i18next";
+import useServices from "../../hooks/useServices";
 
 function ConfigureItem({ config } : { config: ActionConfig }) {
   return (
@@ -22,7 +21,6 @@ function ConfigureItem({ config } : { config: ActionConfig }) {
           variant="filled"
           placeholder={`ex: ${config.example}`}
           p={4}
-
         />
       </FormControl>
     </VStack>
@@ -31,10 +29,9 @@ function ConfigureItem({ config } : { config: ActionConfig }) {
 
 function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'ConfigureAction'> }) {
   const { t } = useTranslation('common')
-
   const { isReaction, serviceName, actionTitle } = route.params
-  const services = useRecoilValue(servicesAtom)
-  const service = services.find(service => service.name === serviceName)
+  const { data } = useServices()
+  const service = data?.data?.find(service => service.name === serviceName)
   if (service === undefined) {
     return null
   }
@@ -43,6 +40,7 @@ function ConfigureActionScreen({ route } : { route: RouteProp<StackParamList, 'C
   if (action === undefined || action.config === undefined) {
     return null
   }
+  console.log(action.config)
   const canSave = false
 
   return (

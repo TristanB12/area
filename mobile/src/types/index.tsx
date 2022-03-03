@@ -10,9 +10,17 @@ type Action = {
   config?: ActionConfig[]
 }
 
+type ServiceLink = {
+  clientID: string,
+  redirectUri: string,
+  scope: string,
+  authorizationEndpoint: string
+}
+
 type Service = {
   name: string,
   logoUri: string,
+  link: ServiceLink,
   isLinked: boolean,
   actions: Action[],
   reactions: Action[]
