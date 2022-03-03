@@ -106,7 +106,6 @@ import {facebookAuthCode, googleAuthCode} from '@/services';
                     this.$router.push({name: 'AreasPage'});
                 }
                 else {
-                    console.log(res);
                     this.error = res[1].message;
                     this.isLoading.login = false;
                 }

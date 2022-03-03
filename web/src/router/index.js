@@ -19,7 +19,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "RegisterPage" */ '../views/RegisterPage.vue')
   },
   {
-    path: '/login',
+    path: '/mobile',
     name: 'MobilePage',
     component: () => import(/* webpackChunkName: "MobilePage" */ '../views/MobilePage.vue')
   },

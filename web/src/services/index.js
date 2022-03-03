@@ -19,8 +19,22 @@ const googleAuthCode = (state) => {
         access_type: 'offline',
         response_type: 'code',
         client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-        scope: 'email profile https://www.googleapis.com/auth/youtube',
+        scope: 'email profile',
         redirect_uri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
+        state: state
+    }))
+    return win;
+}
+
+const youtubeAuthCode = (state) => {
+    let win = window.open('https://accounts.google.com/o/oauth2/v2/auth?' +
+    qs.stringify({
+        prompt: 'consent',
+        access_type: 'offline',
+        response_type: 'code',
+        client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/youtube',
+        redirect_uri: process.env.VUE_APP_YOUTUBE_REDIRECT_URI,
         state: state
     }))
     return win;
@@ -66,7 +80,7 @@ const functionsTable = {
     "twitch": twitchAuthCode,
     "github": githubAuthCode,
     "google": googleAuthCode,
-    "youtube": googleAuthCode,
+    "youtube": youtubeAuthCode,
 }
 
 module.exports = {

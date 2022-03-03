@@ -34,7 +34,6 @@ import axios from 'axios';
                     this.processSignup();
             },
             processLink() {
-                console.log("fsgf")
                 let config = {
                     method: 'post',
                     url: 'https://ikeapi.herokuapp.com/link',

@@ -16,6 +16,7 @@
                 v-for="area in searchedAreas"
                 :key="area._id"
                 :infos="area"
+                @delete-area="loadUserAreas"
             />
         </div>
         <div class="error-container" v-else>
@@ -54,7 +55,7 @@ import API from '@/services/api.js';
                     this.areas = res[0].data;
                     this.searchedAreas = res[0].data;
                 }
-            }
+            },
         }
     }
 </script>

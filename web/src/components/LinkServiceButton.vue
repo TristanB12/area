@@ -37,6 +37,8 @@ import { functionsTable } from '@/services/index.js';
                     if (service.toLowerCase() == this.service.service.name.toLowerCase()) {
                         return true;
                     }
+                    if (['youtube', 'gmail', 'google'].includes(this.service.service.name) && service.toLowerCase() == 'google')
+                        return true;
                 }
                 return false;
             }

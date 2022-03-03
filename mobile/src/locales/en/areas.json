@@ -1,0 +1,20 @@
+{
+  "no_areas_yet": "No areas yet",
+  "create_area_hint": "Why don't you try creating one?",
+  "error_fetching": "There was an error fetching your areas",
+  "title": {
+    "label": "Area name",
+    "placeholder": "Your Area name",
+    "required": "A title for your area is required"
+  },
+  "description": {
+    "label": "Description (optional)",
+    "placeholder": "No description"
+  },
+  "configure_action": "CONFIGURE ACTION",
+  "configure_reaction": "CONFIGURE REACTION",
+  "delete": {
+    "title": "Delete AREA",
+    "message": "Do you really wish to delete this AREA?"
+  }
+}

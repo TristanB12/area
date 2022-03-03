@@ -1,0 +1,34 @@
+version: "3.2"
+services:
+  api:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./back:/app
+
+  mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    volumes:
+      - ./mobile/build:/app/android/app/build/:z
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    # restart: always
+    depends_on:
+      - api
+      - mobile
+    ports:
+      - 8081:8081
+    volumes:
+      - ./web:/app
+      - ./mobile/build:/app/build/:z
