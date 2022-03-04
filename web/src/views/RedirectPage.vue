@@ -34,6 +34,7 @@ import axios from 'axios';
                     this.processSignup();
             },
             processLink() {
+                console.log(process.env)
                 let config = {
                     method: 'post',
                     url: 'https://ikeapi.herokuapp.com/link',
@@ -42,6 +43,7 @@ import axios from 'axios';
                         'Content-Type': 'application/json'
                     },
                     params: {
+                        platform: process.env.NODE_ENV == 'development' ? 'dev' : 'web',
                         service: this.$route.params.service,
                         code: this.$route.query.code,
                         redirect_uri: this.redirectUri + "/redirect/" + this.$route.params.service
