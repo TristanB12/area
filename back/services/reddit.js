@@ -5,7 +5,7 @@ const reddit = require('../controllers/reddit.controller');
 const redditService = {
   tags: ["link"],
   authRef: "reddit",
-  logoUri: "",
+  logoUri: "http://assets.stickpng.com/images/5847e9efcef1014c0b5e482e.png",
   link: {
     accessTokenUrlOption: reddit.accessTokenUrlOption,
     desactive: reddit.unlink

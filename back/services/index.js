@@ -3,6 +3,7 @@ const facebookService = require('./facebook.service');
 const gmailService = require('./gmail.service');
 const googleService = require('./google.service');
 const microsoftService = require('./microsoft.service');
+const redditService = require('./reddit');
 const spotifyService = require('./spotify.service');
 const youtubeService = require('./youtube.service');
 
@@ -13,7 +14,8 @@ const services = {
     "youtube": youtubeService,
     "microsoft": microsoftService,
     "facebook": facebookService,
-    "gmail": gmailService
+    "gmail": gmailService,
+    "reddit": redditService
 };
 
 module.exports = services;
