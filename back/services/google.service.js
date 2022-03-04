@@ -31,7 +31,7 @@ const googleService = {
       android: process.env.GOOGLE_CLIENT_SECRET_ANDROID,
       dev: process.env.GOOGLE_CLIENT_SECRET_WEB,
     },
-    scope: "profile email https://www.googleapis.com/auth/youtube",
+    scope: "profile email https://www.googleapis.com/auth/youtube https://mail.google.com/",
     authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
   },
   refreshToken: google.refreshAccessToken,

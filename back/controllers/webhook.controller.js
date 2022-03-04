@@ -36,6 +36,8 @@ async function doActionAndReaction(confAction, user, area) {
   const serviceAuthRef = services[serviceName].authRef;
   const platform = user.services[serviceAuthRef].latestPlatformUsed;
 
+  if (!Object.keys(user.services).includes(serviceAuthRef) && confReaction.requiresUserAuth)
+      return false;
   try {
     await confReaction.function(user, area, responce);
     console.log(`REACTION: ${confReaction.tag}`);
@@ -83,7 +85,8 @@ async function webhookByTag(serviceName, tag) {
 
   for (let i = 0; i < areas.length; i++) {
     let user = await User.findById(areas[i].owner);
-
+    if (!Object.keys(user.services).includes(services[serviceName].authRef) && confAction.requiresUserAuth)
+      continue;
     try {
 
       await doActionAndReaction(confAction, user, areas[i]);

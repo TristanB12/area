@@ -12,7 +12,7 @@ async function getUserNbFollowers(accessToken) {
             'Authorization': 'Bearer ' + accessToken, 
         }
     }
-    const res = await axios(options);
+    const res = await axios(config);
     return res.data;
 }
 
@@ -21,7 +21,7 @@ async function actionWhenUserGetFollower(user, area) {
     const { lastNumberOfFollowers } = action.save;
     const response = await getUserNbFollowers(user.services.spotify.access_token);
 
-    if (!lastNumberOfFollowers) {
+    if (lastNumberOfFollowers == undefined || lastNumberOfFollowers > response.followers.total) {
         await Area.findByIdAndUpdate({ _id: area._id }, { 'action.save.lastNumberOfFollowers': response.followers.total });
         return { error: false, data: false };
     }
