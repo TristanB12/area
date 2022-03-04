@@ -49,15 +49,9 @@ function ActionCard({ action, isReaction } : { action: ServiceAction | undefined
   )
 }
 
-function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispatch<React.SetStateAction<Area>>, onSave: Function }) {
+function EditArea({ area, setArea } : { area: Area, setArea: React.Dispatch<React.SetStateAction<Area>>}) {
   const { t } = useTranslation(['areas', 'common'])
   const titleIsValid = area.title.length > 0
-  const canSave = (
-    titleIsValid
-    && area.action !== undefined
-    && area.reaction !== undefined
-  )
-  const onSubmit = async () => canSave && await onSave()
 
   return (
     <>
@@ -106,15 +100,6 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
         <ActionCard action={area.action} />
         <ActionCard action={area.reaction} isReaction />
       </VStack>
-      <Button
-        w='80%'
-        onPress={onSubmit}
-        _text={{ fontSize: "lg" }}
-        disabled={!canSave}
-        bgColor={canSave ? "primary.500" : "primary.100"}
-      >
-        { t('save', { ns: 'common' }) }
-      </Button>
     </>
   )
 }

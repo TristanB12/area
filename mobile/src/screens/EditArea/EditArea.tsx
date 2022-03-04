@@ -1,25 +1,23 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { TouchableOpacity, Alert } from "react-native";
-import { CompositeScreenProps } from "@react-navigation/native";
+import { CompositeScreenProps, useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { StackParamList, TabParamList } from "../../navigation/types";
+import { StackNavProp, StackParamList, TabParamList } from "../../navigation/types";
 import { AlertDialog, Button, Icon } from "native-base"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ScreenView from '../../components/ScreenView'
 import EditArea from "../../components/EditArea";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
 import { useTranslation } from "react-i18next";
-import api from "../../api";
-import { useMutation, useQueryClient } from "react-query";
-import Area from "../../types";
+import { useQueryClient } from "react-query";
+import useAreaMutation from "../../hooks/useAreaMutation";
 
 type EditAreaScreenProps = CompositeScreenProps<
   NativeStackScreenProps<StackParamList, 'EditArea'>,
   BottomTabScreenProps<TabParamList>
 >
-
 
 function DeleteAreaButton({ setIsDeleteDialogOpen } : { setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>> }) {
   const toggleDeleteDialog = () => setIsDeleteDialogOpen(isOpen => !isOpen)
@@ -31,10 +29,25 @@ function DeleteAreaButton({ setIsDeleteDialogOpen } : { setIsDeleteDialogOpen: R
   )
 }
 
-function DeleteAreaDialog({ isOpen, setIsOpen, onDelete } : { isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, onDelete: () => void}) {
+function DeleteAreaDialog({ isOpen, setIsOpen } : { isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>}) {
   const cancelRef = useRef(null);
   const { t } = useTranslation(['areas', 'common'])
+  const navigation = useNavigation<StackNavProp>()
+  const editedArea = useRecoilValue(editedAreaAtom)
+  const queryClient = useQueryClient()
+  const deleteAreaMutation = useAreaMutation('delete', queryClient)
+  const [isDeleting, setIsDeleting] = useState(false)
+
   const onClose = () => setIsOpen(!isOpen)
+
+  const onDelete = async () => {
+    setIsDeleting(true)
+    const { error } = await deleteAreaMutation.mutateAsync(editedArea)
+    setIsDeleting(false)
+    if (!error) {
+      navigation.goBack()
+    }
+  }
 
   return (
     <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
@@ -51,7 +64,11 @@ function DeleteAreaDialog({ isOpen, setIsOpen, onDelete } : { isOpen: boolean, s
             <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
               { t('cancel', { ns: "common" })}
             </Button>
-            <Button colorScheme="danger" onPress={onDelete}>
+            <Button
+              colorScheme="danger"
+              isLoading={isDeleting}
+              onPress={onDelete}
+            >
               { t('delete', { ns: "common" })}
             </Button>
           </Button.Group>
@@ -62,24 +79,31 @@ function DeleteAreaDialog({ isOpen, setIsOpen, onDelete } : { isOpen: boolean, s
 }
 
 // Used for editing areas and creating new ones
-function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
+function EditAreaScreen({ navigation }: EditAreaScreenProps) {
   const { t } = useTranslation('navigation')
   const [editedArea, setEditedArea] = useRecoilState(editedAreaAtom)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const queryClient = useQueryClient()
-  const { mutateAsync } = useMutation(async (area: Area) => await api.areas.create(area), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("areas")
-    }
-  })
+  const createAreaMutation = useAreaMutation('create', queryClient)
+  const editAreaMutation = useAreaMutation('edit', queryClient)
 
-  const onDelete = () => {
-    navigation.goBack()
-  }
+  const canSave = (
+    editedArea.title.length > 0
+    && editedArea.action !== undefined
+    && editedArea.reaction !== undefined
+  )
+
   const onSave = async () => {
-    const { data, error } = await mutateAsync(editedArea)
-    console.log(data, error)
-    // navigation.goBack()
+    const isNewArea = (editedArea.id === 0)
+    setIsSaving(true)
+    const { error } = (isNewArea)
+      ? await createAreaMutation.mutateAsync(editedArea)
+      : await editAreaMutation.mutateAsync(editedArea)
+    setIsSaving(false)
+    if (!error) {
+      navigation.goBack()
+    }
   }
 
   useLayoutEffect(() => {
@@ -92,18 +116,25 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
     });
   }, [navigation, editedArea]);
 
-  console.log(editedArea)
   return (
     <ScreenView style={{ justifyContent: "space-between", paddingBottom: 40 }}>
       <EditArea
         area={editedArea}
         setArea={setEditedArea}
-        onSave={onSave}
       />
+      <Button
+        w='80%'
+        onPress={async () => await onSave()}
+        isLoading={isSaving}
+        _text={{ fontSize: "lg" }}
+        disabled={!canSave}
+        bgColor={canSave ? "primary.500" : "primary.100"}
+      >
+        { t('save', { ns: 'common' }) }
+      </Button>
       <DeleteAreaDialog
         isOpen={isDeleteDialogOpen}
         setIsOpen={setIsDeleteDialogOpen}
-        onDelete={onDelete}
       />
     </ScreenView>
   )

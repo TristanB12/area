@@ -20,7 +20,7 @@ const editArea = async (area: Area) => axiosAPI({
 
 const deleteArea = async (area: Area) => axiosAPI({
   method: "DELETE",
-  url: "/areas",
+  url: "/area",
   params: {
     id: area.id
   }
