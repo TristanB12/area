@@ -1,4 +1,5 @@
 import { Platform } from "react-native"
+import { LoginManager, AccessToken } from "react-native-fbsdk-next";
 import axiosAPI from './config'
 import { AuthTokens } from '../types/auth'
 import { Service } from '../types'
@@ -19,8 +20,21 @@ const authEmail = async (action: 'login' | 'signup', authForm: AuthForm) => axio
 const loginEmail = async (authForm: AuthForm) => authEmail('login', authForm)
 const signupEmail = async (authForm: AuthForm) => authEmail('signup', authForm)
 
+const authFacebook = async (service: Service) => {
+  const res = await LoginManager.logInWithPermissions(service.link.scope.split(' '))
+  if (res.isCancelled) {
+    throw new Error()
+  }
+  const authTokens = await AccessToken.getCurrentAccessToken()
+  console.log(authTokens)
+}
+
 const authService = async (action: 'login' | 'signup', service: Service) => {
+  if (service.name.toLowerCase() === "facebook") {
+    return await authFacebook(service)
+  }
   const authorizeResult = await authorizeService(service)
+  console.log(authorizeResult)
 
   if (authorizeResult === null) {
     throw new Error()
