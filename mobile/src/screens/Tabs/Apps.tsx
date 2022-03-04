@@ -1,11 +1,12 @@
 import React from "react";
-import { Heading, Skeleton, VStack } from "native-base";
+import { Center, Heading, HStack, Icon, Skeleton, Text, VStack } from "native-base";
 import NetworkView from "../../components/NetworkView";
 import TabScreenView from "../../components/TabScreenView";
 import useAreas from "../../hooks/useAreas";
 import Area from "../../types";
 import ServiceCard, { ServiceCardSkeleton } from "../../components/ServiceCard";
 import { useTranslation } from "react-i18next";
+import Entypo from "react-native-vector-icons/Entypo";
 
 function NbAreasOfService({ nbAreas } : { nbAreas: number }) {
   return (
@@ -60,6 +61,30 @@ function AppsList({ apps } : { apps: App[] }) {
   )
 }
 
+function NoApps() {
+  const { t } = useTranslation('apps')
+
+  return (
+    <Center flex={1}>
+      <VStack space={8} alignItems="center">
+        <HStack space={4} alignItems="center">
+          <Heading textAlign="center" color="primary.400">
+            { t('no_apps_yet') }
+          </Heading>
+          <Icon
+            size="sm"
+            color="primary.400"
+            as={<Entypo name="emoji-sad" />}
+          />
+        </HStack>
+        <Text fontSize="lg">
+          { t('create_app_hint') }
+        </Text>
+      </VStack>
+    </Center>
+  )
+}
+
 function Apps() {
   const { t } = useTranslation('areas')
   const { isLoading, data, refetch } = useAreas()
@@ -86,7 +111,7 @@ function Apps() {
         data={data}
         errorTitle={t('error_fetching')}
         refetch={refetch}
-        render={<AppsList apps={apps} />}
+        render={apps.length > 0 ? <AppsList apps={apps} /> : <NoApps />}
       />
     </TabScreenView>
   )
