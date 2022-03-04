@@ -8,6 +8,7 @@ import editedAreaAtom from "../../recoil/atoms/editedArea";
 import api from "../../api";
 import useServices from "../../hooks/useServices";
 import ScreenView from '../../components/ScreenView'
+import ServiceItem from "../../components/ServiceItem";
 
 type LinkServiceScreenProps = NativeStackScreenProps<StackParamList, 'LinkService'>
 
@@ -37,13 +38,7 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
       } else {
         setArea(area => ({
           ...area,
-          [(isReaction) ? 'reaction' : 'action']: {
-            service: {
-              name: service.name,
-              logoUri: service.logoUri,
-            },
-            ...action
-          }
+          [(isReaction) ? 'reaction' : 'action']: action
         }))
         navigation.navigate('EditArea')
       }
@@ -79,17 +74,7 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   return (
     <ScreenView>
       <VStack w="100%" mt={10} space={8} alignItems="center">
-        <HStack space={6} alignItems="center">
-          <Image
-            source={{ uri: service.logoUri }}
-            size="sm"
-            resizeMode="contain"
-            alt={service.name}
-          />
-          <Heading textAlign="center" >
-            { service.name }
-          </Heading>
-        </HStack>
+        <ServiceItem service={service} />
         <Text fontSize="lg"  textAlign="center">
           { t('link_service_helper_text') }
         </Text>

@@ -8,13 +8,14 @@ import useServices from "../../hooks/useServices";
 import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
 import Entypo from "react-native-vector-icons/Entypo";
 import NetworkView from "../../components/NetworkView";
+import ServiceItem from "../../components/ServiceItem";
 
-type ServiceItemProps = {
+type ServiceCardProps = {
   service: Service,
   setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
 }
 
-function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
+function ServiceCard({ service, setUnlinkService } : ServiceCardProps) {
   const { t } = useTranslation('services')
 
   return (
@@ -24,17 +25,7 @@ function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
       alignItems="center"
     >
       <HStack w="100%" justifyContent="space-between" alignItems="center">
-        <HStack w="60%" space={4} alignItems="center">
-          <Image
-            source={{ uri: service.logoUri }}
-            size="xs"
-            resizeMode="contain"
-            alt={service.name}
-          />
-          <Text>
-            { service.name }
-          </Text>
-        </HStack>
+        <ServiceItem service={service} w="40%" size="xs" />
         <Button w="40%" colorScheme="danger" onPress={() => setUnlinkService(service)}>
           { t('unlink') }
         </Button>
@@ -43,7 +34,7 @@ function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
   )
 }
 
-function ServiceItemSkeleton() {
+function ServiceCardSkeleton() {
   return (
     <Box
       variant="card"
@@ -71,7 +62,7 @@ function ServiceList({ services, setUnlinkService } : ServiceListProps) {
     <VStack w="100%" space={4}>
       {
         services.map(service =>
-          <ServiceItem
+          <ServiceCard
             key={service.name}
             service={service}
             setUnlinkService={setUnlinkService}
@@ -85,9 +76,9 @@ function ServiceList({ services, setUnlinkService } : ServiceListProps) {
 function ServiceListSkeleton() {
   return (
     <VStack w="100%" space={4}>
-      <ServiceItemSkeleton />
-      <ServiceItemSkeleton />
-      <ServiceItemSkeleton />
+      <ServiceCardSkeleton />
+      <ServiceCardSkeleton />
+      <ServiceCardSkeleton />
     </VStack>
   )
 }
@@ -130,17 +121,7 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
       <AlertDialog.Content>
         <AlertDialog.CloseButton />
         <AlertDialog.Header>
-          <HStack space={4} alignItems="center">
-            <Image
-              source={{ uri: service.logoUri }}
-              size="xs"
-              resizeMode="contain"
-              alt={service.name}
-            />
-            <Text>
-              { service.name }
-            </Text>
-          </HStack>
+          <ServiceItem service={service}/>
         </AlertDialog.Header>
         <AlertDialog.Body>
           { t('unlink_confirm')}

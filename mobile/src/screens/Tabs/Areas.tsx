@@ -8,10 +8,7 @@ import { useSetRecoilState } from "recoil";
 import TabScreenView from "../../components/TabScreenView";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
 import Entypo from 'react-native-vector-icons/Entypo'
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import { APIError } from "../../api";
 import useAreas from "../../hooks/useAreas";
-import ErrorFetching from "../../components/ErrorFetching";
 import NetworkView from "../../components/NetworkView";
 
 function ServiceListItem({ title, url } : { title: string, url: string }) {

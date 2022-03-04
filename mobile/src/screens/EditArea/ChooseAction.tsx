@@ -12,6 +12,7 @@ import ScreenView from '../../components/ScreenView'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import useServices from "../../hooks/useServices";
+import ServiceItem from "../../components/ServiceItem";
 
 function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
   const setArea = useSetRecoilState(editedAreaAtom)
@@ -35,13 +36,7 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
     } else {
       setArea(area => ({
         ...area,
-        [areaActionField]: {
-          service: {
-            name: service.name,
-            logoUri: service.logoUri,
-          },
-          ...action
-        }
+        [areaActionField]: action
       }))
       navigation.navigate('EditArea')
     }
@@ -107,18 +102,8 @@ function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
 
   return (
     <ScreenView>
-      <HStack my="5" mb="10" space={6} alignItems="center">
-        <Image
-          source={{ uri: service.logoUri }}
-          size="sm"
-          resizeMode="contain"
-          alt={service.name}
-        />
-        <Text  textAlign="center" >
-          { service.name }
-        </Text>
-      </HStack>
-      <VStack w="100%" space={4}>
+      <ServiceItem service={service}/>
+      <VStack mt={10} w="100%" space={4}>
         {
           actions.map(action =>
             <ActionItem

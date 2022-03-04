@@ -5,6 +5,7 @@ import settings from './settings.json'
 import auth from './auth.json'
 import areas from './areas.json'
 import services from './services.json'
+import explore from './explore.json'
 
 export default {
   common,
@@ -13,5 +14,6 @@ export default {
   auth,
   settings,
   areas,
-  services
+  services,
+  explore
 }

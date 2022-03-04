@@ -6,7 +6,7 @@ import { StackNavProp } from "../navigation/types";
 import { TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 
-function ServiceCard({ action, isReaction } : { action: ServiceAction | undefined, isReaction?: boolean }) {
+function ActionCard({ action, isReaction } : { action: ServiceAction | undefined, isReaction?: boolean }) {
   const { t } = useTranslation('areas')
   const navigation = useNavigation<StackNavProp>()
   const goToConfigureAction = () => navigation.push('ChooseService', {
@@ -103,8 +103,8 @@ function EditArea({ area, setArea, onSave } : { area: Area, setArea: React.Dispa
         </VStack>
       </VStack>
       <VStack w="100%" space={8}>
-        <ServiceCard action={area.action} />
-        <ServiceCard action={area.reaction} isReaction />
+        <ActionCard action={area.action} />
+        <ActionCard action={area.reaction} isReaction />
       </VStack>
       <Button
         w='80%'

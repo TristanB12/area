@@ -92,6 +92,7 @@ function EditAreaScreen({ route, navigation }: EditAreaScreenProps) {
     });
   }, [navigation, editedArea]);
 
+  console.log(editedArea)
   return (
     <ScreenView style={{ justifyContent: "space-between", paddingBottom: 40 }}>
       <EditArea

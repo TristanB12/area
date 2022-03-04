@@ -1,13 +1,14 @@
 type ActionConfig = {
-  display: string,
-  example: any,
-  value: any
+  [key: string]: {
+    type: string,
+    value: any
+  }
 }
 
 type Action = {
   title: string,
   requiresUserAuth: boolean,
-  config?: ActionConfig[]
+  config?: ActionConfig
 }
 
 type ServiceLink = {
