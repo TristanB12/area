@@ -15,12 +15,13 @@ function accessTokenUrlOption(code, link) {
       url: 'https://github.com/login/oauth/access_token',
       method: 'POST',
       headers: {
-        'Accept': 'application/json'
+        Accept: 'application/json',
       },
       params: {
-        'client-id': link.clientID,
+        'client_id': link.clientID,
         'client_secret': link.clientSecret,
-        code
+        code,
+        redirect_uri: link.redirectUri
       }
     };
 }

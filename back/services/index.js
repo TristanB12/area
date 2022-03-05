@@ -1,5 +1,6 @@
 const areaService =  require('./area.service');
 const facebookService = require('./facebook.service');
+const githubService = require('./github.service');
 const gmailService = require('./gmail.service');
 const googleService = require('./google.service');
 const microsoftService = require('./microsoft.service');
@@ -15,7 +16,8 @@ const services = {
     "microsoft": microsoftService,
     "facebook": facebookService,
     "gmail": gmailService,
-    "reddit": redditService
+    "reddit": redditService,
+    "github": githubService
 };
 
 module.exports = services;

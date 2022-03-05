@@ -1,9 +1,9 @@
 require('dotenv');
-
 const reddit = require('../controllers/reddit.controller');
+const redditAction = require('../action/reddit.action');
 
 const redditService = {
-  tags: ["link"],
+  tags: ["link", "actions"],
   authRef: "reddit",
   logoUri: "http://assets.stickpng.com/images/5847e9efcef1014c0b5e482e.png",
   link: {
@@ -32,6 +32,19 @@ const redditService = {
     scope: "identity edit flair history modconfig modflair modlog modposts modwiki mysubreddits privatemessages read report save submit subscribe vote wikiedit wikiread",
     authorizationEndpoint: "https://www.reddit.com/api/v1/authorize",
   },
+  actions: [
+    {
+      tag: 'RT#5U85RC183',
+      title: "When I get a new follower",
+      service: {
+        name: "reddit",
+        logoUri: "http://assets.stickpng.com/images/5847e9efcef1014c0b5e482e.png",
+      },
+      requiresUserAuth: true,
+      config: null,
+      function: redditAction.actionSubscribeToMe,
+    }
+  ],
   refreshToken: reddit.refreshAccessToken,
 };
 
