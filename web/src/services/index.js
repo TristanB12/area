@@ -20,22 +20,8 @@ const googleAuthCode = (state) => {
         access_type: 'offline',
         response_type: 'code',
         client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-        scope: 'email profile',
+        scope: 'profile email https://www.googleapis.com/auth/youtube https://mail.google.com/',
         redirect_uri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
-        state: state
-    }))
-    return win;
-}
-
-const youtubeAuthCode = (state) => {
-    let win = window.open('https://accounts.google.com/o/oauth2/v2/auth?' +
-    qs.stringify({
-        prompt: 'consent',
-        access_type: 'offline',
-        response_type: 'code',
-        client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-        scope: 'https://www.googleapis.com/auth/youtube',
-        redirect_uri: process.env.VUE_APP_YOUTUBE_REDIRECT_URI,
         state: state
     }))
     return win;
@@ -56,9 +42,22 @@ const facebookAuthCode = (state) => {
 const githubAuthCode = (state) => {
     let win = window.open('https://github.com/login/oauth/authorize?' +
     qs.stringify({
+        redirect_uri: process.env.VUE_APP_GITHUB_REDIRECT_URI,
         client_id: process.env.VUE_APP_GITHUB_CLIENT_ID,
-        scope: 'user',
+        scope: 'user repo',
         state: state,
+    }))
+    return win;
+}
+
+const redditAuthCode = (state) => {
+    let win = window.open('https://www.reddit.com/api/v1/authorize' + 
+    qs.stringify({
+        redirect_uri: process.env.VUE_APP_REDDIT_REDIRECT_URI,
+        client_id: process.env.VUE_APP_REDDIT_CLIENT_ID,
+        response_type: 'code',
+        scope: "identity edit flair history modconfig modflair modlog modposts modwiki mysubreddits privatemessages read report save submit subscribe vote wikiedit wikiread",
+        state: state
     }))
     return win;
 }
@@ -81,7 +80,9 @@ const functionsTable = {
     "twitch": twitchAuthCode,
     "github": githubAuthCode,
     "google": googleAuthCode,
-    "youtube": youtubeAuthCode,
+    "youtube": googleAuthCode,
+    "gmail": googleAuthCode,
+    "reddit": redditAuthCode,
 }
 
 module.exports = {

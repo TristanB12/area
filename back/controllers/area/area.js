@@ -128,4 +128,36 @@ async function deleteArea(req, res) {
   });
 }
 
-module.exports = { getAllArea, createArea, deleteArea };
+async function updateArea(req, res) {
+  const id = req.params.id || req.query.id;
+  let { action, reaction, title, description } = req.body;
+
+  if (!action)
+    return res.status(400).json({ message: 'missing action field in request.' });
+  if (!reaction)
+    return res.status(400).json({ message: 'missing reaction field in request.' });
+  const configAction = getActionByTag(action.service, action.tag);
+  if (!configAction)
+    return res.status(400).json({ message: `specified action does not exist or not supported by ${action.service} service.` });
+  const configReaction = getReactionByTag(reaction.service, reaction.tag);
+    if (!configReaction)
+      return res.status(400).json({ message: `specified reaction does not exist or not supported by ${reaction.service} service.` });
+  
+  if (!title)
+    title = `${configAction.title},${configReaction.title}`;
+  try {
+    Area.findByIdAndUpdate({ _id: id }, {
+      title: title,
+      description: description,
+      action,
+      reaction,
+    });
+    const area = Area.findById(id);
+    return res.status(200).json( { message: "area successfully updated.", area});
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "ID area specified doesn't exist."});
+  } 
+}
+
+module.exports = { getAllArea, createArea, deleteArea, updateArea };

@@ -17,37 +17,27 @@ async function githubReaction(access_token, name, value) {  //name, blog, twitte
 
 async function updateUsername(user, area, actionPayload) {
     const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'name', config['new name']);
+    await githubReaction(user.services.github.access_token, 'name', config['New name'].value);
 }
 
 async function updateBio(user, area, actionPayload) {
     const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'bio', config['new bio']);
+    await githubReaction(user.services.github.access_token, 'bio', config['New bio'].value);
 }
 
 async function updateBlog(user, area, actionPayload) {
     const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'blog', config['new blog']);
-}
-
-async function updateTwitterUsername(user, area, actionPayload) {
-    const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'twitter_username', config['new twitter username']);
+    await githubReaction(user.services.github.access_token, 'blog', config['New blog'].value);
 }
 
 async function updateCompagny(user, area, actionPayload) {
     const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'compagny', config['new compagny']);
+    await githubReaction(user.services.github.access_token, 'compagny', config['New compagny'].value);
 }
 
 async function updateLocation(user, area, actionPayload) {
     const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'location', config['new location']);
+    await githubReaction(user.services.github.access_token, 'location', config['New location'].value);
 }
 
-async function updateEmail(user, area, actionPayload) {
-    const { config } = area.reaction;
-    await githubReaction(user.services.github.access_token, 'email', config['new email']);
-}
-
-module.exports = { updateUsername, updateBio, updateTwitterUsername, updateBlog, updateLocation, updateCompagny, updateEmail}
+module.exports = { updateUsername, updateBio, updateBlog, updateLocation, updateCompagny}

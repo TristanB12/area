@@ -45,7 +45,7 @@ async function refreshAccessToken(user, link) {
     const response = await axios(option);
     const access_token = response.data.access_token;
 
-    await User.findByIdAndUpdate({_id: user._id}, { 'services.spotify.access_token':access_token });
+    await User.findByIdAndUpdate({ _id: user._id }, { 'services.spotify.access_token': access_token });
     return true;
   } catch (error) {
     console.log(error);
@@ -58,9 +58,8 @@ async function refreshAccessToken(user, link) {
  * @param {*} res 
  * @returns 
  */
- async function unlink(req, res)
- {
-   return res.status(200).json({message: 'spotify account unliked successfully.'});
- }
+async function unlink(req, res) {
+  return res.status(200).json({ message: 'spotify account unliked successfully.' });
+}
 
 module.exports = { refreshAccessToken, accessTokenUrlOption, unlink };
