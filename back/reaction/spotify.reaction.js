@@ -15,7 +15,10 @@ async function getArtistIdFromUsername(artistName, accessToken) {
     }
 
     const response = await axios(config);
-    return response.data?.artists.items[0].id;
+    if (response.data) {
+        return response.data.artists.items[0].id;
+    }
+    return null
 }
 
 async function followArtistById(artistId, accessToken) {

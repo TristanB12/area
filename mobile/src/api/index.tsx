@@ -1,6 +1,6 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { loginEmail, loginService, signupEmail, signupService } from "./auth";
-import { getServices, authorizeService, linkService, unlinkService } from './services'
+import { getServices, prefetchAuthorizeService, authorizeService, linkService, unlinkService } from './services'
 import { getUser } from "./user";
 import { createArea, getAreas, editArea, deleteArea } from './areas'
 import { setAccessToken, refreshAccessToken, verifyAccessToken } from './tokens'
@@ -66,6 +66,7 @@ const api = {
   },
   services: {
     get: withErrorHandling(getServices),
+    prefetchAuthorize: prefetchAuthorizeService,
     authorize: authorizeService,
     link: withErrorHandling(linkService),
     unlink: withErrorHandling(unlinkService)

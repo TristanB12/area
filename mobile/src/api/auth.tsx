@@ -20,21 +20,27 @@ const authEmail = async (action: 'login' | 'signup', authForm: AuthForm) => axio
 const loginEmail = async (authForm: AuthForm) => authEmail('login', authForm)
 const signupEmail = async (authForm: AuthForm) => authEmail('signup', authForm)
 
-const authFacebook = async (service: Service) => {
+const authFacebook = async (action: 'login' | 'signup', service: Service) => {
   const res = await LoginManager.logInWithPermissions(service.link.scope.split(' '))
   if (res.isCancelled) {
     throw new Error()
   }
   const authTokens = await AccessToken.getCurrentAccessToken()
-  console.log(authTokens)
+
+  return axiosAPI.request<AuthTokens>({
+    method: "POST",
+    url: `/auth/${action}`,
+    params: {
+      accessToken: authTokens?.accessToken
+    }
+  })
 }
 
 const authService = async (action: 'login' | 'signup', service: Service) => {
   if (service.name.toLowerCase() === "facebook") {
-    return await authFacebook(service)
+    return await authFacebook(action, service)
   }
-  const authorizeResult = await authorizeService(service)
-  console.log(authorizeResult)
+  const authorizeResult = await authorizeService(service.link)
 
   if (authorizeResult === null) {
     throw new Error()

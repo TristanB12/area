@@ -40,5 +40,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { ActionConfig, Action, Service, ServiceAction }
+export type { ActionConfig, Action, Service, ServiceLink, ServiceAction }
 export default Area

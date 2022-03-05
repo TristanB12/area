@@ -1,7 +1,7 @@
 import axiosAPI from "./config"
 import { Platform } from "react-native"
-import { Service } from "../types"
-import { AppAuthError, AuthConfiguration, authorize } from "react-native-app-auth"
+import { ServiceLink } from "../types"
+import { AppAuthError, AuthConfiguration, authorize, prefetchConfiguration } from "react-native-app-auth"
 
 const getServices = async (mode: "" | "offline") => axiosAPI({
   method: "GET",
@@ -11,20 +11,28 @@ const getServices = async (mode: "" | "offline") => axiosAPI({
   }
 })
 
-const authorizeService = async (service: Service) => {
-  const config: AuthConfiguration = {
-    clientId: service.link.clientID,
-    redirectUrl: service.link.redirectUri,
-    scopes: service.link.scope.split(' '),
-    serviceConfiguration: {
-      authorizationEndpoint: service.link.authorizationEndpoint,
-      tokenEndpoint: ""
-    },
-    usePKCE: false,
-    skipCodeExchange: true
-  };
+const serviceLinkToAuthConfiguration = (serviceLink: ServiceLink): AuthConfiguration => ({
+  clientId: serviceLink.clientID,
+  redirectUrl: serviceLink.redirectUri,
+  scopes: serviceLink.scope.split(' '),
+  additionalHeaders: {
+    'Accept': 'application/json'
+  },
+  serviceConfiguration: {
+    authorizationEndpoint: serviceLink.authorizationEndpoint,
+    tokenEndpoint: ""
+  },
+  usePKCE: false,
+  skipCodeExchange: true
+})
+
+const prefetchAuthorizeService = async (serviceLink: ServiceLink) => (
+  await prefetchConfiguration(serviceLinkToAuthConfiguration(serviceLink))
+)
+
+const authorizeService = async (serviceLink: ServiceLink) => {
   try {
-    return await authorize(config)
+    return await authorize(serviceLinkToAuthConfiguration(serviceLink))
   } catch (err) {
     const error = err as AppAuthError
     return null
@@ -52,4 +60,4 @@ const unlinkService = async (serviceName: string) => axiosAPI({
   }
 })
 
-export { getServices, authorizeService, linkService, unlinkService }
+export { getServices, prefetchAuthorizeService, authorizeService, linkService, unlinkService }

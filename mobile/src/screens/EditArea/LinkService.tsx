@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigation/types";
@@ -22,6 +22,10 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   if (service === undefined) {
     return null
   }
+
+  useEffect(() => {
+    api.services.prefetchAuthorize(service.link);
+  }, []);
 
   const navigateNext = () => {
     if (actionTitle) {
@@ -51,7 +55,7 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   }
 
   const linkFromApi = async (): Promise<boolean> => {
-    const authState = await api.services.authorize(service)
+    const authState = await api.services.authorize(service.link)
 
     if (!authState) {
       return false
