@@ -36,13 +36,12 @@ async function actionWhenStreamerIsOnline(user, area, link) {
     const resUserID = await getCurrentUserID(user.services.twitch.access_token, link.clientID);
     const res = await getOnlineStreamers(user.services.twitch.access_token, resUserID.id, link.clientID);
 
-    res.data.forEach(streamer => {
+    for (let streamer of res.data) {
         if (streamer.user_name.toLowerCase() == action.config["Streamer name"].value.toLowerCase()) {
             return { error: false, data: true };
-        } else {
-            return { error: false, data: false };
         }
-    });
+    }
+    return { error: false, data: false };
 }
 
 module.exports = { actionWhenStreamerIsOnline };
