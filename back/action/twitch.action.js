@@ -36,7 +36,7 @@ async function actionWhenStreamerIsOnline(user, area, link) {
     const { action } = area;
     const resUserID = await getCurrentUserID(user.services.twitch.access_token, link.clientID);
     console.log(resUserID);
-    const res = await getOnlineStreamers(user.services.twitch.access_token, resUserID.data.id, link.clientID);
+    const res = await getOnlineStreamers(user.services.twitch.access_token, resUserID.data[0].id, link.clientID);
 
     console.log(res);
     for (let streamer of res.data) {
