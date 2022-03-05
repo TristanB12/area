@@ -3,7 +3,7 @@ const twitch = require('../controllers/twitch.controller');
 const twitchAction = require('../action/twitch.action');
 
 const twitchService = {
-  tags: ["link", "action"],
+  tags: ["link", "actions"],
   authRef: "twitch",
   logoUri: "https://brand.twitch.tv/assets/logos/png/glitch-extruded/2-color/wipeout.png",
   link: {
