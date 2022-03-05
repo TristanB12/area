@@ -4,7 +4,7 @@ const gmailReaction = require('../reaction/gmail.reaction');
 const gmailService = {
   tags: ["reactions"],
   authRef: 'google',
-  logoUri: null,
+  logoUri: "http://assets.stickpng.com/images/5847fafdcef1014c0b5e48ce.png",
   refreshtoken: google.refreshAccessToken,
   reactions: [
     {
@@ -12,7 +12,7 @@ const gmailService = {
       title: "Then send an email.",
       service: {
         name: "gmail",
-        logoUri: null,
+        logoUri: "http://assets.stickpng.com/images/5847fafdcef1014c0b5e48ce.png",
       },
       requiresUserAuth: true,
       config: {
