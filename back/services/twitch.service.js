@@ -49,7 +49,7 @@ const twitchService = {
       },
       function: twitchAction.actionWhenStreamerIsOnline,
     },
-  ]
+  ],
   refreshToken: twitch.refreshAccessToken,
 };
 
