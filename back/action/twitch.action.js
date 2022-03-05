@@ -32,10 +32,13 @@ async function getOnlineStreamers(accessToken, userID, clientID) {
 }
 
 async function actionWhenStreamerIsOnline(user, area, link) {
+    console.log(link);
     const { action } = area;
     const resUserID = await getCurrentUserID(user.services.twitch.access_token, link.clientID);
+    console.log(resUserID);
     const res = await getOnlineStreamers(user.services.twitch.access_token, resUserID.id, link.clientID);
 
+    console.log(res);
     for (let streamer of res.data) {
         if (streamer.user_name.toLowerCase() == action.config["Streamer name"].value.toLowerCase()) {
             return { error: false, data: true };

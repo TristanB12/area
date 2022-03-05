@@ -1,10 +1,11 @@
 require('dotenv');
 const twitch = require('../controllers/twitch.controller');
+const twitchAction = require('../action/twitch.action');
 
 const twitchService = {
-  tags: ["link"],
+  tags: ["link", "action"],
   authRef: "twitch",
-  logoUri: "https://seeklogo.com/images/R/reddit-logo-23F13F6A6A-seeklogo.com.png",
+  logoUri: "https://brand.twitch.tv/assets/logos/png/glitch-extruded/2-color/wipeout.png",
   link: {
     accessTokenUrlOption: twitch.accessTokenUrlOption,
     desactive: twitch.unlink
@@ -30,8 +31,26 @@ const twitchService = {
     },
     scope: "user:read:follows",
     authorizationEndpoint: "https://id.twitch.tv/oauth2/authorize",
+    actions: [
+      {
+        tag: "TWCH#STRONLNE",
+        title: "When a streamer is online",
+        service: {
+          name: "twitch",
+          logoUri: "https://brand.twitch.tv/assets/logos/png/glitch-extruded/2-color/wipeout.png",
+        },
+        requiresUserAuth: true,
+        config: {
+          "Streamer name": {
+            type: "text",
+            value: ""
+          }
+        },
+        function: twitchAction.actionWhenStreamerIsOnline,
+      },
+    ]
   },
-  refreshToken: undefined,
+  refreshToken: twitch.refreshAccessToken,
 };
 
 module.exports = twitchService;

@@ -7,6 +7,7 @@ const microsoftService = require('./microsoft.service');
 const redditService = require('./reddit');
 const spotifyService = require('./spotify.service');
 const youtubeService = require('./youtube.service');
+const twitchServices = require('./twitch.service');
 
 const services = {
     "area": areaService,
@@ -17,7 +18,8 @@ const services = {
     "facebook": facebookService,
     "gmail": gmailService,
     "reddit": redditService,
-    "github": githubService
+    "github": githubService,
+    "twitch": twitchServices
 };
 
 module.exports = services;
