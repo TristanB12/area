@@ -31,25 +31,25 @@ const twitchService = {
     },
     scope: "user:read:follows",
     authorizationEndpoint: "https://id.twitch.tv/oauth2/authorize",
-    actions: [
-      {
-        tag: "TWCH#STRONLNE",
-        title: "When a streamer is online",
-        service: {
-          name: "twitch",
-          logoUri: "https://brand.twitch.tv/assets/logos/png/glitch-extruded/2-color/wipeout.png",
-        },
-        requiresUserAuth: true,
-        config: {
-          "Streamer name": {
-            type: "text",
-            value: ""
-          }
-        },
-        function: twitchAction.actionWhenStreamerIsOnline,
-      },
-    ]
   },
+  actions: [
+    {
+      tag: "TWCH#STRONLNE",
+      title: "When a streamer is online",
+      service: {
+        name: "twitch",
+        logoUri: "https://brand.twitch.tv/assets/logos/png/glitch-extruded/2-color/wipeout.png",
+      },
+      requiresUserAuth: true,
+      config: {
+        "Streamer name": {
+          type: "text",
+          value: ""
+        }
+      },
+      function: twitchAction.actionWhenStreamerIsOnline,
+    },
+  ]
   refreshToken: twitch.refreshAccessToken,
 };
 
