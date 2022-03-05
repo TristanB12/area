@@ -19,7 +19,17 @@ function getReactionByTag(serviceName, tag) {
 }
 
 async function doActionAndReaction(confAction, user, area) {
-  const responce = await confAction.function(user, area);
+  const serviceNameAction = confAction.service.name;
+  const serviceAuthRefAction = services[serviceNameAction].authRef;
+  const platformAction = user.services[serviceAuthRefAction].latestPlatformUsed;
+  const linkAction = {
+    platformAction,
+    clientID: services[serviceAuthRefAction].links.clientID[platformAction],
+    redirectUri: services[serviceAuthRefAction].links.redirectUri[platformAction],
+    clientSecret: services[serviceAuthRefAction].links.clientSecret[platformAction],
+    scope: services[serviceAuthRefAction].links.scope
+  };
+  const responce = await confAction.function(user, area, linkAction);
 
   if (responce.error) {
     console.log(responce.message);
