@@ -20,7 +20,7 @@ const googleAuthCode = (state) => {
         access_type: 'offline',
         response_type: 'code',
         client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID,
-        scope: 'email profile',
+        scope: 'profile email https://www.googleapis.com/auth/youtube https://mail.google.com/',
         redirect_uri: process.env.VUE_APP_GOOGLE_REDIRECT_URI,
         state: state
     }))
