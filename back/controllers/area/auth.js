@@ -3,7 +3,7 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 const db = require("../../models");
-const jwt = require('..//jwt');
+const jwt = require('../jwt');
 
 const User = db.user;
 

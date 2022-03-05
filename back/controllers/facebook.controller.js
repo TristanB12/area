@@ -55,17 +55,21 @@ function accessTokenUrlOption(code, link) {
  */
 async function login(req, res) {
   const { code } = req.query;
+  let { access_token } = req.query;
   const { link } = req;
 
-  if (!code)
+  if (!code && !access_token)
     return res.status(400).json({ mesage: 'You should provide code.' });
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
 
-  if (response.data === undefined)
-    return res.status(400).json({ message: 'Problem to auth with the given code.' });
+  if (!access_token) {
+    const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
+    if (response.data === undefined)
+      return res.status(400).json({ message: 'Problem to auth with the given code.' });
+    access_token = response.data.access_token;
+  }
 
   try {
-    facebookUser = await getUserInfos(response.data.access_token, ["email"]);
+    facebookUser = await getUserInfos(access_token, ["email"]);
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: 'Can not obtain information about the user.' });
@@ -80,7 +84,7 @@ async function login(req, res) {
   await User.findByIdAndUpdate({ _id: user._id }, {
     $set: {
       'services.facebook': {
-        access_token: response.data.access_token,
+        access_token: access_token,
         refresh_token: undefined,
         latestPlatformUsed: link.platform
       }
@@ -102,20 +106,24 @@ async function login(req, res) {
  */
 async function signup(req, res) {
   const { code } = req.query;
+  let { access_token } = req.query;
   const { link } = req;
 
   let facebookUser = undefined;
 
-  if (!code)
+  if (!code && !access_token)
     return res.status(400).json({ mesage: 'You should provide code.' });
 
-  const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
+  if (!access_token) {
+    const response = await tokenController.getServiceAccessToken(accessTokenUrlOption(code, link));
 
-  if (response.data === undefined)
-    return res.status(400).json({ message: 'Problem to link the service with the given code.' });
+    if (response.data === undefined)
+      return res.status(400).json({ message: 'Problem to link the service with the given code.' });
+    access_token = response.data.access_token;
+  }
 
   try {
-    facebookUser = await getUserInfos(response.data.access_token, ["email"]);
+    facebookUser = await getUserInfos(access_token, ["email"]);
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: 'Can not obtain information about the user.' });
@@ -134,7 +142,7 @@ async function signup(req, res) {
     },
     services: {
       facebook: {
-        access_token: response.data.access_token,
+        access_token: access_token,
         refresh_token: null,
         latestPlatformUsed: link.platform
       }
@@ -157,9 +165,8 @@ async function signup(req, res) {
  * @param {*} res 
  * @returns 
  */
-async function unlink(req, res)
-{
-  return res.status(200).json({message: 'facebook account unliked successfully.'});
+async function unlink(req, res) {
+  return res.status(200).json({ message: 'facebook account unliked successfully.' });
 }
 
 module.exports = { accessTokenUrlOption, signup, login, unlink };
