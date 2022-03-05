@@ -188,6 +188,45 @@ The body from this request, will be JSON of the following format:
 }
 ```
 
+### Update an area.
+
+```http
+  PATH /area/:id
+```
+
+| Headers | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `authorization` | `string` | **Required**. The access_token given when signup or login. (ex: "Bearer Your access_token") |
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `id` | `string` | **Required**. ID of area to udpate. |
+| `title` | `string` | **Optional**. Title you want to give to update area. (byt default it would be 'action title' and 'reaction title' ) |
+| `description`    | `string` | **Optional**. Description you want to give to update area. |
+| `action` | `Object` | **Required**. The config of action who trigger the udpate area (see an example below).|
+| `reaction` | `Object` | **Required**. The reaction's config of the udpate area (see an example below).|
+
+** Required but can be in the query or in url request. ( "/delete/08a78c28" or "/delete?id=08a78c28" )
+
+The body from this request, will be JSON of the following format:
+
+```
+{
+    "title": A title for the area,
+    "description": Simple description,
+    "action": {
+        "service": needed service to run this action,
+        "tag": tag of this action,
+        "config": Object that contain all config the action need to run (can be null),
+    },
+    "reaction": {
+        "service": needed service to run this reaction,
+        "tag": tag of this reaction,
+        "config": Object that contain all config the action need to run (can be null),
+    }
+}
+```
+
 ### Delete an area.
 
 ```http

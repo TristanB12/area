@@ -12,7 +12,7 @@ const githubService = {
   },
   links: {
     clientID: {
-      web: process.env.GITHUB,
+      web: process.env.GITHUB_CLIENT_ID_WEB,
       ios: process.env.GITHUB_CLIENT_ID_IOS,
       android: process.env.GITHUB_CLIENT_ID_ANDROID,
       dev: process.env.GITHUB_CLIENT_ID_DEV,
