@@ -33,6 +33,26 @@ function getAllReactionsOfService(service) {
   return reactions;
 }
 
+function getLink(service, platform) {
+  const serviceAuthRef = services[service.authRef];
+
+  if (!service.tags.includes('link') && serviceAuthRef.tags.includes('link'))
+    return null;
+  if (service.tags.includes('link'))
+    return {
+      clientID: service.links.clientID[platform],
+      redirectUri: service.links.redirectUri[platform],
+      scope: service.links.scope,
+      authorizationEndpoint: service.links.authorizationEndpoint,
+    };
+  return {
+    clientID: serviceAuthRef.links.clientID[platform],
+    redirectUri: serviceAuthRef.links.redirectUri[platform],
+    scope: serviceAuthRef.links.scope,
+    authorizationEndpoint: serviceAuthRef.links.authorizationEndpoint,
+  };
+}
+
 function getServicesRepr(user, platform) {
   const serviceNames = Object.keys(services);
   let reprServices = [];
@@ -46,12 +66,7 @@ function getServicesRepr(user, platform) {
       tags: service.tags,
       name: serviceNames[i],
       logoUri: service.logoUri,
-      link: !service.tags.includes('link') ? null : {
-        clientID: service.links.clientID[platform],
-        redirectUri: service.links.redirectUri[platform],
-        scope: service.links.scope,
-        authorizationEndpoint: service.links.authorizationEndpoint,
-      },
+      link: getLink(service, platform),
       isLinked: user ? Object.keys(user.services).includes(service.authRef) : undefined,
       actions,
       reactions
