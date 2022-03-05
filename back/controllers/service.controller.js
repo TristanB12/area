@@ -36,8 +36,10 @@ function getAllReactionsOfService(service) {
 function getLink(service, platform) {
   const serviceAuthRef = services[service.authRef];
 
-  if (!service.tags.includes('link') && serviceAuthRef.tags.includes('link'))
+  if (!service.tags.includes('link') && !serviceAuthRef.tags.includes('link'))
     return null;
+  console.log(service);
+  console.log(serviceAuthRef);
   if (service.tags.includes('link'))
     return {
       clientID: service.links.clientID[platform],
