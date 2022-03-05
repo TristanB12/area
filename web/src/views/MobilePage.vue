@@ -1,6 +1,6 @@
 <template>
     <div class="mobile-app">
-        <a href="../build/outputs/apk/release/app-release.apk">
+        <a href="./app-release.apk">
             <VButton title="Download app"/>
         </a>
     </div>

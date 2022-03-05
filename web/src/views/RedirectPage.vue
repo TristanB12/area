@@ -43,7 +43,7 @@ import axios from 'axios';
                         'Content-Type': 'application/json'
                     },
                     params: {
-                        platform: process.env.NODE_ENV == 'development' ? 'dev' : 'web',
+                        platform:'web',
                         service: this.$route.params.service,
                         code: this.$route.query.code,
                         redirect_uri: this.redirectUri + "/redirect/" + this.$route.params.service
@@ -63,6 +63,7 @@ import axios from 'axios';
                         'Content-Type': 'application/json'
                     },
                     params: {
+                        platform: 'web',
                         code: this.$route.query.code,
                         redirect_uri: this.redirectUri + "/redirect/" + this.$route.params.service
                     }
@@ -82,6 +83,7 @@ import axios from 'axios';
                         'Content-Type': 'application/json'
                     },
                     params: {
+                        platform: 'web',
                         code: this.$route.query.code,
                         redirect_uri: this.redirectUri + "/redirect/" + this.$route.params.service
                     }
