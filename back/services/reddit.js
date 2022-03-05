@@ -5,7 +5,7 @@ const redditAction = require('../action/reddit.action');
 const redditService = {
   tags: ["link", "actions"],
   authRef: "reddit",
-  logoUri: "http://assets.stickpng.com/images/5847e9efcef1014c0b5e482e.png",
+  logoUri: "https://seeklogo.com/images/R/reddit-logo-23F13F6A6A-seeklogo.com.png",
   link: {
     accessTokenUrlOption: reddit.accessTokenUrlOption,
     desactive: reddit.unlink
@@ -38,7 +38,7 @@ const redditService = {
       title: "When I get a new follower",
       service: {
         name: "reddit",
-        logoUri: "http://assets.stickpng.com/images/5847e9efcef1014c0b5e482e.png",
+        logoUri: "https://seeklogo.com/images/R/reddit-logo-23F13F6A6A-seeklogo.com.png",
       },
       requiresUserAuth: true,
       config: null,
