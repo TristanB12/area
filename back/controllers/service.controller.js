@@ -38,8 +38,6 @@ function getLink(service, platform) {
 
   if (!service.tags.includes('link') && !serviceAuthRef.tags.includes('link'))
     return null;
-  console.log(service);
-  console.log(serviceAuthRef);
   if (service.tags.includes('link'))
     return {
       clientID: service.links.clientID[platform],

@@ -51,7 +51,6 @@ async function linkService(req, res) {
     const axiosOpts = services[serviceName].link.accessTokenUrlOption(code, link);
     const response = await tokenController.getServiceAccessToken(axiosOpts);
 
-    console.log(response);
     if (response.data === undefined)
       return res.status(400).json({ message: 'Problem to link the service with the given code.' });
     userServices[serviceName] = {
