@@ -55,6 +55,7 @@ const linkService = async (serviceName: string, authorizationCode: string) => {
 
 const unlinkService = async (serviceName: string) => axiosAPI({
   method: "DELETE",
+  url: "/link",
   params: {
     service: serviceName.toLowerCase()
   }
