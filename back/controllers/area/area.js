@@ -146,13 +146,13 @@ async function updateArea(req, res) {
   if (!title)
     title = `${configAction.title},${configReaction.title}`;
   try {
-    Area.findByIdAndUpdate({ _id: id }, {
-      title: title,
-      description: description,
+    await Area.findByIdAndUpdate({ _id: id }, {
+      titletitle,
+      description,
       action,
       reaction,
     });
-    const area = Area.findById(id);
+    const area = await Area.findById(id);
     return res.status(200).json( { message: "area successfully updated.", area});
   } catch (error) {
     console.log(error);
