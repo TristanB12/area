@@ -110,12 +110,12 @@ import API from '../services/api.js';
                     title: this.area.title,
                     description: this.area.description,
                     action: {
-                        service: this.area.action.service.name,
+                        'service.name': this.area.action.service.name,
                         tag: this.area.action.tag,
                         config: this.area.action.config || null
                     },
                     reaction: {
-                        service: this.area.reaction.service.name,
+                        'service.name': this.area.reaction.service.name,
                         tag: this.area.reaction.tag,
                         config: this.area.reaction.config || null
                     }
