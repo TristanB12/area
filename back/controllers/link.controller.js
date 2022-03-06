@@ -36,6 +36,7 @@ async function linkService(req, res) {
   let serviceName = req.service;
   const { code } = req.query;
   const { platform } = req;
+  const { code_verifier } = req.query;
 
   if (!code)
     return res.status(200).json({ message: 'Code is required.' });
@@ -52,7 +53,9 @@ async function linkService(req, res) {
       clientSecret: services[serviceName].links.clientSecret[platform],
       scope: services[serviceName].links.scope
     };
-    const axiosOpts = services[serviceName].link.accessTokenUrlOption(code, link);
+    let axiosOpts = services[serviceName].link.accessTokenUrlOption(code, link);
+    if (!code_verifier)
+      axiosOpts.params['code_verifier'] = code_verifier;
     const response = await tokenController.getServiceAccessToken(axiosOpts);
 
     if (response.data === undefined)
