@@ -31,7 +31,8 @@ const authFacebook = async (action: 'login' | 'signup', service: Service) => {
     method: "POST",
     url: `/auth/${action}`,
     params: {
-      accessToken: authTokens?.accessToken
+      service: service.name,
+      access_token: authTokens?.accessToken
     }
   })
 }

@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../navigation/types";
-import { Image, Text, HStack, VStack, Heading, Button } from "native-base";
+import { Text, VStack,Button } from "native-base";
 import { useSetRecoilState } from "recoil";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
 import api from "../../api";
 import useServices from "../../hooks/useServices";
 import ScreenView from '../../components/ScreenView'
 import ServiceItem from "../../components/ServiceItem";
+import { useMutation, useQueryClient } from "react-query";
 
 type LinkServiceScreenProps = NativeStackScreenProps<StackParamList, 'LinkService'>
+type LinkServiceProps = {
+  serviceName: string,
+  authorizationCode: string
+}
 
 function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   const { t } = useTranslation('services')
@@ -18,6 +23,14 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   const setArea = useSetRecoilState(editedAreaAtom)
   const [isLinking, setisLinking] = useState(false)
   const { data } = useServices()
+  const queryClient = useQueryClient()
+  const { mutateAsync } = useMutation(async ({ serviceName, authorizationCode } : LinkServiceProps) =>
+    await api.services.link(serviceName, authorizationCode)
+  , {
+    onSuccess: () => {
+      queryClient.invalidateQueries("services")
+    }
+  })
   const service = data?.data?.find(service => service.name === serviceName)
   if (service === undefined) {
     return null
@@ -61,9 +74,11 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
       return false
     }
     console.log(authState)
-    // const { error } = await api.services.link(service.name, authState.authorizationCode)
-    // TODO: invalidate 'services' query to get updated isLinked
-    return (false)
+    const { error } = await mutateAsync({
+      serviceName: service.name,
+      authorizationCode: authState.authorizationCode
+    })
+    return (!error)
   }
 
   const linkService = async () => {
