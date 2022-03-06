@@ -14,7 +14,8 @@ import { useMutation, useQueryClient } from "react-query";
 type LinkServiceScreenProps = NativeStackScreenProps<StackParamList, 'LinkService'>
 type LinkServiceProps = {
   serviceName: string,
-  authorizationCode: string
+  authorizationCode: string,
+  codeVerifier: string,
 }
 
 function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
@@ -24,8 +25,8 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   const [isLinking, setisLinking] = useState(false)
   const { data } = useServices()
   const queryClient = useQueryClient()
-  const { mutateAsync } = useMutation(async ({ serviceName, authorizationCode } : LinkServiceProps) =>
-    await api.services.link(serviceName, authorizationCode)
+  const { mutateAsync } = useMutation(async ({ serviceName, authorizationCode, codeVerifier } : LinkServiceProps) =>
+    await api.services.link(serviceName, authorizationCode, codeVerifier)
   , {
     onSuccess: () => {
       queryClient.invalidateQueries("services")
@@ -37,7 +38,6 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   }
 
   useEffect(() => {
-    console.log(service.link)
     api.services.prefetchAuthorize(service.link);
   }, []);
 
@@ -74,12 +74,11 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
     if (!authState) {
       return false
     }
-    console.log(authState)
     const { error } = await mutateAsync({
       serviceName: service.name,
-      authorizationCode: authState.authorizationCode
+      authorizationCode: authState.authorizationCode,
+      codeVerifier: authState.codeVerifier || ""
     })
-    console.log(error)
     return (!error)
   }
 
