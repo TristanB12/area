@@ -3,7 +3,7 @@ const axios = require('axios');
 const User = db.user;
 const qs = require('qs');
 
-function accessTokenUrlOption(code, link) {
+function accessTokenUrlOption(code, link, code_verifier) {
   return {
     url: 'https://www.reddit.com/api/v1/access_token',
     method: 'POST',
@@ -14,7 +14,8 @@ function accessTokenUrlOption(code, link) {
     data: {
       grant_type: 'authorization_code',
       code,
-      redirect_uri: link.redirectUri
+      redirect_uri: link.redirectUri,
+      code_verifier
     },
 
     transformRequest: [function (data, headers) {

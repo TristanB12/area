@@ -10,7 +10,7 @@ const User = db.user;
  * @param {*} code 
  * @returns 
  */
-function accessTokenUrlOption(code, link) {
+function accessTokenUrlOption(code, link, code_verifier) {
     return {
       url: 'https://github.com/login/oauth/access_token',
       method: 'POST',
@@ -21,7 +21,8 @@ function accessTokenUrlOption(code, link) {
         'client_id': link.clientID,
         'client_secret': link.clientSecret,
         code,
-        redirect_uri: link.redirectUri
+        redirect_uri: link.redirectUri,
+        code_verifier
       }
     };
 }

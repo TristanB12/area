@@ -9,7 +9,7 @@ const User = db.user;
  * @param {*} redirect_uri
  * @returns 
  */
-function accessTokenUrlOption(code, link) {
+function accessTokenUrlOption(code, link, code_verifier) {
   return {
     url: 'https://accounts.spotify.com/api/token',
     method: 'POST',
@@ -20,7 +20,8 @@ function accessTokenUrlOption(code, link) {
     params: {
       code,
       grant_type: 'authorization_code',
-      redirect_uri: link.redirectUri
+      redirect_uri: link.redirectUri,
+      code_verifier
     }
   };
 }

@@ -53,9 +53,7 @@ async function linkService(req, res) {
       clientSecret: services[serviceName].links.clientSecret[platform],
       scope: services[serviceName].links.scope
     };
-    let axiosOpts = services[serviceName].link.accessTokenUrlOption(code, link);
-    if (!code_verifier)
-      axiosOpts.params['code_verifier'] = code_verifier;
+    let axiosOpts = services[serviceName].link.accessTokenUrlOption(code, link, code_verifier);
     const response = await tokenController.getServiceAccessToken(axiosOpts);
 
     if (response.data === undefined)

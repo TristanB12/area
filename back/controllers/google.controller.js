@@ -12,7 +12,7 @@ const User = db.user;
  * @param {*} redirect_uri 
  * @returns 
  */
-function accessTokenUrlOption(code, link) {
+function accessTokenUrlOption(code, link, code_verifier) {
   return {
     url: 'https://oauth2.googleapis.com/token',
     method: 'POST',
@@ -25,6 +25,7 @@ function accessTokenUrlOption(code, link) {
       client_secret: link.clientSecret,
       redirect_uri: link.redirectUri,
       grant_type: 'authorization_code',
+      code_verifier
     }
   };
 }
