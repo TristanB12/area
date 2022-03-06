@@ -51,11 +51,12 @@ const githubAuthCode = (state) => {
 }
 
 const redditAuthCode = (state) => {
-    let win = window.open('https://www.reddit.com/api/v1/authorize' + 
+    let win = window.open('https://www.reddit.com/api/v1/authorize?' + 
     qs.stringify({
         redirect_uri: process.env.VUE_APP_REDDIT_REDIRECT_URI,
         client_id: process.env.VUE_APP_REDDIT_CLIENT_ID,
         response_type: 'code',
+        duration: 'permanent',
         scope: "identity edit flair history modconfig modflair modlog modposts modwiki mysubreddits privatemessages read report save submit subscribe vote wikiedit wikiread",
         state: state
     }))

@@ -18,8 +18,29 @@ function getReactionByTag(serviceName, tag) {
   return undefined;
 }
 
+function useBindingValue(area, actionPayload, confAction) {
+  if (!area.reaction.config || !confAction.binding || !actionPayload || actionPayload === true)
+    return;
+  for (let configName of Object.keys(area.reaction.config)) {
+    if (Object.keys(confAction.binding).includes(area.reaction.config[configName].value) &&
+        Object.keys(actionPayload).includes(area.reaction.config[configName].value)) {
+      area.reaction.config[configName].value = actionPayload[area.reaction.config[configName].value]
+    }
+  }
+}
+
 async function doActionAndReaction(confAction, user, area) {
-  const responce = await confAction.function(user, area);
+  const serviceNameAction = confAction.service.name;
+  const serviceAuthRefAction = services[serviceNameAction].authRef;
+  const platformAction = user.services[serviceAuthRefAction].latestPlatformUsed;
+  const linkAction = {
+    platformAction,
+    clientID: services[serviceAuthRefAction].links.clientID[platformAction],
+    redirectUri: services[serviceAuthRefAction].links.redirectUri[platformAction],
+    clientSecret: services[serviceAuthRefAction].links.clientSecret[platformAction],
+    scope: services[serviceAuthRefAction].links.scope
+  };
+  const responce = await confAction.function(user, area, linkAction);
 
   if (responce.error) {
     console.log(responce.message);
@@ -30,7 +51,7 @@ async function doActionAndReaction(confAction, user, area) {
     return false; // The webhook is not trigger
 
   console.log(`TRIGGER: ${confAction.tag}`);
-
+  useBindingValue(area, responce.data, confAction);
   const confReaction = getReactionByTag(area.reaction.service.name, area.reaction.tag);
   const serviceName = confReaction.service.name;
   const serviceAuthRef = services[serviceName].authRef;
@@ -81,7 +102,7 @@ function getActionByTag(serviceName, tag) {
 async function webhookByTag(serviceName, tag) {
   const service = services[serviceName];
   const confAction = getActionByTag(serviceName, tag);
-  const areas = await Area.find({ 'action.tag': tag });
+  let areas = await Area.find({ 'action.tag': tag });
 
   for (let i = 0; i < areas.length; i++) {
     let user = await User.findById(areas[i].owner);
