@@ -9,6 +9,7 @@ import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
 import Entypo from "react-native-vector-icons/Entypo";
 import NetworkView from "../../components/NetworkView";
 import ServiceItem from "../../components/ServiceItem";
+import { useMutation, useQueryClient } from "react-query";
 
 type ServiceCardProps = {
   service: Service,
@@ -91,6 +92,14 @@ type UnlinkServiceDialogProps = {
 function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialogProps) {
   const { t } = useTranslation(['services', 'common'])
   const [isUnlinking, setIsUnlinking] = useState(false)
+  const queryClient = useQueryClient()
+  const { mutateAsync } = useMutation(async (serviceName: string) =>
+    await api.services.unlink(serviceName)
+  , {
+    onSuccess: () => {
+      queryClient.invalidateQueries("services")
+    }
+  })
   const cancelRef = React.useRef(null);
   const isOpen = (service !== undefined)
 
@@ -102,8 +111,7 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
   }
 
   const unlinkFromApi = async (): Promise<boolean> => {
-    const { error } = await api.services.unlink(service.name)
-    // TODO: invalidate 'services' query to get updated isLinked
+    const { error } = await mutateAsync(service.name)
     return (!error)
   }
 
