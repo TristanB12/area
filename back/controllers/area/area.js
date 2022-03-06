@@ -136,12 +136,12 @@ async function updateArea(req, res) {
     return res.status(400).json({ message: 'missing action field in request.' });
   if (!reaction)
     return res.status(400).json({ message: 'missing reaction field in request.' });
-  const configAction = getActionByTag(action.service, action.tag);
+  const configAction = getActionByTag(action.service.name, action.tag);
   if (!configAction)
-    return res.status(400).json({ message: `specified action does not exist or not supported by ${action.service} service.` });
-  const configReaction = getReactionByTag(reaction.service, reaction.tag);
+    return res.status(400).json({ message: `specified action does not exist or not supported by ${action.service.name} service.` });
+  const configReaction = getReactionByTag(reaction.service.name, reaction.tag);
     if (!configReaction)
-      return res.status(400).json({ message: `specified reaction does not exist or not supported by ${reaction.service} service.` });
+      return res.status(400).json({ message: `specified reaction does not exist or not supported by ${reaction.service.name} service.` });
   
   if (!title)
     title = `${configAction.title},${configReaction.title}`;

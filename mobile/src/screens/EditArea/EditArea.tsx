@@ -100,6 +100,7 @@ function EditAreaScreen({ navigation }: EditAreaScreenProps) {
     const { error } = (isNewArea)
       ? await createAreaMutation.mutateAsync(editedArea)
       : await editAreaMutation.mutateAsync(editedArea)
+    console.log(error)
     setIsSaving(false)
     if (!error) {
       navigation.goBack()

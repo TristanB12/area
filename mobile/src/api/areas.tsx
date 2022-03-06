@@ -15,6 +15,9 @@ const getAreas = async () => axiosAPI({
 const editArea = async (area: Area) => axiosAPI({
   method: "PATCH",
   url: "/area",
+  params: {
+    id: area.id
+  },
   data: area
 })
 
