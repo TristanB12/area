@@ -5,9 +5,11 @@ const tokenController = require('./token.controller');
 const User = db.user;
 
 async function unlinkService(req, res) {
-  const serviceName = req.service;
+  let serviceName = req.service;
 
   try {
+    if (!services[serviceName].tags.includes('link') && services[services[serviceName].authRef].tags.includes('link'))
+      serviceName = services[serviceName].authRef;
     let userServices = req.user.services;
 
     if (userServices[serviceName] == undefined && services[serviceName])
@@ -31,7 +33,7 @@ async function unlinkService(req, res) {
  * @returns 
  */
 async function linkService(req, res) {
-  const serviceName = req.service;
+  let serviceName = req.service;
   const { code } = req.query;
   const { platform } = req;
 
@@ -41,6 +43,8 @@ async function linkService(req, res) {
   const user = req.user;
   let userServices = user.services;
   try {
+    if (!services[serviceName].tags.includes('link') && services[services[serviceName].authRef].tags.includes('link'))
+      serviceName = services[serviceName].authRef;
     const link = !services[serviceName].links ? null : {
       platform,
       clientID: services[serviceName].links.clientID[platform],
