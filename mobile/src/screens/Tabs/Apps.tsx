@@ -3,7 +3,7 @@ import { Center, Heading, HStack, Icon, Skeleton, Text, VStack } from "native-ba
 import NetworkView from "../../components/NetworkView";
 import TabScreenView from "../../components/TabScreenView";
 import useAreas from "../../hooks/useAreas";
-import Area from "../../types";
+import Area, { ServiceAction } from "../../types";
 import ServiceCard, { ServiceCardSkeleton } from "../../components/ServiceCard";
 import { useTranslation } from "react-i18next";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -85,20 +85,27 @@ function NoApps() {
   )
 }
 
+const addOrIncApps = (acc: App[], action: ServiceAction) => {
+  const actionServiceIndex = (acc.findIndex(app =>
+    app.service.name === action.service.name
+  ))
+  if (actionServiceIndex === -1) {
+    acc.push({ service: action.service, nbAreas: 1 })
+  } else {
+    acc[actionServiceIndex].nbAreas += 1
+  }
+}
+
 function Apps() {
   const { t } = useTranslation('areas')
   const { isLoading, data, refetch } = useAreas()
   const areas: Area[] = data?.data?.data || []
   const apps = areas.reduce<App[]>((acc, area) => {
-    const serviceIndex = (acc.findIndex(app =>
-      app.service.name === area.action?.service.name
-      || app.service.name === area.reaction?.service.name
-    ))
     if (area.action) {
-      acc.push({ service: area.action.service, nbAreas: 2 })
+      addOrIncApps(acc, area.action)
     }
     if (area.reaction) {
-      acc.push({ service: area.reaction.service, nbAreas: 1 })
+      addOrIncApps(acc, area.reaction)
     }
     return acc
   }, [])
