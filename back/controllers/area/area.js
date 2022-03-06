@@ -147,8 +147,8 @@ async function updateArea(req, res) {
     title = `${configAction.title},${configReaction.title}`;
   try {
     await Area.findByIdAndUpdate({ _id: id }, {
-      title: title,
-      description: description,
+      titletitle,
+      description,
       action,
       reaction,
     });
