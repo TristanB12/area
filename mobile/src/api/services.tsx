@@ -22,7 +22,7 @@ const serviceLinkToAuthConfiguration = (serviceLink: ServiceLink): AuthConfigura
     authorizationEndpoint: serviceLink.authorizationEndpoint,
     tokenEndpoint: ""
   },
-  usePKCE: false,
+  usePKCE: true,
   skipCodeExchange: true
 })
 
@@ -39,16 +39,17 @@ const authorizeService = async (serviceLink: ServiceLink) => {
   }
 }
 
-const linkService = async (serviceName: string, authorizationCode: string) => {
+const linkService = async (serviceName: string, authorizationCode: string, codeVerifier: string) => {
   serviceName = serviceName.toLowerCase()
 
   return axiosAPI({
     method: "POST",
     url: "/link",
     params: {
+      platform: Platform.OS,
       service: serviceName,
       code: authorizationCode,
-      platform: Platform.OS
+      code_verifier: codeVerifier,
     }
   })
 }
