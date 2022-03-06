@@ -37,6 +37,7 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
   }
 
   useEffect(() => {
+    console.log(service.link)
     api.services.prefetchAuthorize(service.link);
   }, []);
 
@@ -78,6 +79,7 @@ function LinkServiceScreen({ route, navigation } : LinkServiceScreenProps) {
       serviceName: service.name,
       authorizationCode: authState.authorizationCode
     })
+    console.log(error)
     return (!error)
   }
 

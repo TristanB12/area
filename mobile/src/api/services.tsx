@@ -43,12 +43,12 @@ const linkService = async (serviceName: string, authorizationCode: string) => {
   serviceName = serviceName.toLowerCase()
 
   return axiosAPI({
-    method: "GET",
+    method: "POST",
     url: "/link",
     params: {
       service: serviceName,
       code: authorizationCode,
-      redirect_uri: `area:/${serviceName}`
+      platform: Platform.OS
     }
   })
 }

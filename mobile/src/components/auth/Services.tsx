@@ -28,8 +28,6 @@ function AuthServiceCard({ service, action } : { service: Service, action: 'logi
       ? await api.auth.login.service(service)
       : await api.auth.signup.service(service)
     )
-    console.log(data)
-    console.log(error)
     // TODO: implement error messages for services auth
     if (error || !data) {
       return

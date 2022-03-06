@@ -23,7 +23,7 @@ function AuthScreen({ action } : { action: 'login' | 'register' }) {
       data: data.data.filter(service => service.tags.includes("auth") && service.link),
       error: null
     })
-  }) // TODO: maybe invalidate if the results are cached
+  })
   const services: Service[] = data?.data || []
 
   return (
