@@ -5,7 +5,7 @@ const google = require('../controllers/google.controller');
 const youtubeService = {
   tags: ["actions", "reactions"],
   authRef: 'google',
-  logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png",
+  logoUri: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c545.png",
   refreshToken: google.refreshAccessToken,
   actions: [
     {
@@ -13,7 +13,7 @@ const youtubeService = {
       title: "When a new video is upload on a Youtube account.",
       service: {
         name: "youtube",
-        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
+        logoUri: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c545.png"
       },
       requiresUserAuth: true,
       config: {
@@ -46,11 +46,11 @@ const youtubeService = {
       title: "When you subscribe to a new channel",
       service: {
         name: "youtube",
-        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
+        logoUri: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c545.png"
       },
       requiresUserAuth: true,
       config: null,
-      binding: {},
+      binding: null,
       function: youtubeAction.actionNewSubscribe,
     },
     {
@@ -58,11 +58,11 @@ const youtubeService = {
       title: "When you like a video",
       service: {
         name: "youtube",
-        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
+        logoUri: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c545.png"
       },
       requiresUserAuth: true,
       config: null,
-      binding: {},
+      binding: null,
       function: youtubeAction.actionLikedVideo,
     }
   ],
@@ -72,7 +72,7 @@ const youtubeService = {
       title: "Then subscribe to a given youtuber name",
       service: {
         name: "youtube",
-        logoUri: "https://www.pngkit.com/png/detail/2-21145_youtube-logo-transparent-png-pictures-transparent-background-youtube.png"
+        logoUri: "http://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c545.png"
       },
       requiresUserAuth: true,
       config: {

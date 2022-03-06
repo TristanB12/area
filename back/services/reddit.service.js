@@ -30,7 +30,7 @@ const redditService = {
       dev: process.env.REDDIT_CLIENT_SECRET_DEV,
     },
     scope: "identity edit flair history modconfig modflair modlog modposts modwiki mysubreddits privatemessages read report save submit subscribe vote wikiedit wikiread",
-    authorizationEndpoint: "https://www.reddit.com/api/v1/authorize",
+    authorizationEndpoint: "https://www.reddit.com/api/v1/authorize.compact",
   },
   actions: [
     {

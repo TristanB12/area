@@ -4,6 +4,7 @@ const google = require('../controllers/google.controller');
 const googleService = {
   tags: ["link", "auth"],
   authRef: 'google',
+  logoUri: "http://assets.stickpng.com/images/5847f9cbcef1014c0b5e48c8.png",
   link: {
     accessTokenUrlOption: google.accessTokenUrlOption,
     desactive: google.unlink
