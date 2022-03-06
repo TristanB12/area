@@ -25,6 +25,7 @@
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-config": "^1.4.5",
     "react-native-encrypted-storage": "^4.0.2",
+    "react-native-fbsdk-next": "^7.3.2",
     "react-native-localize": "^2.1.9",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",

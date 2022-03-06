@@ -1,24 +1,32 @@
 type ActionConfig = {
-  display: string,
-  example: any,
-  value: any
+  [key: string]: {
+    type: string,
+    value: any
+  }
 }
 
 type Action = {
   title: string,
   requiresUserAuth: boolean,
-  config?: ActionConfig[]
+  config?: ActionConfig
+}
+
+type ServiceLink = {
+  clientID: string,
+  redirectUri: string,
+  scope: string,
+  authorizationEndpoint: string
 }
 
 type Service = {
+  tags: Array<"auth" | 'link' | 'action' | 'reaction'>
   name: string,
   logoUri: string,
+  link: ServiceLink,
   isLinked: boolean,
   actions: Action[],
   reactions: Action[]
 }
-
-type AuthService = Pick<Service, 'name' | 'logoUri'>
 
 type ServiceAction = {
   service: Pick<Service, 'name' | 'logoUri'>
@@ -32,5 +40,5 @@ type Area = {
   reaction: ServiceAction | undefined
 }
 
-export type { ActionConfig, Action, Service, AuthService, ServiceAction }
+export type { ActionConfig, Action, Service, ServiceLink, ServiceAction }
 export default Area

@@ -1,9 +1,9 @@
 - associate auth redirect url with website (after prod, see https://reactnavigation.org/docs/deep-linking/#set-up-with-bare-react-native-projects)
-- login with google & facebook
-- implement useQuery for areas and services
-  - add fallback when there are no services or areas
 - tester l'app en mode offline
+- tester avec refresh token de 5 minutes
 - scrollable screenview
 - change language / theme on sign up
 
-- optional chaining operator not working in some node versions
+- edit area
+- link twitch
+- PKCE

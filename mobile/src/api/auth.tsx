@@ -1,7 +1,9 @@
+import { Platform } from "react-native"
+import { LoginManager, AccessToken } from "react-native-fbsdk-next";
 import axiosAPI from './config'
 import { AuthTokens } from '../types/auth'
-import { AuthConfiguration, authorize, AppAuthError } from 'react-native-app-auth'
 import { Service } from '../types'
+import { authorizeService } from './services'
 
 type AuthForm = {
   email: string,
@@ -18,44 +20,42 @@ const authEmail = async (action: 'login' | 'signup', authForm: AuthForm) => axio
 const loginEmail = async (authForm: AuthForm) => authEmail('login', authForm)
 const signupEmail = async (authForm: AuthForm) => authEmail('signup', authForm)
 
-const authorizeService = async (service: Service) => {
-  const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"
-  const config: AuthConfiguration = {
-    clientId: `${appID}.apps.googleusercontent.com`,
-    redirectUrl: `com.googleusercontent.apps.${appID}:/google`,
-    scopes: ['email', 'profile'],
-    serviceConfiguration: {
-      authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
-      tokenEndpoint: "https://oauth2.googleapis.com/token"
-    },
-    usePKCE: false,
-    skipCodeExchange: true
-  };
-  try {
-    return await authorize(config)
-  } catch (err) {
-    const error = err as AppAuthError
-    return null
+const authFacebook = async (action: 'login' | 'signup', service: Service) => {
+  const res = await LoginManager.logInWithPermissions(service.link.scope.split(' '))
+  if (res.isCancelled) {
+    throw new Error()
   }
+  const authTokens = await AccessToken.getCurrentAccessToken()
+
+  return axiosAPI.request<AuthTokens>({
+    method: "POST",
+    url: `/auth/${action}`,
+    params: {
+      service: service.name,
+      access_token: authTokens?.accessToken
+    }
+  })
 }
 
 const authService = async (action: 'login' | 'signup', service: Service) => {
-  const appID = "641786881554-de3lqqggorlek49cum271bqqetr507sk"
-  const authorizationCode = await authorizeService(service)
+  if (service.name.toLowerCase() === "facebook") {
+    return await authFacebook(action, service)
+  }
+  const authorizeResult = await authorizeService(service.link)
 
-  if (authorizationCode === null) {
+  if (authorizeResult === null) {
     throw new Error()
   }
 
-  // return axiosAPI.request<AuthTokens>({
-  //   method: "POST",
-  //   url: `/auth/${action}`,
-  //   params: {
-  //     service: service.name,
-  //     code: authorizationCode,
-  //     redirect_uri: `com.googleusercontent.apps.${appID}:/google`
-  //   }
-  // })
+  return axiosAPI.request<AuthTokens>({
+    method: "POST",
+    url: `/auth/${action}`,
+    params: {
+      service: service.name,
+      code: authorizeResult.authorizationCode,
+      platform: Platform.OS
+    }
+  })
 }
 
 const loginService = async (service: Service) => authService('login', service)

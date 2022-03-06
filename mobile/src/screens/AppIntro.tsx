@@ -105,10 +105,6 @@ function Pagination({ activeIndex } : { activeIndex: number }) {
 }
 
 function AppIntroScreen() {
-  const onDone = () => {
-    console.log("done !")
-  }
-
   return (
     <Box flex={1}  >
       <StatusBar translucent backgroundColor="transparent"/>
@@ -117,7 +113,6 @@ function AppIntroScreen() {
         renderItem={item => <SlideItem slide={item.item}/>}
         renderPagination={(activeIndex) => <Pagination activeIndex={activeIndex} />}
         data={slides}
-        onDone={onDone}
         ref={(ref) => (slider = ref!)}
       />
     </Box>

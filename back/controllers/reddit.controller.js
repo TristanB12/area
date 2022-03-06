@@ -9,7 +9,7 @@ function accessTokenUrlOption(code, link) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${Buffer.from(`${link.clientID}:${link.clientSecret}`).toString('base64')}`
+      'Authorization': `Basic ${Buffer.from(`${link.clientID}:${link.clientSecret || ""}`).toString('base64')}`
     },
     data: {
       grant_type: 'authorization_code',
@@ -31,7 +31,7 @@ async function refreshAccessToken(user, link) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `Basic ${Buffer.from(`${link.clientID}:${link.clientSecret}`).toString('base64')}`
+      'Authorization': `Basic ${Buffer.from(`${link.clientID}:${link.clientSecret || ""}`).toString('base64')}`
     },
     params: {
       grant_type: 'refresh_token',

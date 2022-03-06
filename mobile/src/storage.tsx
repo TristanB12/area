@@ -25,13 +25,12 @@ const retrieveUserSessionFromStorage = async () => {
   return (session ? JSON.parse(session) as AuthStorage : undefined)
 }
 
-const storeUserSessionToStorage = async (authTokens: AuthTokens, email: string) => {
+const storeUserSessionToStorage = async (authTokens: AuthTokens) => {
   const authStorage: AuthStorage = {
     access_token: authTokens.access_token,
     refresh_token: authTokens.refresh_token,
     expire_timestamp: getTodaysTimestampInSeconds() + authTokens.expires_in,
-    token_type: "Bearer",
-    email: email,
+    token_type: "Bearer"
   }
   try {
     await EncryptedStorage.setItem(
@@ -40,7 +39,9 @@ const storeUserSessionToStorage = async (authTokens: AuthTokens, email: string) 
     );
   } catch (error) {
     console.error(error)
+    return false
   }
+  return true
 }
 
 export { isAppIntroPassed, retrieveUserSessionFromStorage, storeUserSessionToStorage }

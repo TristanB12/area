@@ -5,11 +5,9 @@ const authAtom = atom({
   key: "auth",
   default: {
     isLoading: true,
+    isSignedIn: false,
     isSignout: false,
-    isFirstTimeUsingApp: true,
-    email: "",
-    access_token: "",
-    refresh_token: ""
+    isFirstTimeUsingApp: true
   } as AuthState
 })
 

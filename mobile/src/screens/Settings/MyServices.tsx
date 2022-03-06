@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, Image, Text, Icon, HStack, Button, VStack, AlertDialog, Skeleton, Center, Heading } from "native-base";
-import { useRecoilState } from "recoil";
 import { Service } from "../../types";
 import ScreenView from '../../components/ScreenView'
-import servicesAtom from "../../recoil/atoms/services";
 import api from "../../api";
 import useServices from "../../hooks/useServices";
 import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
-import ErrorFetching from "../../components/ErrorFetching";
 import Entypo from "react-native-vector-icons/Entypo";
+import NetworkView from "../../components/NetworkView";
+import ServiceItem from "../../components/ServiceItem";
+import { useMutation, useQueryClient } from "react-query";
 
-type ServiceItemProps = {
+type ServiceCardProps = {
   service: Service,
   setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
 }
 
-function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
+function ServiceCard({ service, setUnlinkService } : ServiceCardProps) {
   const { t } = useTranslation('services')
 
   return (
@@ -26,17 +26,7 @@ function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
       alignItems="center"
     >
       <HStack w="100%" justifyContent="space-between" alignItems="center">
-        <HStack w="60%" space={4} alignItems="center">
-          <Image
-            source={{ uri: service.logoUri }}
-            size="xs"
-            resizeMode="contain"
-            alt={service.name}
-          />
-          <Text>
-            { service.name }
-          </Text>
-        </HStack>
+        <ServiceItem service={service} w="40%" size="xs" />
         <Button w="40%" colorScheme="danger" onPress={() => setUnlinkService(service)}>
           { t('unlink') }
         </Button>
@@ -45,7 +35,7 @@ function ServiceItem({ service, setUnlinkService } : ServiceItemProps) {
   )
 }
 
-function ServiceItemSkeleton() {
+function ServiceCardSkeleton() {
   return (
     <Box
       variant="card"
@@ -65,19 +55,15 @@ function ServiceItemSkeleton() {
 
 type ServiceListProps = {
   services: Service[],
-  search: string,
   setUnlinkService: React.Dispatch<React.SetStateAction<Service | undefined>>
 }
 
-function ServiceList({ services, search, setUnlinkService } : ServiceListProps) {
+function ServiceList({ services, setUnlinkService } : ServiceListProps) {
   return (
     <VStack w="100%" space={4}>
       {
-        services
-          .filter(service => service.isLinked)
-          .filter(service => service.name.includes(search))
-          .map(service =>
-          <ServiceItem
+        services.map(service =>
+          <ServiceCard
             key={service.name}
             service={service}
             setUnlinkService={setUnlinkService}
@@ -91,9 +77,9 @@ function ServiceList({ services, search, setUnlinkService } : ServiceListProps) 
 function ServiceListSkeleton() {
   return (
     <VStack w="100%" space={4}>
-      <ServiceItemSkeleton />
-      <ServiceItemSkeleton />
-      <ServiceItemSkeleton />
+      <ServiceCardSkeleton />
+      <ServiceCardSkeleton />
+      <ServiceCardSkeleton />
     </VStack>
   )
 }
@@ -105,7 +91,15 @@ type UnlinkServiceDialogProps = {
 
 function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialogProps) {
   const { t } = useTranslation(['services', 'common'])
-  const [services, setServices] = useRecoilState(servicesAtom)// TODO: replace by mutate
+  const [isUnlinking, setIsUnlinking] = useState(false)
+  const queryClient = useQueryClient()
+  const { mutateAsync } = useMutation(async (serviceName: string) =>
+    await api.services.unlink(serviceName)
+  , {
+    onSuccess: () => {
+      queryClient.invalidateQueries("services")
+    }
+  })
   const cancelRef = React.useRef(null);
   const isOpen = (service !== undefined)
 
@@ -115,28 +109,17 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
   const onClose = () => {
     setUnlinkService(undefined)
   }
+
   const unlinkFromApi = async (): Promise<boolean> => {
-    // TODO: call api to unlink service
-    const { data, error } = await api.services.unlink(service.name)
-    console.log(data)
-    console.log(error)
-    return (!error || data)
+    const { error } = await mutateAsync(service.name)
+    return (!error)
   }
 
   const unlinkService = async () => {
-    const editedServices = [...services]
-    const unlinkServiceIndex = editedServices.findIndex(
-      otherService => otherService.name === service.name
-    )
-    if (unlinkServiceIndex === -1) {
-      return
-    }
-    editedServices[unlinkServiceIndex] = {
-      ...service,
-      isLinked: false
-    }
-    if (await unlinkFromApi()) {
-      setServices(editedServices)
+    setIsUnlinking(true)
+    const unlinked = await unlinkFromApi()
+    setIsUnlinking(false)
+    if (unlinked) {
       onClose()
     }
   }
@@ -146,17 +129,7 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
       <AlertDialog.Content>
         <AlertDialog.CloseButton />
         <AlertDialog.Header>
-          <HStack space={4} alignItems="center">
-            <Image
-              source={{ uri: service.logoUri }}
-              size="xs"
-              resizeMode="contain"
-              alt={service.name}
-            />
-            <Text>
-              { service.name }
-            </Text>
-          </HStack>
+          <ServiceItem service={service}/>
         </AlertDialog.Header>
         <AlertDialog.Body>
           { t('unlink_confirm')}
@@ -166,7 +139,13 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
             <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
               { t('cancel', { ns: "common" })}
             </Button>
-            <Button colorScheme="danger" onPress={unlinkService}>
+            <Button
+              isLoading={isUnlinking}
+              isLoadingText={t('unlinking')}
+              disabled={isUnlinking}
+              colorScheme="danger"
+              onPress={unlinkService}
+            >
               { t('unlink') }
             </Button>
           </Button.Group>
@@ -178,7 +157,7 @@ function UnlinkServiceDialog({ service, setUnlinkService } : UnlinkServiceDialog
 
 function MyServices({ services } : { services: Service[] }) {
   const { t } = useTranslation('services')
-  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);  // TODO: filter only connected services
+  const [unlinkService, setUnlinkService] = useState<Service | undefined>(undefined);
   const [search, setSearch] = useState("")
 
   return (
@@ -189,8 +168,7 @@ function MyServices({ services } : { services: Service[] }) {
         setSearch={setSearch}
       />
       <ServiceList
-        services={services}
-        search={search}
+        services={services.filter(service => service.name.includes(search))}
         setUnlinkService={setUnlinkService}
       />
       <UnlinkServiceDialog
@@ -231,24 +209,24 @@ function NoLinkedServices() {
 
 function MyServicesScreen() {
   const { t } = useTranslation('services')
-  const { isLoading, data, refetch } = useServices()
+  const { isLoading, data, refetch } = useServices("", {
+    select: (data) => (data.data === null) ? data : ({
+      data: data.data.filter(service => service.isLinked),
+      error: null
+    })
+  })
   const services: Service[] = data?.data || []
 
   return (
     <ScreenView>
-      {
-        isLoading ? (
-          <MyServicesSkeleton />
-        ) : (data === undefined || data.error) ? (
-          <ErrorFetching
-            title={t('error_fetching')}
-            error={data?.error}
-            refetch={refetch}
-          />
-        ) : (
-          services.length > 0 ? <MyServices services={services} /> : <NoLinkedServices />
-        )
-      }
+      <NetworkView
+        isLoading={isLoading}
+        skeleton={<MyServicesSkeleton />}
+        data={data}
+        errorTitle={t('error_fetching')}
+        refetch={refetch}
+        render={services.length > 0 ? <MyServices services={services} /> : <NoLinkedServices />}
+      />
     </ScreenView>
   )
 }

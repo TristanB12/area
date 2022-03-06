@@ -1,20 +1,38 @@
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { Box, HStack, VStack, Image, Text } from "native-base"
+import { Box, HStack, VStack, Image, Text, Skeleton } from "native-base"
 import { useTranslation } from "react-i18next"
-import { AuthService } from "../../types"
+import { Service } from "../../types"
 import api from "../../api";
+import { signIn } from "../../utils"
+import { useSetRecoilState } from "recoil"
+import authAtom from "../../recoil/atoms/auth"
 
-function AuthServiceCard({ service, action } : { service: AuthService, action: 'login' | 'register' }) {
+function AuthServiceCardSkeleton() {
+  return (
+    <Box variant="card" alignItems="center" p={4}>
+      <HStack space={4} alignItems="center">
+        <Skeleton size="10" rounded="full" />
+        <Skeleton.Text lines={1} w="50%" />
+      </HStack>
+    </Box>
+  )
+}
+
+function AuthServiceCard({ service, action } : { service: Service, action: 'login' | 'register' }) {
   const { t } = useTranslation('auth')
+  const setAuth = useSetRecoilState(authAtom)
 
-  const onSubmit = async (service: AuthService) => {
+  const onSubmit = async (service: Service) => {
     const { data, error } = ((action === "login")
       ? await api.auth.login.service(service)
       : await api.auth.signup.service(service)
     )
-    console.log(data)
-    console.log(error)
+    // TODO: implement error messages for services auth
+    if (error || !data) {
+      return
+    }
+    await signIn(data, setAuth)
   }
 
   return (
@@ -36,7 +54,16 @@ function AuthServiceCard({ service, action } : { service: AuthService, action: '
   )
 }
 
-function AuthServices({ services, action } : { services: AuthService[], action: 'login' | 'register' }) {
+function AuthServicesSkeleton() {
+  return (
+    <VStack space={4}>
+      <AuthServiceCardSkeleton />
+      <AuthServiceCardSkeleton />
+    </VStack>
+  )
+}
+
+function AuthServices({ services, action } : { services: Service[], action: 'login' | 'register' }) {
   return (
     <VStack space={4}>
       {
@@ -52,4 +79,5 @@ function AuthServices({ services, action } : { services: AuthService[], action: 
   )
 }
 
+export { AuthServicesSkeleton }
 export default AuthServices

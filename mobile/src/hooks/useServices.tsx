@@ -1,11 +1,13 @@
 import { useQuery, UseQueryOptions } from "react-query"
 import api, { APIResponse } from "../api"
+import { Service } from "../types";
 
 const useServices = (
-  options?: Omit<UseQueryOptions<APIResponse<any>>, 'queryKey' | 'queryFn'>
-) => useQuery<APIResponse<any>>(
+  mode: "" | "offline" = "",
+  options?: Omit<UseQueryOptions<APIResponse<Service[]>>, 'queryKey' | 'queryFn'>
+) => useQuery<APIResponse<Service[]>>(
   "services",
-  async () => await api.services.get(),
+  async () => await api.services.get(mode),
   options
 );
 

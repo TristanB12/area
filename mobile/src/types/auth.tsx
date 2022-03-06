@@ -5,19 +5,15 @@ type AuthTokens = {
   token_type: "Bearer"
 }
 
+type AuthStorage = Omit<AuthTokens, 'expires_in'> & {
+  expire_timestamp: number
+}
+
 type AuthState = {
   isLoading: boolean,
+  isSignedIn: boolean,
   isSignout: boolean,
   isFirstTimeUsingApp: boolean,
-  email: string,
-} & Pick<AuthTokens, 'access_token' | 'refresh_token'>
-
-type AuthStorage = {
-  access_token: string,
-  refresh_token: string,
-  expire_timestamp: number,
-  token_type: "Bearer",
-  email: string
 }
 
 export type { AuthTokens, AuthState, AuthStorage }

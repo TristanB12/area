@@ -15,12 +15,15 @@ const getAreas = async () => axiosAPI({
 const editArea = async (area: Area) => axiosAPI({
   method: "PATCH",
   url: "/area",
+  params: {
+    id: area.id
+  },
   data: area
 })
 
 const deleteArea = async (area: Area) => axiosAPI({
   method: "DELETE",
-  url: "/areas",
+  url: "/area",
   params: {
     id: area.id
   }

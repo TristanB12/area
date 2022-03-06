@@ -39,7 +39,7 @@ function StackNavigation() {
         {
           auth.isLoading ? (
             <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }}/>
-          ) : !auth.access_token ? (
+          ) : !auth.isSignedIn ? (
             auth.isFirstTimeUsingApp ? (
               <Stack.Screen name="AppIntro" component={AppIntroScreen} options={{ headerShown: false }}/>
             ) : (

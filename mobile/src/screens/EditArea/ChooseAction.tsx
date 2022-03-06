@@ -4,14 +4,15 @@ import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackNavProp, StackParamList } from "../../navigation/types";
-import { Box, Image, VStack, Text, Input, Icon, HStack } from "native-base";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { Box, Image, VStack, Text, Icon, HStack } from "native-base";
+import { useSetRecoilState } from "recoil";
 import editedAreaAtom from "../../recoil/atoms/editedArea";
-import servicesAtom from "../../recoil/atoms/services";
 import Area, { Service, Action } from "../../types";
 import ScreenView from '../../components/ScreenView'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import useServices from "../../hooks/useServices";
+import ServiceItem from "../../components/ServiceItem";
 
 function ActionItem({ service, action, isReaction } : { service: Service, action: Action, isReaction: boolean }) {
   const setArea = useSetRecoilState(editedAreaAtom)
@@ -35,13 +36,7 @@ function ActionItem({ service, action, isReaction } : { service: Service, action
     } else {
       setArea(area => ({
         ...area,
-        [areaActionField]: {
-          service: {
-            name: service.name,
-            logoUri: service.logoUri,
-          },
-          ...action
-        }
+        [areaActionField]: action
       }))
       navigation.navigate('EditArea')
     }
@@ -91,13 +86,8 @@ type ChooseActionScreenProps = NativeStackScreenProps<StackParamList, 'ChooseAct
 function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
   const { t } = useTranslation('navigation')
   const { serviceName, isReaction } = route.params
-  const services = useRecoilValue(servicesAtom)
-  const service = services.find(service => service.name === serviceName)
-
-  if (service === undefined) {
-    return null
-  }
-  const actions = isReaction ? service.reactions : service.actions
+  const { data } = useServices()
+  const service = data?.data?.find(service => service.name === serviceName)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -105,20 +95,15 @@ function ChooseActionScreen({ route, navigation } : ChooseActionScreenProps) {
     });
   }, [navigation]);
 
+  if (service === undefined) {
+    return null
+  }
+  const actions = isReaction ? service.reactions : service.actions
+
   return (
     <ScreenView>
-      <HStack my="5" mb="10" space={6} alignItems="center">
-        <Image
-          source={{ uri: service.logoUri }}
-          size="sm"
-          resizeMode="contain"
-          alt={service.name}
-        />
-        <Text  textAlign="center" >
-          { service.name }
-        </Text>
-      </HStack>
-      <VStack w="100%" space={4}>
+      <ServiceItem service={service}/>
+      <VStack mt={10} w="100%" space={4}>
         {
           actions.map(action =>
             <ActionItem

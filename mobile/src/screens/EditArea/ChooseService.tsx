@@ -10,8 +10,9 @@ import { useTranslation } from "react-i18next";
 import useServices from "../../hooks/useServices";
 import ErrorFetching from "../../components/ErrorFetching";
 import SearchBar, { SearchBarSkeleton } from "../../components/SearchBar";
+import ServiceItem from "../../components/ServiceItem";
 
-function ServiceItem({ service, isReaction } : { service: Service, isReaction: boolean }) {
+function ServiceCard({ service, isReaction } : { service: Service, isReaction: boolean }) {
   const actions = isReaction ? service.reactions : service.actions
   const needsLinking = (!service.isLinked && actions.every(action => action.requiresUserAuth))
   const navigation = useNavigation<StackNavProp>()
@@ -43,23 +44,13 @@ function ServiceItem({ service, isReaction } : { service: Service, isReaction: b
             <Icon as={<FontAwesome name="link" />} color="white" size={4} />
           </Center>
         }
-        <VStack space={4} alignItems="center">
-          <Image
-            source={{ uri: service.logoUri }}
-            size="xs"
-            resizeMode="contain"
-            alt={service.name}
-          />
-          <Text>
-            { service.name }
-          </Text>
-        </VStack>
+        <ServiceItem service={service} direction="column" size="xs" />
       </Box>
     </TouchableOpacity>
   )
 }
 
-function ServiceItemSkeleton() {
+function ServiceCardSkeleton() {
   return (
     <Box
       variant="card"
@@ -92,7 +83,7 @@ function SearchServices({ services, isReaction } : { services: Service[], isReac
         style={{ width: "100%" }}
         keyExtractor={service => service.name}
         data={services ? services.filter(service => service.name.includes(search)) : []}
-        renderItem={item => <ServiceItem service={item.item} isReaction={isReaction} />}
+        renderItem={item => <ServiceCard service={item.item} isReaction={isReaction} />}
         numColumns={2}
       />
     </>
@@ -108,7 +99,7 @@ function SearchServicesSkeleton() {
         style={{ width: "100%" }}
         keyExtractor={(item) => item.toString()}
         data={[...Array(6).keys()]}
-        renderItem={() => <ServiceItemSkeleton />}
+        renderItem={() => <ServiceCardSkeleton />}
         numColumns={2}
       />
     </>
@@ -118,7 +109,12 @@ function SearchServicesSkeleton() {
 function ChooseServiceScreen({ route } : { route: RouteProp<StackParamList, 'ChooseService'> }) {
   const { isReaction } = route.params
   const { t } = useTranslation('services')
-  const { isLoading, data, refetch } = useServices()
+  const { isLoading, data, refetch } = useServices("", {
+    select: (data) => (data.data === null) ? data : ({
+      data: data.data.filter(service => service[(isReaction) ? 'reactions' : 'actions'].length > 0),
+      error: null
+    })
+  })
   const services: Service[] = data?.data || []
 
   return (
