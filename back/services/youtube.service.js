@@ -50,7 +50,7 @@ const youtubeService = {
       },
       requiresUserAuth: true,
       config: null,
-      binding: {},
+      binding: null,
       function: youtubeAction.actionNewSubscribe,
     },
     {
@@ -62,7 +62,7 @@ const youtubeService = {
       },
       requiresUserAuth: true,
       config: null,
-      binding: {},
+      binding: null,
       function: youtubeAction.actionLikedVideo,
     }
   ],
