@@ -4,7 +4,7 @@ const facebook = require('../controllers/facebook.controller');
 const facebookService = {
   tags: ["link", "auth"],
   authRef: 'facebook',
-  logoUri: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.defontaine-construction.fr%2Factualites%2Ffacebook-logo-png-transparent-background%2F&psig=AOvVaw0yQ_WnoUHrtY0dxHAOCXyc&ust=1646481873607000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIil0461rPYCFQAAAAAdAAAAABAJ",
+  logoUri: "https://logodownload.org/wp-content/uploads/2014/09/facebook-logo-5-1.png",
   link: {
     accessTokenUrlOption: facebook.accessTokenUrlOption,
     desactive: facebook.unlink,
