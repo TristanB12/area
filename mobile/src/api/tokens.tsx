@@ -1,3 +1,5 @@
+import { storeUserSessionToStorage } from "../storage";
+import { AuthTokens } from "./auth";
 import axiosAPI from "./config";
 
 function setAccessToken(access_token: string) {
@@ -6,7 +8,7 @@ function setAccessToken(access_token: string) {
 
 const refreshAccessToken = async (refresh_token: string) => {
   try {
-    const { data } = await axiosAPI({
+    const { data } = await axiosAPI.request<AuthTokens>({
       method: "GET",
       url: "/token/refresh",
       params: {
@@ -15,7 +17,7 @@ const refreshAccessToken = async (refresh_token: string) => {
     })
     if (data) {
       setAccessToken(data.access_token)
-      // TODO: store token locally
+      await storeUserSessionToStorage(data)
     }
   } catch (error) {
     console.log(error)
